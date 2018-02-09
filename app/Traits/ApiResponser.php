@@ -35,7 +35,7 @@ trait ApiResponser{
 	    $collection = $this->transformData($collection, $transformer);
 
 	    //Cacheing data from laravel cache
-	    $collection = $this->cacheData($collection);
+//	    $collection = $this->cacheData($collection);
 
 		return $this->successResponse($collection, $code);
 	}
