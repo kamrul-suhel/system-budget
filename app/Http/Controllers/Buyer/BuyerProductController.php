@@ -18,7 +18,8 @@ class BuyerProductController extends ApiController
      */
     public function index(Buyer $buyer)
     {
-        $transitions = $buyer->transitions()->with('product')
+        $transitions = $buyer->transitions()
+            ->with('product')
             ->get()
             ->pluck('product')
             ->unique()

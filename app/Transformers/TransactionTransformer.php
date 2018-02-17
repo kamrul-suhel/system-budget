@@ -21,7 +21,7 @@ class TransactionTransformer extends TransformerAbstract
             'product'    => (int) $transaction->product_id,
             'creationdate'    => (string) $transaction->created_at,
             'lastchange'    => (string) $transaction->updated_at,
-            'deleteddate'   => isset($transaction->deleted_at) ? (string) $transaction->deleted_al : null,
+            'deleteddate'   => isset($transaction->deleted_at) ? (string) $transaction->deleted_at : null,
             'links' =>[
                 [
                     'rel'   => 'self',
