@@ -14,11 +14,17 @@ class Transaction extends Model
 
     public $transformer = TransactionTransformer::class;
     protected $dates = ['deleted_at'];
+
+    //Transaction product
+    const TRANSICTION_STATUS_OK = 1;
+    const TRANSACTION_STATUS_DUE = 2;
+
     //
     protected $fillable = [
     	'quantity',
     	'buyer_id',
-    	'product_id'
+    	'product_id',
+        'payment_status'
     ];
 
     protected $hidden =[

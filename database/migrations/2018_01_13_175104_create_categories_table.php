@@ -18,7 +18,12 @@ class CreateCategoriesTable extends Migration
             $table->string('name');
             $table->string('description', 1000);
             $table->timestamps();
-            $table->softDeletes();
+
+            // Nested element
+            $table->integer('parent_id')->nullable()->index();
+            $table->integer('lft')->nullable()->index();
+            $table->integer('rgt')->nullable()->index();
+            $table->integer('depth')->nullable();
         });
     }
 

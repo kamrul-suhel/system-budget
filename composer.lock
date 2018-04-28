@@ -4,39 +4,40 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "6289fe1b5bc6a8407ce753d99215873f",
+    "content-hash": "4e6defee4f48d4660c27db2908a93ce9",
     "packages": [
         {
-            "name": "baum/baum",
-            "version": "1.1.1",
+            "name": "asm89/stack-cors",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/etrepat/baum.git",
-                "reference": "9290bed862d329aaaef666a71e0a2734afc28286"
+                "url": "https://github.com/asm89/stack-cors.git",
+                "reference": "c163e2b614550aedcf71165db2473d936abbced6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/etrepat/baum/zipball/9290bed862d329aaaef666a71e0a2734afc28286",
-                "reference": "9290bed862d329aaaef666a71e0a2734afc28286",
+                "url": "https://api.github.com/repos/asm89/stack-cors/zipball/c163e2b614550aedcf71165db2473d936abbced6",
+                "reference": "c163e2b614550aedcf71165db2473d936abbced6",
                 "shasum": ""
             },
             "require": {
-                "illuminate/console": "5.*",
-                "illuminate/database": "5.*",
-                "illuminate/events": "5.*",
-                "illuminate/filesystem": "5.*",
-                "illuminate/support": "5.*",
-                "php": ">=5.4.0"
+                "php": ">=5.5.9",
+                "symfony/http-foundation": "~2.7|~3.0|~4.0",
+                "symfony/http-kernel": "~2.7|~3.0|~4.0"
             },
             "require-dev": {
-                "d11wtq/boris": "~1.0.10",
-                "mockery/mockery": "~0.9",
-                "phpunit/phpunit": "~4.0"
+                "phpunit/phpunit": "^5.0 || ^4.8.10",
+                "squizlabs/php_codesniffer": "^2.3"
             },
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.2-dev"
+                }
+            },
             "autoload": {
-                "psr-0": {
-                    "Baum": "src/"
+                "psr-4": {
+                    "Asm89\\Stack\\": "src/Asm89/Stack/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -45,21 +46,78 @@
             ],
             "authors": [
                 {
-                    "name": "Estanislau Trepat",
-                    "email": "estanis@etrepat.com",
-                    "homepage": "http://etrepat.com"
+                    "name": "Alexander",
+                    "email": "iam.asm89@gmail.com"
                 }
             ],
-            "description": "Baum is an implementation of the Nested Set pattern for Eloquent models.",
+            "description": "Cross-origin resource sharing library and stack middleware",
+            "homepage": "https://github.com/asm89/stack-cors",
             "keywords": [
-                "Laravel 4",
-                "database",
-                "eloquent",
-                "laravel",
-                "laravel 5",
-                "nested set"
+                "cors",
+                "stack"
             ],
-            "time": "2015-03-04T12:07:54+00:00"
+            "time": "2017-12-20T14:37:45+00:00"
+        },
+        {
+            "name": "barryvdh/laravel-cors",
+            "version": "v0.11.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/barryvdh/laravel-cors.git",
+                "reference": "6ba64a654b4258a3ecc11aba6614c932b3442e30"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/barryvdh/laravel-cors/zipball/6ba64a654b4258a3ecc11aba6614c932b3442e30",
+                "reference": "6ba64a654b4258a3ecc11aba6614c932b3442e30",
+                "shasum": ""
+            },
+            "require": {
+                "asm89/stack-cors": "^1.2",
+                "illuminate/support": "5.3.x|5.4.x|5.5.x|5.6.x",
+                "php": ">=5.5.9",
+                "symfony/http-foundation": "^3.1|^4",
+                "symfony/http-kernel": "^3.1|^4"
+            },
+            "require-dev": {
+                "orchestra/testbench": "3.x",
+                "phpunit/phpunit": "^4.8|^5.2",
+                "squizlabs/php_codesniffer": "^2.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.11-dev"
+                },
+                "laravel": {
+                    "providers": [
+                        "Barryvdh\\Cors\\ServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Barryvdh\\Cors\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Barry vd. Heuvel",
+                    "email": "barryvdh@gmail.com"
+                }
+            ],
+            "description": "Adds CORS (Cross-Origin Resource Sharing) headers support in your Laravel application",
+            "keywords": [
+                "api",
+                "cors",
+                "crossdomain",
+                "laravel"
+            ],
+            "time": "2018-01-04T06:59:27+00:00"
         },
         {
             "name": "defuse/php-encryption",
@@ -663,6 +721,89 @@
                 "url"
             ],
             "time": "2017-03-20T17:10:46+00:00"
+        },
+        {
+            "name": "hungnm144/baum",
+            "version": "1.3.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/hungnm144/baum.git",
+                "reference": "f33eb560f3f87b6228de46444dbad4b5be07844b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/hungnm144/baum/zipball/f33eb560f3f87b6228de46444dbad4b5be07844b",
+                "reference": "f33eb560f3f87b6228de46444dbad4b5be07844b",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/console": "5.1.*|5.2.*|5.3.*|5.4.*|5.5.*",
+                "illuminate/database": "5.1.*|5.2.*|5.3.*|5.4.*|5.5.*",
+                "illuminate/events": "5.1.*|5.2.*|5.3.*|5.4.*|5.5.*",
+                "illuminate/filesystem": "5.1.*|5.2.*|5.3.*|5.4.*|5.5.*",
+                "illuminate/support": "5.1.*|5.2.*|5.3.*|5.4.*|5.5.*",
+                "php": ">=7.0.0"
+            },
+            "require-dev": {
+                "d11wtq/boris": "~1.0.10",
+                "fabpot/php-cs-fixer": "^1.11",
+                "mockery/mockery": "~0.9",
+                "phpunit/phpunit": "4.*",
+                "satooshi/php-coveralls": "dev-master"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Baum\\Providers\\BaumServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Baum\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Estanislau Trepat",
+                    "email": "estanis@etrepat.com",
+                    "homepage": "http://etrepat.com"
+                },
+                {
+                    "name": "Gary Pearman",
+                    "email": "gaz@red-robot.co.uk",
+                    "homepage": "http://red-robot.co.uk"
+                },
+                {
+                    "name": "Martin Seysen",
+                    "email": "mse@dogado.de",
+                    "homepage": "https://www.dogado.de"
+                },
+                {
+                    "name": "Sithira Munasinghe",
+                    "email": "sithiraac@gmail.com",
+                    "homepage": "http://github.com/Sithira"
+                },
+                {
+                    "name": "Hung Nguyen",
+                    "email": "hungnm144@gmail.com",
+                    "homepage": "http://github.com/hungnm144"
+                }
+            ],
+            "description": "Baum is an implementation of the Nested Set pattern for Eloquent models.",
+            "keywords": [
+                "database",
+                "eloquent",
+                "laravel",
+                "laravel 5",
+                "nested set"
+            ],
+            "time": "2017-11-11T19:00:29+00:00"
         },
         {
             "name": "jakub-onderka/php-console-color",

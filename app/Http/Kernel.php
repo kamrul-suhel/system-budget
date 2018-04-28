@@ -34,7 +34,7 @@ class Kernel extends HttpKernel
             \Illuminate\Session\Middleware\StartSession::class,
             // \Illuminate\Session\Middleware\AuthenticateSession::class,
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
-            \App\Http\Middleware\VerifyCsrfToken::class,
+//            \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
 
@@ -42,6 +42,7 @@ class Kernel extends HttpKernel
             'signature:X-Applications-Name',
             'throttle:60,1',
             'bindings',
+            'cors'
         ],
     ];
 
@@ -62,5 +63,6 @@ class Kernel extends HttpKernel
         'throttle' => \App\Http\Middleware\CustomThrottleMiddleware::class,
         'signature' => \App\Http\Middleware\SignatureMiddleware::class,
         'transform.input' => \App\Http\Middleware\TransformInput::class,
+        'cors'  => \Barryvdh\Cors\HandleCors::class,
     ];
 }

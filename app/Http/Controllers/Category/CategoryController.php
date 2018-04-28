@@ -11,9 +11,9 @@ class CategoryController extends ApiController
 {
     public function __construct()
     {
-        $this->middleware('client.credentials')->only(['show','index']);
-        $this->middleware('auth:api')->except(['show','index']);
-        $this->middleware('transform.input:'.CategoryTransformer::class)->only(['store','update']);
+//        $this->middleware('client.credentials')->only(['show','index']);
+//        $this->middleware('auth:api')->except(['show','index']);
+        // $this->middleware('transform.input:'.CategoryTransformer::class)->only(['store','update']);
     }
 
     /**
@@ -23,8 +23,9 @@ class CategoryController extends ApiController
      */
     public function index()
     {
-        $categories = Category::all();
-        return $this->showAll($categories, 200);
+        $categories = Category::root();
+        $childrens = $categories->getDescendantsAndSelf();
+        return $this->showAll($childrens, 200);
     }
 
 
@@ -38,12 +39,29 @@ class CategoryController extends ApiController
     {
         $rules = [
             'name'          => 'required',
-            'description'   => 'required'
+            'description'   => 'required',
         ];
 
         $this->validate($request, $rules);
 
-        $category = Category::create($request->all());
+        $root = Category::root();
+    
+        if(!$root) {
+            $category = Category::create($request->all());
+            $category->makeRoot();
+            return $this->showOne($category, 201);
+        }
+
+        // check if parent id is set
+        if($request->parent_id){
+           $parent = Category::find($request->parent_id);
+           $category = Category::create($request->all());
+
+           $category->makeChildOf($parent);
+           return $this->showOne($category, 201);
+        }
+        $category = $root->children()->create($request->all());
+
 
         return $this->showOne($category, 201);
     }
@@ -71,9 +89,8 @@ class CategoryController extends ApiController
     {
         $category->fill($request->only([
             'name',
-            'description'
+            'description',
         ]));
-
         if($category->isClean()){
             return $this->errorResponse("You need to specifi any diffrent value to update", 422);
         }
@@ -89,6 +106,9 @@ class CategoryController extends ApiController
      */
     public function destroy(Category $category)
     {
+        if($category->id == 1){
+            return $this->errorResponse('You can not delete this category', 422);
+        }
         $category->delete();
         return $this->showOne($category, 505);
     }

@@ -22,17 +22,18 @@ trait ApiResponser{
             return $this->successResponse(['data' => $collection], $code);
         }
 
-	    $transformer = $collection->first()->transformer;
+	    // $transformer = $collection->first()->transformer;
         // FIltering data
-	    $collection = $this->filterData($collection, $transformer);
+	    // $collection = $this->filterData($collection, $transformer);
+
 	    //sorting data
-	    $collection = $this->sortData($collection, $transformer);
+	    // $collection = $this->sortData($collection, $transformer);
 
 	    //Paginate data
-        $collection = $this->paginate($collection);
+        // $collection = $this->paginate($collection);
 
 	    //Transform data
-	    $collection = $this->transformData($collection, $transformer);
+//	    $collection = $this->transformData($collection, $transformer);
 
 	    //Cacheing data from laravel cache
 //	    $collection = $this->cacheData($collection);
@@ -42,7 +43,7 @@ trait ApiResponser{
 
 	protected function showOne(Model $instance, $code = 200){
 	    $transformer = $instance->transformer;
-	    $instance = $this->transformData($instance, $transformer);
+	    // $instance = $this->transformData($instance, $transformer);
 		return $this->successResponse($instance, $code);
 	}
 

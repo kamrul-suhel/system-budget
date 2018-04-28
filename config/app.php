@@ -169,6 +169,7 @@ return [
          */
         \Spatie\Fractal\FractalServiceProvider::class,
         \Laravel\Passport\PassportServiceProvider::class,
+        Baum\Providers\BaumServiceProvider::class,
 
         /*
          * Application Service Providers...

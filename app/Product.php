@@ -21,13 +21,21 @@ class Product extends Model
 	const UNAVAILABLE_PRODUCT = 'unavailable';
 	const ABAILABLE_PRODUCT = 'available';
 
+	const PRODUCTTYPEKG = 'kg';
+	const PRODUCTTYPLITTER = 'litter';
+	const PRODUCTTYPEITEM = 'item';
+
+
     protected $fillable = [
     	'name',
     	'description',
     	'status',
     	'quantity',
     	'image',
-    	'seller_id'
+    	'seller_id',
+        'quantity_type',
+        'sale_price',
+        'purchase_price'
     ];
 
     protected $hidden = [
@@ -50,4 +58,10 @@ class Product extends Model
     public function transitions(){
         return $this->hasMany(Transaction::class);
     }
+
+    // getter and setter
+    public function setQuantityTypeAttribute($value){
+        $this->attributes['quantity_type'] = strtolower($value);
+    }
+
 }
