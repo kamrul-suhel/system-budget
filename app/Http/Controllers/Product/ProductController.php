@@ -13,7 +13,7 @@ class ProductController extends ApiController
     public function __construct()
     {
 //        $this->middleware('client.credentials')->only(['index','show']);
-        $this->middleware('transform.input:'.ProductTransformer::class)->only(['store','update']);
+//        $this->middleware('transform.input:'.ProductTransformer::class)->only(['store','update']);
     }
 
     /**
@@ -24,7 +24,11 @@ class ProductController extends ApiController
     public function index()
     {
         $products = Product::all();
-        return $this->showAll($products);
+        $data = collect([
+            'products' => $products,
+            'quantity_types' => Product::getQuantityType()
+        ]);
+        return $this->showAll($data);
     }
 
     /**
@@ -48,16 +52,16 @@ class ProductController extends ApiController
         //
         $product = $request->all();
         $product['image'] = '1.jpg';
-
-
+        //change this when auth is set
+        $product['seller_id'] = 1;
 
         $product = Product::create($product);
 
         // If product has category then it will link with category in pivot table
         if($request->has('categories')){
             $categoriesId = [];
-            foreach($request->categories as $category){
-                $categoriesId[] = $category['identifier'];
+            foreach(json_decode($request->categories) as $category){
+                $categoriesId[] = $category;
             }
             $product->categories()->sync($categoriesId);
         }

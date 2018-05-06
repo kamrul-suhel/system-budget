@@ -1,4 +1,3 @@
-
 window._ = require('lodash');
 
 
@@ -10,8 +9,6 @@ window._ = require('lodash');
 
 try {
     window.$ = window.jQuery = require('jquery');
-
-    require('bootstrap-sass');
 } catch (e) {}
 
 /**
@@ -20,9 +17,15 @@ try {
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
 
-window.axios = require('axios');
+import Vue from 'vue'
+import Vuetify from 'vuetify'
+import axios from 'axios'
 
-window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+import router from './router'
+Vue.use(Vuetify);
+
+
+Vue.config.productionTip = true
 
 /**
  * Next we will register the CSRF Token as a common header with Axios so that
@@ -30,13 +33,20 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
  * a simple convenience so we don't have to attach every token manually.
  */
 
-var token = document.head.querySelector('meta[name="csrf-token"]');
 
-if (token) {
-    window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
-} else {
-    console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
-}
+import App from './components/App'
+
+
+/* eslint-disable no-new */
+new Vue({
+    el: '#budgetapp',
+    router,
+    components: {App},
+    template: '<App/>'
+})
+
+
+
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening

@@ -24,6 +24,7 @@ class Product extends Model
 	const PRODUCTTYPEKG = 'kg';
 	const PRODUCTTYPLITTER = 'litter';
 	const PRODUCTTYPEITEM = 'item';
+	const PRODUCTTYPEPIC = 'pic';
 
 
     protected $fillable = [
@@ -62,6 +63,14 @@ class Product extends Model
     // getter and setter
     public function setQuantityTypeAttribute($value){
         $this->attributes['quantity_type'] = strtolower($value);
+    }
+
+    public static function getQuantityType(){
+        return [
+            self::PRODUCTTYPEKG,
+            self::PRODUCTTYPLITTER,
+            self::PRODUCTTYPEPIC
+        ];
     }
 
 }

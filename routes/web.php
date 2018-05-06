@@ -36,3 +36,11 @@ Route::get('/home/authorize-clients', 'HomeController@getAuthorizeClients')->nam
 Route::get('/',function(){
     return view('welcome');
 })->middleware('guest');
+
+Route::get('/products', function(){
+    return view('welcome');
+});
+
+Route::get('/categories', function(){
+    return view('welcome');
+});

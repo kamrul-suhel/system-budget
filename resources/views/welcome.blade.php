@@ -1,23 +1,22 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
-@section('content')
-    <div class="container">
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2">
-                <div class="panel panel-default">
-                    <div class="panel-heading">Welcome</div>
+    <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
+    <link href="https://unpkg.com/vuetify/dist/vuetify.min.css" rel="stylesheet">
 
-                    <div class="panel-body">
-                        @if (session('status'))
-                            <div class="alert alert-success">
-                                {{ session('status') }}
-                            </div>
-                        @endif
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
-                        You are logged in!
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-@endsection
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>budgetapp</title>
+</head>
+<body>
+<div id="budgetapp"></div>
+<!-- built files will be auto injected -->
+<script src="{{ asset('js/app.js') }}"></script>
+</body>
+</html>
