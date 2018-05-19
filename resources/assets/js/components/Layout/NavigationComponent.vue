@@ -6,7 +6,7 @@
             app
     >
         <v-list dense>
-            <v-list-tile v-for="item in items" :key="item.text" @click="">
+            <v-list-tile v-for="item in items" :key="item.link" @click="">
                 <v-list-tile-action>
                     <v-icon>{{ item.icon }}</v-icon>
                 </v-list-tile-action>
@@ -49,15 +49,9 @@
                     },
                     {
                         icon: 'watch_later', 
-                        text: 'Customer',
-                        link: 'customer'
+                        text: 'Customers',
+                        link: 'customers'
                     }
-                ],
-                items2: [
-                    {picture: 28, text: 'Joseph'},
-                    {picture: 38, text: 'Apple'},
-                    {picture: 48, text: 'Xbox Ahoy'},
-                    {picture: 58, text: 'Nokia'},
                 ]
             }
         }

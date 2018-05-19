@@ -16,13 +16,13 @@ class CreateTransactionsTable extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('quantity')->unsigned();
-            $table->integer('buyer_id')->unsigned();
+            $table->integer('customer_id')->unsigned();
             $table->integer('product_id')->unsigned();
             $table->integer('payment_status')->unsigned()->nullable();
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('buyer_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('customer_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
         });
     }

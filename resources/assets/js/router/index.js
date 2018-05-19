@@ -34,8 +34,13 @@ const routes = [
     },
 
     {
-        path: '/customer',
-        name: 'customer',
+        path: '/customers',
+        name: 'customers',
+        component: CustomerComponent
+    },
+    {
+        path: '/customers/:id/transitions',
+        name: 'customers_transitions',
         component: CustomerComponent
     }
 ]

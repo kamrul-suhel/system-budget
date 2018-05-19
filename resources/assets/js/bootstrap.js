@@ -1,5 +1,11 @@
 window._ = require('lodash');
 
+window.axios = require('axios');
+
+window.axios.defaults.headers.common = {
+    'X-Requested-With': 'XMLHttpRequest'
+};
+
 
 /**
  * We'll load jQuery and the Bootstrap jQuery plugin which provides support
@@ -19,7 +25,6 @@ try {
 
 import Vue from 'vue'
 import Vuetify from 'vuetify'
-import axios from 'axios'
 
 import router from './router'
 Vue.use(Vuetify);

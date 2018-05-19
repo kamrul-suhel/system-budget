@@ -44,3 +44,6 @@ Route::get('/products', function(){
 Route::get('/categories', function(){
     return view('welcome');
 });
+
+Route::resource('customers', 'Customer\CustomerController')->only(['store', 'index', 'update']);
+Route::resource('customers.transactions', 'Customer\CustomerTransitionController')->only(['index']);

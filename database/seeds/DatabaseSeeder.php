@@ -1,5 +1,6 @@
 <?php
 
+use App\Customer;
 use App\User;
 use App\Product;
 use App\Category;
@@ -19,6 +20,7 @@ class DatabaseSeeder extends Seeder
     	DB::statement('SET FOREIGN_KEY_CHECKS = 0');
 
         User::truncate();
+        Customer::truncate();
         Category::truncate();
         Product::truncate();
         Transaction::truncate();
@@ -28,8 +30,10 @@ class DatabaseSeeder extends Seeder
         Product::flushEventListeners();
         Category::flushEventListeners();
         Transaction::flushEventListeners();
+        Customer::flushEventListeners();
 
         $usersQuantity = 30;
+        $customerQuantity = 10;
         $categoriesQuantity = 200;
         $productsQuantity = 200;
         $transactionQuantity = 200;
@@ -102,6 +106,7 @@ class DatabaseSeeder extends Seeder
 
 
         factory(User::class, $usersQuantity)->create();
+        factory(Customer::class, $customerQuantity)->create();
 
         factory(Product::class, $productsQuantity)->create()->each(
         	function($product){

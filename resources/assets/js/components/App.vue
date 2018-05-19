@@ -12,9 +12,7 @@
                 <v-container fill-height>
                     <v-layout justify-left>
                         <v-flex>
-
                             <router-view></router-view>
-
                         </v-flex>
                     </v-layout>
                 </v-container>

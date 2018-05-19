@@ -22,7 +22,7 @@ class Transaction extends Model
     //
     protected $fillable = [
     	'quantity',
-    	'buyer_id',
+    	'customer_id',
     	'product_id',
         'payment_status'
     ];
@@ -31,8 +31,8 @@ class Transaction extends Model
         'deleted_at'
     ];
 
-     public function buyer(){
-     	return $this->belongsTo(Buyer::class);
+     public function customer(){
+     	return $this->belongsTo(Customer::class);
      }
 
      public function product(){

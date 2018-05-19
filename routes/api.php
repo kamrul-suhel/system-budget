@@ -78,3 +78,13 @@ Route::name('resend')->get('users/{user}/resend', 'User\UserController@resend');
  * Client auth
  */
 Route::post('oauth/token', '\Laravel\Passport\Http\Controllers\AccessTokenController@issueToken');
+
+
+
+/*
+ *
+ * Customer route
+ *
+ */
+
+Route::resource('customers', 'Customer\CustomerController');
