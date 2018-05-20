@@ -28,7 +28,7 @@ const routes = [
     },
 
     {
-        path: 'transaction',
+        path: '/transaction',
         name: 'transaction',
         component: TransactionComponent
     },

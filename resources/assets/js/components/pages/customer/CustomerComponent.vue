@@ -58,7 +58,7 @@
                     <span class="headline">{{ formTitle }}</span>
                 </v-card-title>
 
-                <v-card-text>
+                <v-card-text class="pt-0">
                     <v-container grid-list-md>
                         <v-layout wrap>
                             <v-flex xs12>
@@ -91,12 +91,11 @@
                             </v-flex>
 
                             <v-flex xs6>
-                                <v-select
-                                        :items="active"
-                                        v-model="editedItem.active"
-                                        label="active"
-                                        auto
-                                ></v-select>
+                                <v-text-field
+                                    v-model="editedItem.address"
+                                    label="Address"
+                                    multi-line
+                                ></v-text-field>
                             </v-flex>
                         </v-layout>
                     </v-container>
@@ -194,7 +193,7 @@
 
     export default {
         data: () => ({
-            dialog: true,
+            dialog: false,
             search: '',
             pagination: {
                 sortBy: 'name'

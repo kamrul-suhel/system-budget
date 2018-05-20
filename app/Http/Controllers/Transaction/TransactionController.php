@@ -21,7 +21,11 @@ class TransactionController extends ApiController
      */
     public function index()
     {
-        $transactions = Transaction::all();
+        $transactions = Transaction::with('product')
+        ->get();
+        $total = $transactions->avg('product.quantity');
+        dd($total);
+        
         return $this->showAll($transactions);
     }
 

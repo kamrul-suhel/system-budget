@@ -9,7 +9,7 @@
             <header-component></header-component>
 
             <v-content>
-                <v-container fill-height>
+                <v-container fill-height class="pt-0">
                     <v-layout justify-left>
                         <v-flex>
                             <router-view></router-view>

@@ -1,52 +1,5 @@
 <template>
     <div class="products">
-        <v-container grid-list-md>
-            <v-layout row wrap>
-                <v-flex xs12>
-                    <h2>Products</h2>
-                </v-flex>
-            </v-layout>
-
-            <v-divider class="mb-3 dark"></v-divider>
-
-            <v-layout row wrap>
-                <v-flex xs3>
-                    <v-card flat class="cyan lighten-1 white--text">
-                        <v-card-title>Total product</v-card-title>
-                        <v-card-text class="pt-0">
-                            <h2 class="display-2 white--text text-xs-center"><strong>350</strong></h2>
-                        </v-card-text>
-                    </v-card>
-                </v-flex>
-
-                <v-flex xs3>
-                    <v-card flat class="light-blue white--text">
-                        <v-card-title>Total product</v-card-title>
-                        <v-card-text class="pt-0">
-                            <h2 class="display-2 white--text text-xs-center"><strong>350</strong></h2>
-                        </v-card-text>
-                    </v-card>
-                </v-flex>
-
-                <v-flex xs3>
-                    <v-card flat class="light-green lighten-1 white--text">
-                        <v-card-title>Total product</v-card-title>
-                        <v-card-text class="pt-0">
-                            <h2 class="display-2 white--text text-xs-center"><strong>350</strong></h2>
-                        </v-card-text>
-                    </v-card>
-                </v-flex>
-
-                <v-flex xs3>
-                    <v-card flat class="orange darken-1 white--text">
-                        <v-card-title>Total product</v-card-title>
-                        <v-card-text class="pt-0">
-                            <h2 class="display-2 white--text text-xs-center"><strong>350</strong></h2>
-                        </v-card-text>
-                    </v-card>
-                </v-flex>
-            </v-layout>
-        </v-container>
 
         <v-dialog
                 v-model="dialog"
@@ -146,13 +99,58 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
-
-        <v-container grid-list-lg>
+        <v-container grid-list-md class="pt-0">
             <v-layout row wrap>
-                <v-card
-                        raised
-                        width="100%">
-                    <v-card-title class="pb-0 pt-0">
+                <v-flex xs12 class="pt-0">
+                    <h2>Products</h2>
+                </v-flex>
+            </v-layout>
+
+            <v-divider class="mb-3 dark"></v-divider>
+
+            <v-layout row wrap>
+                <v-flex xs3>
+                    <v-card flat class="cyan lighten-1 white--text">
+                        <v-card-title>Total product</v-card-title>
+                        <v-card-text class="pt-0">
+                            <h2 class="display-2 white--text text-xs-center"><strong>350</strong></h2>
+                        </v-card-text>
+                    </v-card>
+                </v-flex>
+
+                <v-flex xs3>
+                    <v-card flat class="light-blue white--text">
+                        <v-card-title>Total product</v-card-title>
+                        <v-card-text class="pt-0">
+                            <h2 class="display-2 white--text text-xs-center"><strong>350</strong></h2>
+                        </v-card-text>
+                    </v-card>
+                </v-flex>
+
+                <v-flex xs3>
+                    <v-card flat class="light-green lighten-1 white--text">
+                        <v-card-title>Total product</v-card-title>
+                        <v-card-text class="pt-0">
+                            <h2 class="display-2 white--text text-xs-center"><strong>350</strong></h2>
+                        </v-card-text>
+                    </v-card>
+                </v-flex>
+
+                <v-flex xs3>
+                    <v-card flat class="orange darken-1 white--text">
+                        <v-card-title>Total product</v-card-title>
+                        <v-card-text class="pt-0">
+                            <h2 class="display-2 white--text text-xs-center"><strong>350</strong></h2>
+                        </v-card-text>
+                    </v-card>
+                </v-flex>
+            </v-layout>
+        </v-container>
+
+        <v-container grid-list-md>
+            <v-layout row wrap>
+                <v-card >
+                    <v-card-title>
                         <v-btn dark fab small color="dark" @click="dialog = true">
                             <v-icon>add</v-icon>
                         </v-btn>
@@ -235,7 +233,7 @@
 
             headers: [
                 {
-                    text: 'Identifier',
+                    text: 'Id',
                     align: 'left',
                     sortable: true,
                     value: 'id'
@@ -252,7 +250,7 @@
                     sortable: true
                 },
                 {
-                    text: 'Quantity type',
+                    text: 'Type',
                     value: 'quantity_types',
                     sortable: true
                 },
@@ -443,3 +441,10 @@
         }
     }
 </script>
+
+<style>
+    .products table.table thead th:first-child{
+        padding:0 15px;
+    }
+    
+</style>
