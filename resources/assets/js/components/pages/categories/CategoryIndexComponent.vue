@@ -1,5 +1,10 @@
 <template>
     <section class="categories-page">
+
+        <v-btn raised primary @click="snackbar = !snackbar">
+            Snackbar
+        </v-btn>
+
         <v-dialog v-model="dialog" max-width="500px">
             <v-btn
                     dark
@@ -82,6 +87,16 @@
                 </v-data-table>
             </v-card-text>
         </v-card>
+
+        <v-snackbar
+                :timeout="4000"
+        top
+        right
+        color="success"
+        multi-line
+        v-model="snackbar">
+            {{ snackbar_message }}
+        </v-snackbar>
     </section>
 </template>
 
@@ -91,6 +106,8 @@
         data: () => ({
             dialog: false,
             search:'',
+            snackbar: false,
+            snackbar_message:'',
             headers: [
                 {
                     text: 'Identifier',
@@ -167,8 +184,9 @@
             close () {
                 this.dialog = false
                 setTimeout(() => {
-                    this.editedItem = Object.assign({}, this.defaultItem)
-                    this.editedIndex = -1
+                    this.editedItem = Object.assign({}, this.defaultItem);
+                    this.editedIndex = -1;
+                    this.snackbar = true;
                 }, 300)
             },
 
@@ -185,7 +203,8 @@
                 
                     axios.post(url, form)
                         .then((response) => {
-                            Object.assign(this.items[this.editedIndex], this.editedItem)
+                            Object.assign(this.items[this.editedIndex], this.editedItem);
+                            this.snackbar_message = "Category "+this.editedItem.name+" successfully update.";
                         })
                     .catch((error)=> {
 
@@ -194,6 +213,8 @@
                     axios.post(url, form)
                     .then((response) => {
                         this.items.push(response.data);
+                        this.snackbar_message = "Category "+this.editedItem.name+" successfully created.";
+                        console.log(this.snackbar_message);
                     });
                 }
                 this.close()

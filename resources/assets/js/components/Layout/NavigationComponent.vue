@@ -48,7 +48,7 @@
                         link: 'transaction'
                     },
                     {
-                        icon: 'watch_later', 
+                        icon: 'watch_later',
                         text: 'Customers',
                         link: 'customers'
                     }

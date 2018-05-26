@@ -111,10 +111,11 @@ class ProductController extends ApiController
             'status'
         ]));
 
+
         if($request->has('categories') && !empty($request->categories)){
             $categoriesId = [];
-            foreach($request->categories as $category){
-                $categoriesId[] = $category['identifier'];
+            foreach(json_decode($request->categories) as $category){
+                $categoriesId[] = $category;
             }
             $product->categories()->sync($categoriesId);
         }

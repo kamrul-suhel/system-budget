@@ -3,8 +3,6 @@
 
         <v-dialog
                 v-model="dialog"
-                max-width="800px"
-                height="1000px"
                 persistent>
             <v-card class="px-2 py-2">
                 <v-card-title>
@@ -12,7 +10,7 @@
                 </v-card-title>
 
                 <v-card-text>
-                    <v-container grid-list-md>
+                    <v-container fluid grid-list-md>
                         <v-layout wrap>
                             <v-flex xs12>
                                 <v-text-field label="Title" v-model="editedItem.name"></v-text-field>
@@ -149,7 +147,7 @@
 
         <v-container grid-list-md>
             <v-layout row wrap>
-                <v-card >
+                <v-card width="100%">
                     <v-card-title>
                         <v-btn dark fab small color="dark" @click="dialog = true">
                             <v-icon>add</v-icon>
@@ -216,6 +214,16 @@
                 </v-card>
             </v-layout>
         </v-container>
+
+        <v-snackbar
+                :timeout="4000"
+                top
+                right
+                color="success"
+                multi-line
+                v-model="snackbar">
+            {{ snackbar_message }}
+        </v-snackbar>
     </div>
 </template>
 <script>
@@ -230,6 +238,9 @@
             pagination: {
                 sortBy: 'name'
             },
+
+            snackbar: false,
+            snackbar_message: '',
 
             headers: [
                 {
@@ -302,6 +313,7 @@
 
             categories: [],
             selectedCategories: [],
+            update_form : false,
 
             defaultItem: {
                 name: '',
@@ -361,11 +373,11 @@
 
             editItem(item) {
                 // get selected categories & all categories
-                let url = '/api/products/' + item.id + '/categories'
+                let url = '/api/products/' + item.id + '/categories';
 
                 axios.get(url)
                     .then((response) => {
-                        let selectedCategories = response.data
+                        let selectedCategories = response.data;
                         selectedCategories.forEach((value) => {
                             let categories = {}
                             categories.value = value.id
@@ -384,50 +396,52 @@
             },
 
             close() {
-                this.dialog = false
-                this.selectedCategories = []
+                this.dialog = false;
+                this.selectedCategories = [];
                 setTimeout(() => {
-                    this.editedItem = Object.assign({}, this.defaultItem)
-                    this.editedIndex = -1
+                    this.editedItem = Object.assign({}, this.defaultItem);
+                    this.editedIndex = -1;
                 }, 300)
             },
 
             save() {
-                let form = new FormData()
-                let url = '/api/products/'
+                let form = new FormData();
+                let url = '/api/products';
 
-                form.append('name', this.editedItem.name)
-                form.append('description', this.editedItem.description)
-                form.append('purchase_price', this.editedItem.purchase_price)
-                form.append('sale_price', this.editedItem.sale_price)
-                form.append('quantity', this.editedItem.quantity)
-                form.append('status', this.editedItem.status)
-                form.append('quantity_type', this.editedItem.quantity_type)
+                form.append('name', this.editedItem.name);
+                form.append('description', this.editedItem.description);
+                form.append('purchase_price', this.editedItem.purchase_price);
+                form.append('sale_price', this.editedItem.sale_price);
+                form.append('quantity', this.editedItem.quantity);
+                form.append('status', this.editedItem.status);
+                form.append('quantity_type', this.editedItem.quantity_type);
 
                 if (this.selectedCategories) {
-                    form.append('categories', JSON.stringify(this.selectedCategories))
+                    form.append('categories', JSON.stringify(this.selectedCategories));
+                    console.log(this.selectedCategories);
                 }
 
-                if (this.editedIndex !== -1) {
+                if (this.editedIndex > -1) {
                     // update product
                     form.append('_method', 'PATCH')
-                    url = url + this.editedItem.id
+                    url = url +'/'+ this.editedItem.id
                     axios.post(url, form)
                         .then((response) => {
-                            console.log(response)
-                            return;
+                            Object.assign(this.items[this.editedIndex], this.editedItem);
+                            this.snackbar_message = 'Product '+this.editedItem.name + ' successfully updated.';
+                            this.snackbar = true;
                         })
                 } else {
                     // create product
                     axios.post(url, form)
                         .then((response) => {
-                            console.log(response);
-                            return;
-                            this.items.push(response.data)
+                            this.items.push(response.data);
+                            this.snackbar_message = 'Product '+this.editedItem.name + ' successfully created.';
+                            this.snackbar = true;
                         })
                 }
 
-                // this.close()
+                 this.close()
             },
 
             changeSort(column) {
