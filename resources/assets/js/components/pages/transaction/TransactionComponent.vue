@@ -215,7 +215,7 @@
 
     export default {
         data: () => ({
-            dialog: true,
+            dialog: false,
             total_transactions: 0,
             total_amount_transactions: 0,
 

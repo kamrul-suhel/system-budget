@@ -1,7 +1,7 @@
 <template>
     <div id="app">
         <v-app
-                light
+                dark
                 id="inspire"
         >
             <h2>Headeri test</h2>
