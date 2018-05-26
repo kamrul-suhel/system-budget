@@ -106,8 +106,8 @@
 
                     <v-btn dark color="dark" raised @click.native="close">Cancel</v-btn>
 
-                    <v-btn dark color="dark" raised @click.native="save">{{ editedIndex == -1 ? 'Create product' :
-                        'Update product' }}
+                    <v-btn dark color="dark" raised @click.native="save">{{ editedIndex == -1 ? 'Create customer' :
+                        'Update customer' }}
                     </v-btn>
                 </v-card-actions>
             </v-card>
@@ -184,6 +184,16 @@
                 </v-card>
             </v-layout>
         </v-container>
+
+        <v-snackbar
+                :timeout="4000"
+                top
+                right
+                color="success"
+                multi-line
+                v-model="snackbar">
+            {{ snackbar_message }}
+        </v-snackbar>
     </div>
 </template>
 <script>
@@ -198,6 +208,9 @@
             pagination: {
                 sortBy: 'name'
             },
+
+            snackbar: false,
+            snackbar_message: '',
 
             headers: [
                 {
@@ -280,46 +293,46 @@
 
             editItem(item) {
                 // get selected categories & all categories
-                let url = '/api/products/' + item.id + '/categories'
+                let url = '/api/products/' + item.id + '/categories';
 
                 axios.get(url)
                     .then((response) => {
-                        let selectedCategories = response.data
+                        let selectedCategories = response.data;
                         selectedCategories.forEach((value) => {
-                            let categories = {}
-                            categories.value = value.id
-                            categories.text = value.name
+                            let categories = {};
+                            categories.value = value.id;
+                            categories.text = value.name;
                             this.selectedCategories.push(categories)
                         })
                     })
-                this.editedIndex = this.items.indexOf(item)
-                this.editedItem = Object.assign({}, item)
+                this.editedIndex = this.items.indexOf(item);
+                this.editedItem = Object.assign({}, item);
                 this.dialog = true
             },
 
             deleteItem(item) {
-                const index = this.items.indexOf(item)
+                const index = this.items.indexOf(item);
                 confirm('Are you sure you want to delete this item?') && this.items.splice(index, 1)
             },
 
             close() {
                 this.dialog = false
-                this.selectedCategories = []
+                this.selectedCategories = [];
                 setTimeout(() => {
-                    this.editedItem = Object.assign({}, this.defaultItem)
+                    this.editedItem = Object.assign({}, this.defaultItem);
                     this.editedIndex = -1
                 }, 300)
             },
 
             save() {
-                let form = new FormData()
-                let url = '/customers'
+                let form = new FormData();
+                let url = '/customers';
 
-                form.append('name', this.editedItem.name)
-                form.append('email', this.editedItem.email)
-                form.append('phone', this.editedItem.phone)
-                form.append('mobile', this.editedItem.mobile)
-                form.append('address', this.editedItem.address)
+                form.append('name', this.editedItem.name);
+                form.append('email', this.editedItem.email);
+                form.append('phone', this.editedItem.phone);
+                form.append('mobile', this.editedItem.mobile);
+                form.append('address', this.editedItem.address);
 
                 if (this.selectedCategories) {
                     form.append('categories', JSON.stringify(this.selectedCategories))
@@ -327,17 +340,21 @@
 
                 if (this.editedIndex !== -1) {
                     // update product
-                    form.append('_method', 'PATCH')
-                    url = url + '/'+this.editedItem.id
+                    form.append('_method', 'PATCH');
+                    url = url + '/'+this.editedItem.id;
                     axios.post(url, form)
                         .then((response) => {
-                            Object.assign(this.items[this.editedIndex], this.editedItem)
+                            Object.assign(this.items[this.editedIndex], this.editedItem);
+                            this.snackbar_message = 'Customer '+this.editedItem.name + ' successfully updated.';
+                            this.snackbar = true;
                         })
                 } else {
                     // create product
                     axios.post(url, form)
                         .then((response) => {
-                            this.items.push(response.data)
+                            this.items.push(response.data);
+                            this.snackbar_message = 'Customer '+this.editedItem.name + ' successfully updated.';
+                            this.snackbar = true;
                         })
                 }
 
@@ -348,7 +365,7 @@
                 if (this.pagination.sortBy === column) {
                     this.pagination.descending = !this.pagination.descending
                 } else {
-                    this.pagination.sortBy = column
+                    this.pagination.sortBy = column;
                     this.pagination.descending = false
                 }
             },

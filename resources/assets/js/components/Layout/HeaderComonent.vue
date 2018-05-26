@@ -1,9 +1,10 @@
 <template>
     <v-toolbar
-            dark
             fixed
             clipped-left
             app
+            color="dark"
+            dark
     >
         <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
         <v-icon class="mx-3">fab fa-youtube</v-icon>

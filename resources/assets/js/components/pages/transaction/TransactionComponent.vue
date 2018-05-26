@@ -12,64 +12,83 @@
             <v-layout row wrap>
                 <v-flex xs3>
                     <v-card flat class="cyan lighten-1 white--text">
-                        <v-card-title>Total Customers</v-card-title>
+                        <v-card-title>Total Transactions</v-card-title>
                         <v-card-text class="pt-0">
-                            <h2 class="display-2 white--text text-xs-center"><strong>350</strong></h2>
+                            <h2 class="display-2 white--text text-xs-center"><strong>{{ total_transactions }}</strong>
+                            </h2>
                         </v-card-text>
                     </v-card>
                 </v-flex>
 
                 <v-flex xs3>
                     <v-card flat class="light-blue white--text">
-                        <v-card-title>Active Customers</v-card-title>
+                        <v-card-title>Total Amount Transactions</v-card-title>
                         <v-card-text class="pt-0">
-                            <h2 class="display-2 white--text text-xs-center"><strong>350</strong></h2>
+                            <h2 class="display-2 white--text text-xs-center"><strong>&#2547;
+                                {{ total_amount_transactions }}</strong></h2>
                         </v-card-text>
                     </v-card>
                 </v-flex>
 
-                <v-flex xs3>
-                    <v-card flat class="light-green lighten-1 white--text">
-                        <v-card-title>Deactive Customer</v-card-title>
-                        <v-card-text class="pt-0">
-                            <h2 class="display-2 white--text text-xs-center"><strong>350</strong></h2>
-                        </v-card-text>
-                    </v-card>
-                </v-flex>
+                <!--<v-flex xs3>-->
+                <!--<v-card flat class="light-green lighten-1 white&#45;&#45;text">-->
+                <!--<v-card-title>Deactive Customer</v-card-title>-->
+                <!--<v-card-text class="pt-0">-->
+                <!--<h2 class="display-2 white&#45;&#45;text text-xs-center"><strong>350</strong></h2>-->
+                <!--</v-card-text>-->
+                <!--</v-card>-->
+                <!--</v-flex>-->
 
-                <v-flex xs3>
-                    <v-card flat class="orange darken-1 white--text">
-                        <v-card-title>Highest Customer</v-card-title>
-                        <v-card-text class="pt-0">
-                            <h2 class="display-2 white--text text-xs-center"><strong>350</strong></h2>
-                        </v-card-text>
-                    </v-card>
-                </v-flex>
+                <!--<v-flex xs3>-->
+                <!--<v-card flat class="orange darken-1 white&#45;&#45;text">-->
+                <!--<v-card-title>Highest Customer</v-card-title>-->
+                <!--<v-card-text class="pt-0">-->
+                <!--<h2 class="display-2 white&#45;&#45;text text-xs-center"><strong>350</strong></h2>-->
+                <!--</v-card-text>-->
+                <!--</v-card>-->
+                <!--</v-flex>-->
             </v-layout>
         </v-container>
 
         <v-dialog
                 v-model="dialog"
-                max-width="800px"
-                height="1000px"
                 persistent>
             <v-card class="px-2 py-2">
                 <v-card-title>
-                    <span class="headline">{{ formTitle }}</span>
-                </v-card-title>
+                    <v-container grid-list-xl>
+                        <v-layout wrap>
+                            <v-flex>
+                                <span class="headline">{{ formTitle }}</span>
+                            </v-flex>
+                        </v-layout>
+                    </v-container>
 
+                </v-card-title>
                 <v-card-text class="pt-0">
                     <v-container grid-list-md>
                         <v-layout wrap>
-                            <v-flex xs12>
-                                <v-text-field label="Customer Name" v-model="editedItem.name"></v-text-field>
+                            <v-flex xs6>
+                                <v-select
+                                        label="Select Customer"
+                                        :items="customers"
+                                        v-model="selectedCustomer"
+                                        append-icon="account_circle"
+                                >
+                                    <template slot="selection" slot-scope="customer">
+                                        <div>{{ customer.name }}</div>
+                                    </template>
+                                </v-select>
                             </v-flex>
 
-                            <v-flex xs12>
-                                <v-text-field
-                                        label="Email"
-                                        v-model="editedItem.email"
-                                ></v-text-field>
+                            <v-flex xs6>
+                                <v-select
+                                        label="Select Product"
+                                        :items="products"
+                                        append-icon="add_shopping_cart"
+                                        v-model="selectedProduct"
+                                        chips
+                                        persistent-hint
+                                ></v-select>
                             </v-flex>
 
                             <v-flex xs6>
@@ -83,18 +102,18 @@
 
                             <v-flex xs6>
                                 <v-text-field
-                                    label="mobile"
-                                    type="mobile"
-                                    hint="Mobile number"
-                                    v-model="editedItem.mobile">
+                                        label="mobile"
+                                        type="mobile"
+                                        hint="Mobile number"
+                                        v-model="editedItem.mobile">
                                 </v-text-field>
                             </v-flex>
 
                             <v-flex xs6>
                                 <v-text-field
-                                    v-model="editedItem.address"
-                                    label="Address"
-                                    multi-line
+                                        v-model="editedItem.address"
+                                        label="Address"
+                                        multi-line
                                 ></v-text-field>
                             </v-flex>
                         </v-layout>
@@ -106,8 +125,8 @@
 
                     <v-btn dark color="dark" raised @click.native="close">Cancel</v-btn>
 
-                    <v-btn dark color="dark" raised @click.native="save">{{ editedIndex == -1 ? 'Create product' :
-                        'Update product' }}
+                    <v-btn dark color="dark" raised @click.native="save">{{ editedIndex == -1 ? 'Create Transaction' :
+                        'Update Transaction' }}
                     </v-btn>
                 </v-card-actions>
             </v-card>
@@ -155,10 +174,13 @@
                             </template>
 
                             <template slot="items" slot-scope="props">
-                                <td class="text-xs-center">{{ props.item.name }}</td>
-                                <td class="text-xs-center">{{ props.item.phone }}</td>
-                                <td class="text-xs-center">{{ props.item.mobile }}</td>
-                                <td class="text-xs-center">{{ props.item.address }}</td>
+                                <td class="text-xs-center">{{ props.item.customer.name }}</td>
+                                <td class="text-xs-center">{{ props.item.customer.phone }}</td>
+                                <td class="text-xs-center">{{ props.item.customer.mobile }}</td>
+                                <td class="text-xs-center">{{ props.item.product.name }}</td>
+                                <td class="text-xs-center">{{ props.item.quantity }}</td>
+                                <td class="text-xs-center">{{ props.item.payment_status }}</td>
+                                <td class="text-xs-center">{{ props.item.product.seller.name }}</td>
                                 <td class="justify-start layout px-0">
                                     <v-btn icon class="mx-0" @click="editItem(props.item)">
                                         <v-icon color="dark">edit</v-icon>
@@ -193,7 +215,10 @@
 
     export default {
         data: () => ({
-            dialog: false,
+            dialog: true,
+            total_transactions: 0,
+            total_amount_transactions: 0,
+
             search: '',
             pagination: {
                 sortBy: 'name'
@@ -201,24 +226,39 @@
 
             headers: [
                 {
-                    text: 'Name',
-                    value: 'name',
+                    text: 'C Name',
+                    value: 'customer_name',
                     sortable: true
                 },
 
                 {
-                    text: 'Phone',
-                    value: 'phone',
+                    text: 'C Phone',
+                    value: 'customer_phone',
                     sortable: false
                 },
                 {
-                    text: 'Mobile',
-                    value: 'mobile',
+                    text: 'C Mobile',
+                    value: 'customer_mobile',
                     sortable: false
                 },
                 {
-                    text: 'Address',
-                    value: 'address',
+                    text: 'Product',
+                    value: 'product',
+                    sortable: true
+                },
+                {
+                    text: 'Quantity',
+                    value: 'sale_total_product',
+                    sortable: true
+                },
+                {
+                    text: 'Status',
+                    value: 'transaction_status',
+                    sortable: true
+                },
+                {
+                    text: 'S name',
+                    value: 'seller_name',
                     sortable: true
                 },
                 {
@@ -227,6 +267,10 @@
             ],
             total_customer: '',
             items: [],
+            products: [],
+            selectedProduct: [],
+            customers: [],
+            selectedCustomer:'',
 
             editedIndex: -1,
             editedItem: {
@@ -238,7 +282,7 @@
                 address: 'available',
                 active: '1'
             },
-            active: [1,2],
+            active: [1, 2],
 
 
             defaultItem: {
@@ -251,7 +295,7 @@
 
         computed: {
             formTitle() {
-                return this.editedIndex === -1 ? 'New Customer' : 'Edit Customer'
+                return this.editedIndex === -1 ? 'New Transaction' : 'Edit Transaction'
             }
         },
 
@@ -267,14 +311,48 @@
 
         methods: {
             initialize() {
-                // get all product
-                axios.get('/customers')
+                // get all transaction
+                axios.get('/api/transactions')
                     .then((response) => {
-                        this.items = response.data
+                        this.items = response.data.transactions;
+                        this.total_transactions = response.data.total_transactions;
+                        this.total_amount_transactions = response.data.total_tk;
                     })
                     .catch((error) => {
                         console.log(error)
                     })
+
+                //get all product
+                axios.get('/api/products')
+                    .then((response) => {
+                        this.products = response.data.products;
+                        var array_products = [];
+                        this.products.forEach((product)=> {
+                            var product = { text: product.name, value : product.id};
+                            array_products.push(product);
+                        })
+                        this.products = array_products;
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                    });
+
+
+                // get all customers
+                axios.get('/customers')
+                    .then((response) => {
+                        this.customers = response.data;
+                        console.log(this.customers);
+                        var array_customer = [];
+                        this.customers.forEach((customer)=> {
+                            var customer = { text: customer.name, value : customer.id};
+                            array_customer.push(customer);
+                        })
+                        this.customers = array_customer;
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                    });
 
             },
 
@@ -328,7 +406,7 @@
                 if (this.editedIndex !== -1) {
                     // update product
                     form.append('_method', 'PATCH')
-                    url = url + '/'+this.editedItem.id
+                    url = url + '/' + this.editedItem.id
                     axios.post(url, form)
                         .then((response) => {
                             Object.assign(this.items[this.editedIndex], this.editedItem)

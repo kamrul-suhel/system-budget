@@ -91,7 +91,7 @@
 
                     <v-btn dark color="dark" raised @click.native="close">Cancel</v-btn>
 
-                    <v-btn dark color="dark" raised @click.native="save">{{ editedIndex == -1 ? 'Create product' :
+                    <v-btn dark color="dark" raised @click.native="save">{{ editedIndex === -1 ? 'Create product' :
                         'Update product' }}
                     </v-btn>
                 </v-card-actions>
@@ -300,9 +300,9 @@
             editedIndex: -1,
             editedItem: {
                 id: '',
-                name: 'New title',
-                description: 'new Description',
-                quantity: '250',
+                name: '',
+                description: '',
+                quantity: '',
                 status: 'available',
                 sale_price: '200',
                 purchase_price: '150',
@@ -345,28 +345,28 @@
                 // get all product
                 axios.get('/api/products')
                     .then((response) => {
-                        this.items = response.data.products
-                        this.quantity_type = response.data.quantity_types
-                        this.total_product = response.data.total_product
+                        this.items = response.data.products;
+                        this.quantity_type = response.data.quantity_types;
+                        this.total_product = response.data.total_product;
                     })
                     .catch((error) => {
                         console.log(error)
-                    })
+                    });
 
                 // get all categories
                 axios.get('/api/categories')
                     .then((response) => {
-                        let categories = response.data
+                        let categories = response.data;
                         categories.forEach((value) => {
-                            let category = {}
-                            category.value = value.id
-                            category.text = value.name
+                            let category = {};
+                            category.value = value.id;
+                            category.text = value.name;
 
                             this.categories.push(category)
                         })
                     })
                     .catch((error) => {
-                        console.log('categories error')
+                        console.log('categories error');
                         console.log(error)
                     })
             },

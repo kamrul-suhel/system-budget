@@ -21,12 +21,21 @@ class TransactionController extends ApiController
      */
     public function index()
     {
-        $transactions = Transaction::with('product')
+        $transactions = Transaction::with('product.seller')->with('customer')
         ->get();
-        $total = $transactions->avg('product.quantity');
-        dd($total);
+        $total = $transactions->count();
+
+        $amount_transactions = $transactions->sum(function($transaction){
+           return $transaction->quantity * $transaction->product->sale_price;
+        });
+
+        $collect = collect([
+                'transactions' => $transactions,
+                'total_tk'  => $amount_transactions,
+                'total_transactions' => $total
+            ]);
         
-        return $this->showAll($transactions);
+        return $this->showAll($collect);
     }
 
     /**
