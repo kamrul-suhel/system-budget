@@ -51,6 +51,12 @@
                         icon: 'watch_later',
                         text: 'Customers',
                         link: 'customers'
+                    },
+
+                    {
+                        icon: 'watch_later',
+                        text: 'Settings',
+                        link: 'settings'
                     }
                 ]
             }

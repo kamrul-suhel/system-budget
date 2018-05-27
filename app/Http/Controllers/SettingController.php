@@ -8,7 +8,7 @@ class SettingController extends Controller
 {
     //
     public function index(){
-
+    	
     }
 
     public function show(Setting $setting){

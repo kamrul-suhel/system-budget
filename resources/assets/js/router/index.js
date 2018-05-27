@@ -42,6 +42,12 @@ const routes = [
         path: '/customers/:id/transitions',
         name: 'customers_transitions',
         component: CustomerComponent
+    },
+
+    {
+        path: '/settings',
+        name: 'setting',
+        component: SettingComponent
     }
 ]
 
