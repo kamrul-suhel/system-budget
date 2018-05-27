@@ -29,10 +29,13 @@ class TransactionController extends ApiController
            return $transaction->quantity * $transaction->product->sale_price;
         });
 
+        $payment_type = Transaction::getPaymentStatusType();
+
         $collect = collect([
                 'transactions' => $transactions,
                 'total_tk'  => $amount_transactions,
-                'total_transactions' => $total
+                'total_transactions' => $total,
+                'payment_type' => $payment_type
             ]);
         
         return $this->showAll($collect);

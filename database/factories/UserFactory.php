@@ -76,6 +76,8 @@ $factory->define(Transaction::class, function (Faker $faker) {
         'customer_id' => $customer->id,
         'product_id' => $seller->products->random()->id,
         'payment_status' => $faker->randomElement([Transaction::TRANSACTION_STATUS_DUE, Transaction::TRANSICTION_STATUS_OK]),
+        'payment_due'   => $faker->randomFloat($nbMaxDecimals = 2, $min = 0, $max = 4000),
+        'paied'         => $faker->randomFloat($nbMaxDecimals =2, $min = 0, $max = 2000),
         'created_at'    => $faker->dateTimeBetween($startDate = '-5 month', $endDate = 'now'),
         'updated_at'    => $faker->dateTimeBetween($startDate = '-5 month', $endDate = 'now')
     ];

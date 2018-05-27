@@ -51,3 +51,5 @@ Route::get('/transaction', function(){
 
 Route::resource('customers', 'Customer\CustomerController')->only(['store', 'index', 'update']);
 Route::resource('customers.transactions', 'Customer\CustomerTransitionController')->only(['index']);
+
+Route::resource('settings', 'SettingController')->only(['store', 'index', 'update','destroy']);

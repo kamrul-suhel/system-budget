@@ -109,6 +109,24 @@
                                     v-model="selectedPaymentStatus"
                                     ></v-select>
                             </v-flex>
+
+                                <v-flex xs6 v-if="selectedPaymentStatus > 1">
+                                    <v-text-field
+                                      name="payment_due"
+                                      label="Payment left"
+                                      v-model="payment_due"
+                                    ></v-text-field>
+                                </v-flex>
+
+                                <v-flex xs6 v-if="selectedPaymentStatus > 1">
+                                    <v-text-field
+                                        label="How much paied"
+                                        v-model="paied"
+                                        hint="Put how much paied">
+                                        
+                                    </v-text-field>
+                                </v-flex>
+
                         </v-layout>
                     </v-container>
                 </v-card-text>
@@ -208,7 +226,7 @@
 
     export default {
         data: () => ({
-            dialog: false,
+            dialog: true,
             total_transactions: 0,
             total_amount_transactions: 0,
 
@@ -261,10 +279,13 @@
             total_customer: '',
             items: [],
             products: [],
+            allProductData: [],
             current_product_quantity: '',
             selectedProduct: [],
             customers: [],
             selectedCustomer:[],
+            payment_due:'',
+            paied:'',
 
             editedIndex: -1,
             editedItem: {
@@ -272,10 +293,11 @@
                 name: 'New title',
                 email: 'new Description',
                 quantity: '',
-                active: '1'
+                active: '1',
+
             },
-            paymentStatus:[{text: 'Due', value: 1}, {text: 'Paied', value:2}, {text: 'Half paied', value:3}],
-            selectedPaymentStatus:3,
+            paymentStatus:[{text: 'Paied', value: 1}, {text: 'Due', value:2}, {text: 'Half paied', value:3}],
+            selectedPaymentStatus:1,
             active: [1, 2],
 
 
@@ -300,12 +322,18 @@
 
             selectedProduct(val) {
                 var change_product = '';
-                this.items.forEach(function(transaction) {
-                    if(val === transaction.product.id){
-                        change_product =  transaction;
+                this.allProductData.forEach(function(product) {
+                    console.log(product);
+                    if(val === product.id){
+
+                        change_product =  product;
                     }
                 });
-                this.current_product_quantity = change_product.product.quantity;
+                this.current_product_quantity = change_product.quantity;
+            },
+
+            selectedPaymentStatus(selectedValue){
+                console.log(selectedValue);
             }
         },
 
@@ -319,6 +347,7 @@
                 axios.get('/api/transactions')
                     .then((response) => {
                         this.items = response.data.transactions;
+                        console.log(this.items);
                         this.total_transactions = response.data.total_transactions;
                         this.total_amount_transactions = response.data.total_tk;
                         console.log(this.items);
@@ -331,6 +360,7 @@
                 axios.get('/api/products')
                     .then((response) => {
                         this.products = response.data.products;
+                        this.allProductData = response.data.products;
                         var array_products = [];
                         this.products.forEach((product)=> {
                             var product = { text: product.name, value : product.id};
@@ -405,6 +435,8 @@
 
                 form.append('quantity', this.editedItem.quantity);
                 form.append('payment_status', this.selectedPaymentStatus);
+                form.append('payment_due', this.payment_due);
+                form.append('paied', this.paied);
 
 
                 if (this.editedIndex !== -1) {

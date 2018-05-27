@@ -50,7 +50,9 @@ class ProductBuyerTransactionController extends ApiController
                 'quantity'      => $request->quantity,
                 'customer_id'      => $customer->id,
                 'product_id'    => $product->id,
-                'payment_status'=> $request->payment_status
+                'payment_status'=> $request->payment_status,
+                'payment_due'   => $request->payment_due,
+                'paied'         => $request->paied
             ]);
 
             return $transaction;
@@ -61,8 +63,6 @@ class ProductBuyerTransactionController extends ApiController
             ->with('customer')
             ->first();
         return $this->showOne($product);
-
-
     }
 
 
