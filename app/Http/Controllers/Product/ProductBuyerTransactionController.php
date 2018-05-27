@@ -1,14 +1,12 @@
 <?php
 
 namespace App\Http\Controllers\Product;
-
-use App\Buyer;
 use App\Http\Controllers\ApiController;
 use App\Product;
 use App\Seller;
 use App\Transaction;
-use App\Transformers\TransactionTransformer;
 use App\User;
+use App\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -18,7 +16,6 @@ class ProductBuyerTransactionController extends ApiController
     public function __construct()
     {
         parent::__construct();
-        $this->middleware('transform.input:'.TransactionTransformer::class)->only(['store']);
     }
 
     /**
@@ -27,7 +24,7 @@ class ProductBuyerTransactionController extends ApiController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Product $product, User $buyer)
+    public function store(Request $request, Product $product, Customer $customer)
     {
         $rules = [
           'quantity' => 'required|integer|min:1'
@@ -35,17 +32,6 @@ class ProductBuyerTransactionController extends ApiController
 
         $this->validate($request, $rules);
 
-        if($buyer->id == $product->seller_id){
-            return $this->errorResponse('The buyer must be diffrent from the seller', 409);
-        }
-
-        if(!$buyer->isVerified()){
-            return $this->errorResponse('The buyer must be varifi user', 409);
-        }
-
-        if(!$product->seller->isVerified()){
-            return $this->errorResponse('The seller must be varifi user', 409);
-        }
 
         if(!$product->isAbaliable()){
             return $this->errorResponse('The is not avaliable', 409);
@@ -55,18 +41,26 @@ class ProductBuyerTransactionController extends ApiController
             return $this->errorResponse('The product do not have enough units for this transaction', 409);
         }
 
-        return DB::transaction(function() use ($request, $product, $buyer){
+        $transaction = DB::transaction(function() use ($request, $product, $customer){
 
             $product->quantity -= $request->quantity;
             $product->save();
 
             $transaction = Transaction::create([
                 'quantity'      => $request->quantity,
-                'buyer_id'      => $buyer->id,
-                'product_id'    => $product->id
+                'customer_id'      => $customer->id,
+                'product_id'    => $product->id,
+                'payment_status'=> $request->payment_status
             ]);
-            return $this->showOne($product, 201);
+
+            return $transaction;
+            // return $this->showOne($transaction, 201);
         });
+        $product = $transaction
+            ->with('product.seller')
+            ->with('customer')
+            ->first();
+        return $this->showOne($product);
 
 
     }

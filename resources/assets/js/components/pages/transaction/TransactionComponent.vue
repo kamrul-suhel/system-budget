@@ -55,7 +55,7 @@
                 persistent>
             <v-card class="px-2 py-2">
                 <v-card-title>
-                    <v-container grid-list-xl>
+                    <v-container grid-list-xl pa-0>
                         <v-layout wrap>
                             <v-flex>
                                 <span class="headline">{{ formTitle }}</span>
@@ -73,10 +73,9 @@
                                         :items="customers"
                                         v-model="selectedCustomer"
                                         append-icon="account_circle"
+                                        chips
+                                        persistent-hint
                                 >
-                                    <template slot="selection" slot-scope="customer">
-                                        <div>{{ customer.name }}</div>
-                                    </template>
                                 </v-select>
                             </v-flex>
 
@@ -93,28 +92,22 @@
 
                             <v-flex xs6>
                                 <v-text-field
-                                        label="Phone"
-                                        type="phone"
-                                        hint="Phone number"
-                                        v-model="editedItem.phone"
+                                        label="Quantity"
+                                        type="number"
+                                        :placeholder="'You have '+ current_product_quantity + ' in your stock'"
+                                        :hint="'How much you want to sale. your stock is : ' + current_product_quantity"
+                                        persistent-hint
+                                        v-model="editedItem.quantity"
                                 ></v-text-field>
                             </v-flex>
 
                             <v-flex xs6>
-                                <v-text-field
-                                        label="mobile"
-                                        type="mobile"
-                                        hint="Mobile number"
-                                        v-model="editedItem.mobile">
-                                </v-text-field>
-                            </v-flex>
-
-                            <v-flex xs6>
-                                <v-text-field
-                                        v-model="editedItem.address"
-                                        label="Address"
-                                        multi-line
-                                ></v-text-field>
+                                <v-select
+                                    label="Payment Status"
+                                    hint="What is the payment status."
+                                    :items="paymentStatus"
+                                    v-model="selectedPaymentStatus"
+                                    ></v-select>
                             </v-flex>
                         </v-layout>
                     </v-container>
@@ -268,20 +261,21 @@
             total_customer: '',
             items: [],
             products: [],
+            current_product_quantity: '',
             selectedProduct: [],
             customers: [],
-            selectedCustomer:'',
+            selectedCustomer:[],
 
             editedIndex: -1,
             editedItem: {
                 id: '',
                 name: 'New title',
                 email: 'new Description',
-                phone: '01622296755',
-                mobile: '075493188',
-                address: 'available',
+                quantity: '',
                 active: '1'
             },
+            paymentStatus:[{text: 'Due', value: 1}, {text: 'Paied', value:2}, {text: 'Half paied', value:3}],
+            selectedPaymentStatus:3,
             active: [1, 2],
 
 
@@ -289,7 +283,7 @@
                 name: '',
                 descriptin: ''
             },
-            row_per_page: [20, 30, 50, {'text': 'All', 'value': -1}],
+            row_per_page: [20, 30, 40, 50, {'text': 'All', 'value': -1}],
 
         }),
 
@@ -302,6 +296,16 @@
         watch: {
             dialog(val) {
                 val || this.close()
+            },
+
+            selectedProduct(val) {
+                var change_product = '';
+                this.items.forEach(function(transaction) {
+                    if(val === transaction.product.id){
+                        change_product =  transaction;
+                    }
+                });
+                this.current_product_quantity = change_product.product.quantity;
             }
         },
 
@@ -317,6 +321,7 @@
                         this.items = response.data.transactions;
                         this.total_transactions = response.data.total_transactions;
                         this.total_amount_transactions = response.data.total_tk;
+                        console.log(this.items);
                     })
                     .catch((error) => {
                         console.log(error)
@@ -342,13 +347,13 @@
                 axios.get('/customers')
                     .then((response) => {
                         this.customers = response.data;
-                        console.log(this.customers);
                         var array_customer = [];
                         this.customers.forEach((customer)=> {
                             var customer = { text: customer.name, value : customer.id};
                             array_customer.push(customer);
                         })
                         this.customers = array_customer;
+                    
                     })
                     .catch((error) => {
                         console.log(error)
@@ -359,6 +364,9 @@
             editItem(item) {
                 // get selected categories & all categories
                 let url = '/api/products/' + item.id + '/categories'
+                console.log('Edite item: ');
+                console.log(item);
+                return;
 
                 axios.get(url)
                     .then((response) => {
@@ -391,17 +399,13 @@
 
             save() {
                 let form = new FormData()
-                let url = '/customers'
+                let url = ' api/products/'+this.selectedProduct+'/customers/'+this.selectedCustomer+'/transactions';
 
-                form.append('name', this.editedItem.name)
-                form.append('email', this.editedItem.email)
-                form.append('phone', this.editedItem.phone)
-                form.append('mobile', this.editedItem.mobile)
-                form.append('address', this.editedItem.address)
+                console.log(url);
 
-                if (this.selectedCategories) {
-                    form.append('categories', JSON.stringify(this.selectedCategories))
-                }
+                form.append('quantity', this.editedItem.quantity);
+                form.append('payment_status', this.selectedPaymentStatus);
+
 
                 if (this.editedIndex !== -1) {
                     // update product
@@ -415,6 +419,7 @@
                     // create product
                     axios.post(url, form)
                         .then((response) => {
+                            console.log(response);
                             this.items.push(response.data)
                         })
                 }
