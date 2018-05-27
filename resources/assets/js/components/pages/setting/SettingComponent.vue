@@ -1,25 +1,79 @@
 <template>
     <section class="setting-page">
+        <v-container grid-list-xl>
+            <v-card>
+                <v-card-title>
+                    <h2>Company Information</h2>
+                    <v-spacer></v-spacer>
 
-        <v-card>
-            <v-card-title>
-                Setting
-                <v-spacer></v-spacer>
-               
-            </v-card-title>
+                </v-card-title>
 
-            <v-card-text>
-                
-            </v-card-text>
-        </v-card>
+                <v-card-text>
+                    <v-layout row wrap>
+                        <v-flex xs6>
+                            <v-text-field
+                                    label="Company Name"
+                                    v-model="company_name"
+                                    hint="Name of company">
+
+                            </v-text-field>
+                        </v-flex>
+
+                        <v-flex xs6>
+                            <v-text-field
+                                    label="Address"
+                                    multi-line
+                                    v-model="company_address"
+                                    hint="Address of company">
+                            </v-text-field>
+                        </v-flex>
+
+                        <v-flex xs6>
+                            <v-text-field
+                                    label="Phone"
+                                    v-model="company_phone"
+                                    hint="Company phone number">
+                            </v-text-field>
+                        </v-flex>
+
+                        <v-flex xs6>
+                            <v-text-field
+                                    label="Mobile"
+                                    v-model="company_mobile"
+                                    hint="Company mobile number">
+                            </v-text-field>
+                        </v-flex>
+
+                        <v-flex xs6>
+                            <v-text-field
+                                    label="Fax"
+                                    v-model="company_fax"
+                                    hint="Company fax"></v-text-field>
+                        </v-flex>
+
+
+                    </v-layout>
+                </v-card-text>
+
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn
+                            dark
+                            raised
+                            color="dark"
+                            @click="onUpdateSetting()">Update setting
+                    </v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-container>
 
         <v-snackbar
                 :timeout="4000"
-        top
-        right
-        color="success"
-        multi-line
-        v-model="snackbar">
+                top
+                right
+                color="success"
+                multi-line
+                v-model="snackbar">
             {{ snackbar_message }}
         </v-snackbar>
     </section>
@@ -27,78 +81,61 @@
 
 <script>
     import axios from 'axios'
+
     export default {
         data: () => ({
-           
+
             snackbar: false,
-            snackbar_message:'',
-            
-            items: [],
-         
+            snackbar_message: '',
+
+            company_name: '',
+            company_address: '',
+            company_email: '',
+            company_phone: '',
+            company_mobile: '',
+            company_fax: ''
+
         }),
 
-        computed: {
-           
-        },
+        computed: {},
 
-        watch: {
-            
-        },
+        watch: {},
 
-        created () {
+        created() {
             this.initialize()
         },
 
         methods: {
-            initialize () {
+            initialize() {
                 axios.get('/settings')
-                .then((response) => {
-                    this.items = response.data;
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
+                    .then((response) => {
+
+                        this.company_name = response.data.company_name;
+                        this.company_address = response.data.company_address;
+                        this.company_email = response.data.company_email;
+                        this.company_phone = response.data.company_phone;
+                        this.company_mobile = response.data.company_mobile;
+                        this.company_fax = response.data.company_fax;
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
             },
 
-            editItem (item) {
-                this.editedIndex = this.items.indexOf(item)
-                this.editedItem = Object.assign({}, item)
-                this.dialog = true
-            },
-
-            
-           
-
-            save () {
+            onUpdateSetting() {
                 let form = new FormData();
                 let url = 'api/categories';
 
-                form.append('name', this.editedItem.name);
+                form.append('name', this.e);
                 form.append('description', this.editedItem.description);
-                    
-                if (this.editedIndex > -1) {
-                    form.append('_method', 'PUT');
-                    url = url +'/'+ this.editedItem.id;
-                
-                    axios.post(url, form)
-                        .then((response) => {
-                            Object.assign(this.items[this.editedIndex], this.editedItem);
-                            this.snackbar_message = "Category "+this.editedItem.name+" successfully update.";
-                            this.snackbar = true;
-                        })
-                    .catch((error)=> {
 
-                    });
-                } else {
-                    axios.post(url, form)
+
+                axios.post(url, form)
                     .then((response) => {
                         this.items.push(response.data);
-                        this.snackbar_message = "Category "+this.editedItem.name+" successfully created.";
+                        this.snackbar_message = "Category " + this.editedItem.name + " successfully created.";
                         this.snackbar = true;
                     });
-                }
-                this.close()
-            
             }
         }
     }

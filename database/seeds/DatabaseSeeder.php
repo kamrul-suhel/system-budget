@@ -1,6 +1,7 @@
 <?php
 
 use App\Customer;
+use App\Setting;
 use App\User;
 use App\Product;
 use App\Category;
@@ -117,5 +118,7 @@ class DatabaseSeeder extends Seeder
         );
 
         factory(Transaction::class, $transactionQuantity)->create();
+
+        factory(Setting::class, 1)->create();
     }
 }

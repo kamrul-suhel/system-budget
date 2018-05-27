@@ -1,6 +1,7 @@
 <?php
 
 use App\Customer;
+use App\Setting;
 use App\User;
 use App\Seller;
 use App\Product;
@@ -80,5 +81,16 @@ $factory->define(Transaction::class, function (Faker $faker) {
         'paied'         => $faker->randomFloat($nbMaxDecimals =2, $min = 0, $max = 2000),
         'created_at'    => $faker->dateTimeBetween($startDate = '-5 month', $endDate = 'now'),
         'updated_at'    => $faker->dateTimeBetween($startDate = '-5 month', $endDate = 'now')
+    ];
+});
+
+$factory->define(Setting::class, function(Faker $faker){
+    return [
+        'company_name'      => $faker->company,
+        'company_address'   => $faker->address,
+        'company_phone'     => $faker->phoneNumber,
+        'company_mobile'    => $faker->phoneNumber,
+        'company_email'     => $faker->email,
+        'company_fax'       => $faker->phoneNumber
     ];
 });

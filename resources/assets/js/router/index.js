@@ -4,6 +4,7 @@ import CategoryComponent from '../components/pages/categories/CategoryIndexCompo
 import ProductComponent from '../components/pages/products/ProductsComponent'
 import TransactionComponent from '../components/pages/transaction/TransactionComponent'
 import CustomerComponent from '../components/pages/customer/CustomerComponent'
+import SettingComponent from '../components/pages/setting/SettingComponent'
 
 
 Vue.use(Router)
@@ -46,7 +47,7 @@ const routes = [
 
     {
         path: '/settings',
-        name: 'setting',
+        name: 'settings',
         component: SettingComponent
     }
 ]
