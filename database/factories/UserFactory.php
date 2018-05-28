@@ -68,14 +68,11 @@ $factory->define(Product::class, function (Faker $faker) {
 
 $factory->define(Transaction::class, function (Faker $faker) {
 
-    $seller = Seller::has('products')->get()->random();
     $customer = Customer::all()->random();
 
 
-    return [
-        'quantity' => $faker->numberBetween(1, 3),
+    return[
         'customer_id' => $customer->id,
-        'product_id' => $seller->products->random()->id,
         'payment_status' => $faker->randomElement([Transaction::TRANSACTION_STATUS_DUE, Transaction::TRANSICTION_STATUS_OK]),
         'payment_due'   => $faker->randomFloat($nbMaxDecimals = 2, $min = 0, $max = 4000),
         'paied'         => $faker->randomFloat($nbMaxDecimals =2, $min = 0, $max = 2000),

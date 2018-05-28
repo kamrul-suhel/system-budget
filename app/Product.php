@@ -57,7 +57,7 @@ class Product extends Model
     }
 
     public function transitions(){
-        return $this->hasMany(Transaction::class);
+        return $this->belongsToMany(Transaction::class);
     }
 
     // getter and setter
