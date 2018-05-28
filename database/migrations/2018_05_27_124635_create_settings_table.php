@@ -18,6 +18,7 @@ class CreateSettingsTable extends Migration
             $table->string('company_name');
             $table->string('company_address');
             $table->string('company_email');
+            $table->string('company_shop_number');
             $table->string('company_phone');
             $table->string('company_mobile');
             $table->string('company_fax');

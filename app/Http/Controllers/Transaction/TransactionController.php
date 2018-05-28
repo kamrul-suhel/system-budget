@@ -21,24 +21,39 @@ class TransactionController extends ApiController
      */
     public function index()
     {
-        $transactions = Transaction::with('product.seller')->with('customer')
-        ->get();
+        $transactions = Transaction::with('products')->paginate(15);
+
+        $transactions = $transactions->each(function($transaction){
+            foreach($transaction->products as $product){
+                $product->sale_quantity = $product->pivot->sale_quantity;
+            }
+        });
         $total = $transactions->count();
 
-        $amount_transactions = $transactions->sum(function($transaction){
-           return $transaction->quantity * $transaction->product->sale_price;
-        });
+//        $amount_transactions = $transactions->sum(function($transaction){
+////           return $transaction->quantity * $transaction->product->sale_price;
+//        });
 
         $payment_type = Transaction::getPaymentStatusType();
 
         $collect = collect([
                 'transactions' => $transactions,
-                'total_tk'  => $amount_transactions,
+//                'total_tk'  => $amount_transactions,
                 'total_transactions' => $total,
                 'payment_type' => $payment_type
             ]);
         
         return $this->showAll($collect);
+    }
+
+    public function RandomString()
+    {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $randstring = '';
+        for ($i = 0; $i < 10; $i++) {
+            $randstring .= $characters[rand(0, strlen($characters))];
+        }
+        return $randstring;
     }
 
     /**

@@ -21,6 +21,13 @@
 
                         <v-flex xs6>
                             <v-text-field
+                                label="Company Shop number"
+                                hint="Enter you shop number"
+                                v-model="company_shop_number"></v-text-field>
+                        </v-flex>
+
+                        <v-flex xs12>
+                            <v-text-field
                                     label="Address"
                                     multi-line
                                     v-model="company_address"
@@ -46,6 +53,13 @@
 
                         <v-flex xs6>
                             <v-text-field
+                                label="Email"
+                                hint="Company email"
+                                v-model="company_email"></v-text-field>
+                        </v-flex>
+
+                        <v-flex xs6>
+                            <v-text-field
                                     label="Fax"
                                     v-model="company_fax"
                                     hint="Company fax"></v-text-field>
@@ -61,7 +75,7 @@
                             dark
                             raised
                             color="dark"
-                            @click="onUpdateSetting()">Update setting
+                            @click="onUpdateSetting()">Update company info
                     </v-btn>
                 </v-card-actions>
             </v-card>
@@ -93,7 +107,8 @@
             company_email: '',
             company_phone: '',
             company_mobile: '',
-            company_fax: ''
+            company_fax: '',
+            company_shop_number:''
 
         }),
 
