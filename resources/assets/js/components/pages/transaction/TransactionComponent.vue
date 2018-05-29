@@ -20,12 +20,12 @@
                     </v-card>
                 </v-flex>
 
-                <v-flex xs3>
+                <v-flex xs6>
                     <v-card flat class="light-blue white--text">
                         <v-card-title>Total Amount Transactions</v-card-title>
                         <v-card-text class="pt-0">
                             <h2 class="display-2 white--text text-xs-center"><strong>&#2547;
-                                {{ total_amount_transactions }}</strong></h2>
+                                {{ price_format(total_amount_transactions) }}</strong></h2>
                         </v-card-text>
                     </v-card>
                 </v-flex>
@@ -149,7 +149,7 @@
                         raised
                         width="100%">
                     <v-card-title class="pb-0 pt-0">
-                        <v-btn dark fab small color="dark" @click="dialog = true">
+                        <v-btn dark fab small color="dark" @click="onGotoCreateTransaction()">
                             <v-icon>add</v-icon>
                         </v-btn>
 
@@ -186,21 +186,28 @@
 
                             <template slot="items" slot-scope="props">
                                 <td class="text-xs-center">{{ props.item.customer.name }}</td>
-                                <td class="text-xs-center">{{ props.item.customer.phone }}</td>
-                                <td class="text-xs-center">{{ props.item.customer.mobile }}</td>
-                                <td class="text-xs-center">{{ props.item.product.name }}</td>
-                                <td class="text-xs-center">{{ props.item.quantity }}</td>
+                                <td class="text-xs-center">{{ props.item.invoice_number.toUpperCase() }}</td>
+                                <td class="text-xs-center">{{ props.item.products.length ? props.item.products.length : 0 }}</td>
                                 <td class="text-xs-center">{{ props.item.payment_status }}</td>
-                                <td class="text-xs-center">{{ props.item.product.seller.name }}</td>
+                                <td class="text-xs-center">TK. {{ price_format(props.item.total) }}</td>
+                                <td class="text-xs-center">TK. {{ price_format(props.item.discount_amount) }}</td>
+                                <td class="text-xs-center">TK. {{ price_format(props.item.paied) }}</td>
+                                <td class="text-xs-center">TK. {{ price_format(props.item.payment_due) }}</td>
                                 <td class="justify-start layout px-0">
                                     <v-btn icon class="mx-0" @click="editItem(props.item)">
                                         <v-icon color="dark">edit</v-icon>
                                     </v-btn>
+
                                     <v-btn icon class="mx-0" @click="viewTransition(props.item)">
                                         <v-icon clor="dark">view_comfy</v-icon>
                                     </v-btn>
+
                                     <v-btn icon class="mx-0" @click="deleteItem(props.item)">
-                                        <v-icon color="pink">delete</v-icon>
+                                        <v-icon color="dark">delete</v-icon>
+                                    </v-btn>
+
+                                    <v-btn icon class="mx-0" @click="onPrintTransaction(props.item)">
+                                        <v-icon color="dark">print</v-icon>
                                     </v-btn>
                                 </td>
                             </template>
@@ -243,13 +250,8 @@
                 },
 
                 {
-                    text: 'C Phone',
-                    value: 'customer_phone',
-                    sortable: false
-                },
-                {
-                    text: 'C Mobile',
-                    value: 'customer_mobile',
+                    text: 'Invoice number',
+                    value: 'invoice_number',
                     sortable: false
                 },
                 {
@@ -257,21 +259,37 @@
                     value: 'product',
                     sortable: true
                 },
-                {
-                    text: 'Quantity',
-                    value: 'sale_total_product',
-                    sortable: true
-                },
+
                 {
                     text: 'Status',
                     value: 'transaction_status',
                     sortable: true
                 },
+
                 {
-                    text: 'S name',
-                    value: 'seller_name',
+                    text: 'Total',
+                    value: 'total',
                     sortable: true
                 },
+
+                {
+                    text: 'Discount',
+                    value: 'discount',
+                    sortable: true
+                },
+
+                {
+                    text: 'Paied',
+                    value: 'paied',
+                    sortable: true
+                },
+
+                {
+                    text: 'Due',
+                    value: 'payment_due',
+                    sortable: true
+                },
+
                 {
                     text: 'Actions'
                 }
@@ -347,7 +365,6 @@
                 axios.get('/api/transactions')
                     .then((response) => {
                         this.items = response.data.transactions;
-                        console.log(this.items);
                         this.total_transactions = response.data.total_transactions;
                         this.total_amount_transactions = response.data.total_tk;
                         console.log(this.items);
@@ -470,6 +487,20 @@
 
             viewTransition(){
 
+            },
+
+            price_format(val){
+                return val.toFixed(2).replace(/./g, function(c, i, a) {
+                    return i && c !== "." && ((a.length - i) % 3 === 0) ? ',' + c : c;
+                });
+            },
+
+            onGotoCreateTransaction(){
+                this.$router.push({name: 'create_transaction'});
+            },
+
+            onPrintTransaction(item){
+                this.$router.push({name: 'print_transaction', params: { id: item.id}});
             }
         }
     }

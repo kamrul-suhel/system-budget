@@ -123,7 +123,7 @@ class DatabaseSeeder extends Seeder
             $products = Product::all()->random(mt_rand(1,5))->pluck('id');
             $transaction->products()->attach($products,
                 [
-                    'sale_quantity' => mt_rand(1, 5),
+                    'sale_quantity' => Faker::create()->numberBetween(1, 5),
                     'created_at'    => Faker::create()->dateTimeBetween($startDate = '-5 month', $endDate = 'now'),
                     'updated_at'    => Faker::create()->dateTimeBetween($startDate = '-5 month', $endDate = 'now')
                 ]);

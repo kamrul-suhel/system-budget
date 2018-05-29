@@ -4,6 +4,7 @@
             clipped
             v-model="drawer"
             app
+            width="200"
     >
         <v-list dense>
             <v-list-tile v-for="item in items" :key="item.link" @click="onPageChange(item)">
@@ -54,7 +55,7 @@
                     },
 
                     {
-                        icon: 'watch_later',
+                        icon: 'settings',
                         text: 'Settings',
                         link: 'settings'
                     }

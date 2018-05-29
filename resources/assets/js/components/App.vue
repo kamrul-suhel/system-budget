@@ -4,7 +4,6 @@
                 dark
                 id="inspire"
         >
-            <h2>Headeri test</h2>
             <navigation-component></navigation-component>
             <header-component></header-component>
 

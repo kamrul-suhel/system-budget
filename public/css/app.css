@@ -1,0 +1,33 @@
+.transaction-print table {
+  border-collapse: collapse;
+}
+
+.transaction-print p {
+  margin-bottom: 0;
+}
+
+.transaction-print .print-signature-section {
+  margin-top: 30px;
+}
+
+.transaction-print-table th,
+.transaction-print-table td {
+  border-bottom: 1px solid #ddd;
+  padding: 15px;
+}
+
+@media print {
+  .navigation-drawer {
+    display: none;
+  }
+
+  .content {
+    padding: 0;
+    width: 100% !important;
+  }
+
+  .toolbar {
+    display: none;
+  }
+}
+

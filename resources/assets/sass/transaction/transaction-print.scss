@@ -1,0 +1,14 @@
+@media print {
+  .navigation-drawer{
+    display:none;
+  }
+
+  .content{
+    padding:0;
+    width:100% !important;
+  }
+
+  .toolbar{
+    display:none;
+  }
+}

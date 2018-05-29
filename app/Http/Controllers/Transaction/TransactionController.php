@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Transaction;
 
 use App\Http\Controllers\ApiController;
+use App\Setting;
 use App\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
@@ -21,7 +22,8 @@ class TransactionController extends ApiController
      */
     public function index()
     {
-        $transactions = Transaction::with('products')->paginate(15);
+        $transactions = Transaction::with('products.seller')
+            ->with('customer')->get();
 
         $transactions = $transactions->each(function($transaction){
             foreach($transaction->products as $product){
@@ -30,15 +32,13 @@ class TransactionController extends ApiController
         });
         $total = $transactions->count();
 
-//        $amount_transactions = $transactions->sum(function($transaction){
-////           return $transaction->quantity * $transaction->product->sale_price;
-//        });
+        $amount_transactions = $transactions->sum('total');
 
         $payment_type = Transaction::getPaymentStatusType();
 
         $collect = collect([
                 'transactions' => $transactions,
-//                'total_tk'  => $amount_transactions,
+                'total_tk'  => $amount_transactions,
                 'total_transactions' => $total,
                 'payment_type' => $payment_type
             ]);
@@ -46,14 +46,15 @@ class TransactionController extends ApiController
         return $this->showAll($collect);
     }
 
-    public function RandomString()
-    {
+    public function generateRandomString($length = 11) {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $randstring = '';
-        for ($i = 0; $i < 10; $i++) {
-            $randstring .= $characters[rand(0, strlen($characters))];
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
         }
-        return $randstring;
+        return $randomString;
+
     }
 
     /**
@@ -87,6 +88,29 @@ class TransactionController extends ApiController
     {
         //
         return $this->showOne($transaction);
+    }
+
+    public function showPrint(Request $request, int $id)
+    {
+        if($request->ajax()){
+            $transaction = Transaction::with('products')
+                ->with('customer')
+                ->where('id', '=', $id)
+                ->first();
+
+            foreach($transaction->products as $product){
+                $product->sale_quantity = $product->pivot->sale_quantity;
+            }
+            $setting = Setting::find(1);
+
+            $data = collect([
+                'transaction' => $transaction,
+                'setting'   => $setting
+            ]);
+            return $data;
+        }
+
+        return view('welcome');
     }
 
     /**

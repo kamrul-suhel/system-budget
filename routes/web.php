@@ -53,3 +53,5 @@ Route::resource('customers', 'Customer\CustomerController')->only(['store', 'ind
 Route::resource('customers.transactions', 'Customer\CustomerTransitionController')->only(['index']);
 
 Route::resource('settings', 'SettingController')->only(['store', 'index', 'update','destroy']);
+
+Route::get('transaction/{id}/print', 'Transaction\TransactionController@showPrint');

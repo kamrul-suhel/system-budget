@@ -71,11 +71,25 @@ $factory->define(Transaction::class, function (Faker $faker) {
     $customer = Customer::all()->random();
 
 
+    $unique_id='';
+    while($is_exists = true){
+        $unique_id = generateRandomString(11);
+        $unique_id_exists = Transaction::where('invoice_number', '=', $unique_id)->first();
+        if($unique_id_exists){
+            continue;
+        }else{
+            break;
+        }
+    }
+
     return[
         'customer_id' => $customer->id,
         'payment_status' => $faker->randomElement([Transaction::TRANSACTION_STATUS_DUE, Transaction::TRANSICTION_STATUS_OK]),
         'payment_due'   => $faker->randomFloat($nbMaxDecimals = 2, $min = 0, $max = 4000),
         'paied'         => $faker->randomFloat($nbMaxDecimals =2, $min = 0, $max = 2000),
+        'discount_amount' => $faker->numberBetween(20, 50),
+        'invoice_number' => $unique_id,
+        'total' => $faker->numberBetween(3000, 4000),
         'created_at'    => $faker->dateTimeBetween($startDate = '-5 month', $endDate = 'now'),
         'updated_at'    => $faker->dateTimeBetween($startDate = '-5 month', $endDate = 'now')
     ];
@@ -92,3 +106,14 @@ $factory->define(Setting::class, function(Faker $faker){
         'company_shop_number'=> $faker->bankAccountNumber
     ];
 });
+
+function generateRandomString($length = 11) {
+    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $charactersLength = strlen($characters);
+    $randomString = '';
+    for ($i = 0; $i < $length; $i++) {
+        $randomString .= $characters[rand(0, $charactersLength - 1)];
+    }
+    return $randomString;
+
+}
