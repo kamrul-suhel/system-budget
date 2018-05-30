@@ -7,6 +7,7 @@ import CustomerComponent from '../components/pages/customer/CustomerComponent'
 import SettingComponent from '../components/pages/setting/SettingComponent'
 import CreateTransaction from '../components/pages/transaction/CreateTransactionComponent'
 import TransactionPrint from '../components/pages/transaction/TransactionPrintComponent'
+import EditTransactionComponent from '../components/pages/transaction/EditTransactionComponent'
 
 
 Vue.use(Router)
@@ -40,6 +41,12 @@ const routes = [
         path: '/transaction/create',
         name: 'create_transaction',
         component: CreateTransaction
+    },
+
+    {
+        path: '/transaction/:id/edit',
+        name: 'edit_transaction',
+        component: EditTransactionComponent
     },
 
     {

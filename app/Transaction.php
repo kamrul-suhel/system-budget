@@ -12,7 +12,7 @@ class Transaction extends Model
 {
     use SoftDeletes;
 
-    public $transformer = TransactionTransformer::class;
+//    public $transformer = TransactionTransformer::class;
     protected $dates = ['deleted_at'];
 
     //Transaction product

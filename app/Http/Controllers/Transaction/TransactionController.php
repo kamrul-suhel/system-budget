@@ -25,8 +25,8 @@ class TransactionController extends ApiController
         $transactions = Transaction::with('products.seller')
             ->with('customer')->get();
 
-        $transactions = $transactions->each(function($transaction){
-            foreach($transaction->products as $product){
+        $transactions = $transactions->each(function ($transaction) {
+            foreach ($transaction->products as $product) {
                 $product->sale_quantity = $product->pivot->sale_quantity;
             }
         });
@@ -37,16 +37,17 @@ class TransactionController extends ApiController
         $payment_type = Transaction::getPaymentStatusType();
 
         $collect = collect([
-                'transactions' => $transactions,
-                'total_tk'  => $amount_transactions,
-                'total_transactions' => $total,
-                'payment_type' => $payment_type
-            ]);
-        
+            'transactions' => $transactions,
+            'total_tk' => $amount_transactions,
+            'total_transactions' => $total,
+            'payment_type' => $payment_type
+        ]);
+
         return $this->showAll($collect);
     }
 
-    public function generateRandomString($length = 11) {
+    public function generateRandomString($length = 11)
+    {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $charactersLength = strlen($characters);
         $randomString = '';
@@ -62,15 +63,15 @@ class TransactionController extends ApiController
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        return view('welcome');
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -81,7 +82,7 @@ class TransactionController extends ApiController
     /**
      * Display the specified resource.
      *
-     * @param  \App\Transaction  $transaction
+     * @param  \App\Transaction $transaction
      * @return \Illuminate\Http\Response
      */
     public function show(Transaction $transaction)
@@ -92,20 +93,20 @@ class TransactionController extends ApiController
 
     public function showPrint(Request $request, int $id)
     {
-        if($request->ajax()){
+        if ($request->ajax()) {
             $transaction = Transaction::with('products')
                 ->with('customer')
                 ->where('id', '=', $id)
                 ->first();
 
-            foreach($transaction->products as $product){
+            foreach ($transaction->products as $product) {
                 $product->sale_quantity = $product->pivot->sale_quantity;
             }
             $setting = Setting::find(1);
 
             $data = collect([
                 'transaction' => $transaction,
-                'setting'   => $setting
+                'setting' => $setting
             ]);
             return $data;
         }
@@ -114,21 +115,27 @@ class TransactionController extends ApiController
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Transaction  $transaction
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\JsonResponse|\Illuminate\View\View
      */
-    public function edit(Transaction $transaction)
+    public function edit(Request $request)
     {
         //
+        if ($request->ajax()) {
+            $transaction = Transaction::with('products.seller')
+                ->with('customer')
+                ->findOrFail($request->id);
+            return $this->showOne($transaction);
+        }
+
+        return view('welcome');
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Transaction  $transaction
+     * @param  \Illuminate\Http\Request $request
+     * @param  \App\Transaction $transaction
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Transaction $transaction)
@@ -139,7 +146,7 @@ class TransactionController extends ApiController
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Transaction  $transaction
+     * @param  \App\Transaction $transaction
      * @return \Illuminate\Http\Response
      */
     public function destroy(Transaction $transaction)

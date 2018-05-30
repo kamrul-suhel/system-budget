@@ -58,7 +58,7 @@
                                             <td>{{ product.sale_quantity }}</td>
                                             <td>{{ product.name }}</td>
                                             <td>{{ product.description }}</td>
-                                            <td>TK. {{ product.sale_price }}</td>
+                                            <td>TK. {{ product.sale_price | price_format }}</td>
                                             <td>TK. {{ product.sale_price * product.sale_quantity }}</td>
                                         </tr>
                                     </tbody>
@@ -68,10 +68,10 @@
 
                         <v-layout row wrap>
                             <v-flex xs12 class="text-xs-right">
-                                <p>Subtotal: {{ subtotal }}</p>
-                                <p>Discount: {{ data.transaction.discount_amount }}</p>
-                                <p>Balance Due: {{ data.transaction.payment_due }}</p>
-                                <p>Total Pay: {{ subtotal - discount }}</p>
+                                <p>Subtotal: {{ subtotal | price_format(true) }}</p>
+                                <p>Discount: {{ data.transaction.discount_amount | price_format }}</p>
+                                <p>Balance Due: {{ data.transaction.payment_due | price_format }}</p>
+                                <p>Total Pay: {{ subtotal - discount | price_format }}</p>
                             </v-flex>
                         </v-layout>
 

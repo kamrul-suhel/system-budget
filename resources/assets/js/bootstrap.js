@@ -26,6 +26,12 @@ try {
 import Vue from 'vue'
 import Vuetify from 'vuetify'
 
+/**
+ * Import filter
+ */
+
+import "./filters/price-filter"
+
 import router from './router'
 Vue.use(Vuetify);
 
