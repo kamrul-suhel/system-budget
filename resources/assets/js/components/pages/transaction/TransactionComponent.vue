@@ -1,5 +1,5 @@
 <template>
-    <div class="products">
+    <div class="transaction-component">
         <v-container grid-list-md>
             <v-layout row wrap>
                 <v-flex xs12>

@@ -1,7 +1,7 @@
 <template>
     <div id="app">
         <v-app
-                dark
+                light
                 id="inspire"
         >
             <navigation-component></navigation-component>

@@ -108,7 +108,8 @@
             company_phone: '',
             company_mobile: '',
             company_fax: '',
-            company_shop_number:''
+            company_shop_number:'',
+            setting_id:'',
 
         }),
 
@@ -124,13 +125,15 @@
             initialize() {
                 axios.get('/settings')
                     .then((response) => {
-
+                        console.log(response);
                         this.company_name = response.data.company_name;
                         this.company_address = response.data.company_address;
                         this.company_email = response.data.company_email;
                         this.company_phone = response.data.company_phone;
+                        this.company_shop_number = response.data.company_shop_number;
                         this.company_mobile = response.data.company_mobile;
                         this.company_fax = response.data.company_fax;
+                        this.setting_id = response.data.id;
                     })
                     .catch((error) => {
                         console.log(error);
@@ -139,16 +142,31 @@
 
             onUpdateSetting() {
                 let form = new FormData();
-                let url = 'api/categories';
+                let url = 'settings/'+this.setting_id;
+                console.log(url);
 
-                form.append('name', this.e);
-                form.append('description', this.editedItem.description);
+                form.append('company_name', this.company_name);
+                form.append('company_address', this.company_address);
+                form.append('company_email', this.company_email);
+                form.append('company_phone', this.company_phone);
+                form.append('company_shop_number', this.company_shop_number);
+                form.append('company_fax', this.company_fax);
+                form.append('_method', 'PATCH');
 
 
                 axios.post(url, form)
                     .then((response) => {
-                        this.items.push(response.data);
-                        this.snackbar_message = "Category " + this.editedItem.name + " successfully created.";
+                        console.log(response);
+
+                        form.append('company_name', this.company_name);
+                        form.append('company_address', this.company_address);
+                        form.append('company_email', this.company_email);
+                        form.append('company_phone', this.company_phone);
+                        form.append('company_shop_number', this.company_shop_number);
+                        form.append('company_fax', this.company_fax);
+                        form.append('_method', 'PATCH');
+
+                        this.snackbar_message = "Setting data update successfully.";
                         this.snackbar = true;
                     });
             }

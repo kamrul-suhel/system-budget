@@ -22,7 +22,15 @@
                                 </v-flex>
                             </v-layout>
 
-                            <product-component></product-component>
+                            <product-component v-for="product in total_product"></product-component>
+
+                            <v-layout row wrap>
+                                <v-flex xs12>
+                                    <v-btn fab small @click="total_product++">
+                                        <v-icon>add</v-icon>
+                                    </v-btn>
+                                </v-flex>
+                            </v-layout>
 
                             <v-layout row wrap>
                                 <v-flex xs6>
@@ -44,6 +52,7 @@
                                     </v-text-field>
                                 </v-flex>
                             </v-layout>
+
 
                             <v-layout row wrap>
                                 <v-flex xs6 v-if="selectedPaymentStatus > 1">
@@ -77,6 +86,8 @@
 
             items: [],
             allProductData: [],
+
+            total_product: 1,
 
             customers: [],
             selectedCustomer:[],

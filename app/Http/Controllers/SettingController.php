@@ -19,12 +19,17 @@ class SettingController extends Controller
     	return view('welcome');
     }
 
-    public function show(Setting $setting){
-
-    }
 
     public function store(Request $request){
 
+    }
+
+    public function update(Request $request, Setting $setting){
+        $setting = $setting->fill($request->all());
+
+        $setting->save();
+
+        return $this->showOne($setting);
     }
 
     public function destroy(Setting $setting){

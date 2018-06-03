@@ -52,7 +52,7 @@ Route::get('/transaction', function(){
 Route::resource('customers', 'Customer\CustomerController')->only(['store', 'index', 'update']);
 Route::resource('customers.transactions', 'Customer\CustomerTransitionController')->only(['index']);
 
-Route::resource('settings', 'SettingController')->only(['store', 'index', 'update','destroy']);
+Route::resource('settings', 'SettingController')->only(['index', 'update']);
 
 Route::get('transaction/{id}/print', 'Transaction\TransactionController@showPrint');
 Route::get('transaction/{id}/edit', 'Transaction\TransactionController@edit');

@@ -14,6 +14,7 @@ class Setting extends Model
 		'company_email',
 		'company_phone',
 		'company_mobile',
-		'company_fax'
+		'company_fax',
+        'company_shop_number'
     ];
 }
