@@ -91,7 +91,7 @@ $factory->define(Transaction::class, function (Faker $faker) {
         'invoice_number' => $unique_id,
         'total' => $faker->numberBetween(3000, 4000),
         'created_at'    => $faker->dateTimeBetween($startDate = '-5 month', $endDate = 'now'),
-        'updated_at'    => $faker->dateTimeBetween($startDate = '-5 month', $endDate = 'now')
+        'updated_at'    => $faker->dateTimeBetween($startDate = '-6 month', $endDate = 'now')
     ];
 });
 

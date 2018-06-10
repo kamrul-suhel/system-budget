@@ -10,7 +10,7 @@
             <v-divider class="mb-3 dark"></v-divider>
 
             <v-layout row wrap>
-                <v-flex xs3>
+                <v-flex xs6>
                     <v-card flat class="cyan lighten-1 white--text">
                         <v-card-title>Total Transactions</v-card-title>
                         <v-card-text class="pt-0">
@@ -189,10 +189,10 @@
                                 <td class="text-xs-center">{{ props.item.invoice_number.toUpperCase() }}</td>
                                 <td class="text-xs-center">{{ props.item.products.length ? props.item.products.length : 0 }}</td>
                                 <td class="text-xs-center">{{ props.item.payment_status }}</td>
-                                <td class="text-xs-center">TK. {{ price_format(props.item.total) }}</td>
-                                <td class="text-xs-center">TK. {{ price_format(props.item.discount_amount) }}</td>
-                                <td class="text-xs-center">TK. {{ price_format(props.item.paied) }}</td>
-                                <td class="text-xs-center">TK. {{ price_format(props.item.payment_due) }}</td>
+                                <td class="text-xs-center">TK. {{ props.item.total? price_format(props.item.total): 0 }}</td>
+                                <td class="text-xs-center">TK. {{ props.item.discount_amount? price_format(props.item.discount_amount): 0 }}</td>
+                                <td class="text-xs-center">TK. {{ props.item.paied ? price_format(props.item.paied): 0 }}</td>
+                                <td class="text-xs-center">TK. {{ props.item.payment_due? price_format(props.item.payment_due): 0 }}</td>
                                 <td class="justify-start layout px-0">
                                     <v-btn icon class="mx-0" @click="editItem(props.item)">
                                         <v-icon color="dark">edit</v-icon>
@@ -357,6 +357,8 @@
 
         created() {
             this.initialize()
+
+            console.log(this.$store.getters.getProduct);
         },
 
         methods: {

@@ -24,44 +24,47 @@ class ProductBuyerTransactionController extends ApiController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, Product $product, Customer $customer)
+    public function store(Request $request, Customer $customer)
     {
-        $rules = [
-          'quantity' => 'required|integer|min:1'
-        ];
 
-        $this->validate($request, $rules);
+        $transaction = DB::transaction(function() use ($request, $customer){
+            $attach_product =[];
+            $unique_id = $this->getUniqueId();
+
+            $products = json_decode($request->products);
 
 
-        if(!$product->isAbaliable()){
-            return $this->errorResponse('The is not avaliable', 409);
-        }
 
-        if($product->quantity < $request->quantity ){
-            return $this->errorResponse('The product do not have enough units for this transaction', 409);
-        }
 
-        $transaction = DB::transaction(function() use ($request, $product, $customer){
+            foreach($products as $product){
+                $cur_product= Product::find($product->product->id);
+                $selected_quantity = $product->selected_quantity;
+                $cur_product->quantity -= $selected_quantity;
 
-            $product->quantity -= $request->quantity;
-            $product->save();
+                $attach_product[$product->product->id] = ['sale_quantity' => $product->selected_quantity];
+
+                $cur_product->save();
+            }
 
             $transaction = Transaction::create([
-                'quantity'      => $request->quantity,
                 'customer_id'      => $customer->id,
-                'product_id'    => $product->id,
+                'invoice_number'         => $unique_id,
+                'discount_amount'          => $request->discount,
+                'total'          => $request->total,
                 'payment_status'=> $request->payment_status,
                 'payment_due'   => $request->payment_due,
                 'paied'         => $request->paied
             ]);
 
+            $transaction->products()->sync($attach_product);
             return $transaction;
-            // return $this->showOne($transaction, 201);
         });
+
         $product = $transaction
-            ->with('product.seller')
+            ->with('products.seller')
             ->with('customer')
             ->first();
+
         return $this->showOne($product);
     }
 

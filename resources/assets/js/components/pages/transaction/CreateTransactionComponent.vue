@@ -22,7 +22,7 @@
                                 </v-flex>
                             </v-layout>
 
-                            <product-component v-for="product in total_product"></product-component>
+                            <product-component v-for="(product, index) in total_product" :key="index" :index="index"></product-component>
 
                             <v-layout row wrap>
                                 <v-flex xs12>
@@ -53,7 +53,6 @@
                                 </v-flex>
                             </v-layout>
 
-
                             <v-layout row wrap>
                                 <v-flex xs6 v-if="selectedPaymentStatus > 1">
                                     <v-text-field
@@ -63,6 +62,29 @@
                                             hint="Put how much paied">
 
                                     </v-text-field>
+                                </v-flex>
+                            </v-layout>
+
+
+                            <v-layout row wrap>
+                                <v-spacer></v-spacer>
+                                <v-flex xs3 class="text-xs-right">
+                                    <p><strong>Total: {{ total_amount_transactions }}</strong></p>
+                                    <p v-if="paied > 0"><strong>Paied: {{ paied }}</strong></p>
+                                </v-flex>
+                                <v-flex xs3 class="text-xs-right">
+                                    <p v-if="selectedPaymentStatus > 1"><strong>Due: {{ total_amount_transactions - paied }}</strong></p>
+                                    <p><strong>Discount: {{ discount }}</strong></p>
+                                    <p><strong>Grand total: {{ total_amount_transactions - discount }}</strong></p>
+
+                                </v-flex>
+                            </v-layout>
+
+                            <v-layout row wrap>
+                                <v-flex xs12 class="text-xs-right">
+                                    <v-btn dark raised @click="onCreateTransaction()">
+                                        Create transaction
+                                    </v-btn>
                                 </v-flex>
                             </v-layout>
                         </v-container>
@@ -75,6 +97,7 @@
 
 <script>
     import ProductLoopComponent from './partials/ProductLoopComponent';
+    import TransactionEventBus from '../../../event_bus/transaction_event';
     export default {
         components:{
             'productComponent': ProductLoopComponent
@@ -89,15 +112,17 @@
 
             total_product: 1,
 
-            customers: [],
+            customers: [{text: '', value: 1}],
             selectedCustomer:[],
             payment_due:'',
             paied:'',
-            discount:'',
+            discount:0,
 
             paymentStatus:[{text: 'Paied', value: 1}, {text: 'Due', value:2}, {text: 'Half paied', value:3}],
             selectedPaymentStatus:1,
             active: [1, 2],
+
+
 
 
         }),
@@ -112,22 +137,26 @@
             selectedProduct(val) {
                 var change_product = '';
                 this.allProductData.forEach(function(product) {
-                    console.log(product);
                     if(val === product.id){
-
                         change_product =  product;
                     }
                 });
                 this.current_product_quantity = change_product.quantity;
-            },
-
-            selectedPaymentStatus(selectedValue){
-                console.log(selectedValue);
             }
         },
 
         created() {
-            this.initialize()
+            this.initialize();
+
+            TransactionEventBus.$on('updateProduct', () => {
+                var totalTransactions = this.$store.getters.getProduct;
+                var total = 0;
+                totalTransactions.forEach((product) => {
+                    total += product.product.sale_price * product.selected_quantity;
+                });
+
+                this.total_amount_transactions = total;
+            });
         },
 
         methods: {
@@ -168,6 +197,27 @@
 
             },
 
+            onCreateTransaction(){
+                let form = new FormData()
+
+                let url = '/api/customers/'+this.selectedCustomer+'/transactions';
+
+                form.append('payment_status', this.selectedPaymentStatus);
+                form.append('discount', this.discount);
+                form.append('total', this.total_amount_transactions - this.discount);
+                form.append('payment_due', this.payment_due);
+                form.append('paied', this.paied);
+
+                console.log(this.$store.getters.getProduct);
+                var products = JSON.stringify(this.$store.getters.getProduct);
+                form.append('products', products);
+
+                axios.post(url, form)
+                    .then((response)=>{
+                        console.log(response);
+                    });
+            },
+
 
             close() {
                 this.dialog = false
@@ -176,38 +226,6 @@
                     this.editedItem = Object.assign({}, this.defaultItem)
                     this.editedIndex = -1
                 }, 300)
-            },
-
-            save() {
-                let form = new FormData()
-                let url = ' api/products/'+this.selectedProduct+'/customers/'+this.selectedCustomer+'/transactions';
-
-                console.log(url);
-
-                form.append('quantity', this.editedItem.quantity);
-                form.append('payment_status', this.selectedPaymentStatus);
-                form.append('payment_due', this.payment_due);
-                form.append('paied', this.paied);
-
-
-                if (this.editedIndex !== -1) {
-                    // update product
-                    form.append('_method', 'PATCH')
-                    url = url + '/' + this.editedItem.id
-                    axios.post(url, form)
-                        .then((response) => {
-                            Object.assign(this.items[this.editedIndex], this.editedItem)
-                        })
-                } else {
-                    // create product
-                    axios.post(url, form)
-                        .then((response) => {
-                            console.log(response);
-                            this.items.push(response.data)
-                        })
-                }
-
-                this.close()
             },
 
 

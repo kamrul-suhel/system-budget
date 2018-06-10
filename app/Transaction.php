@@ -30,7 +30,10 @@ class Transaction extends Model
     	'product_id',
         'payment_status',
         'payment_due',
-        'paied'
+        'paied',
+        'discount_amount',
+        'total',
+        'invoice_number'
     ];
 
     protected $hidden =[
