@@ -151,8 +151,11 @@ class TransactionController extends ApiController
      * @param  \App\Transaction $transaction
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Transaction $transaction)
+    public function destroy(Request $request)
     {
         //
+        $transaction = Transaction::find($request->id);
+        $transaction->products()->detach();
+        dd($transaction->delete());
     }
 }

@@ -5,6 +5,7 @@ namespace App;
 use App\Buyer;
 use App\Product;
 use App\Transformers\TransactionTransformer;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -56,6 +57,11 @@ class Transaction extends Model
             'half_paied' => self::PAYMENT_HALF_PAIED,
             'due'   => self::PAYMENT_DUE
         ];
+     }
+
+     public function getCreatedAtAttribute($value){
+        $dt = date("F j, Y, g:i a", strtotime($value));
+        return $dt;
      }
     
 }

@@ -29,24 +29,6 @@
                         </v-card-text>
                     </v-card>
                 </v-flex>
-
-                <!--<v-flex xs3>-->
-                <!--<v-card flat class="light-green lighten-1 white&#45;&#45;text">-->
-                <!--<v-card-title>Deactive Customer</v-card-title>-->
-                <!--<v-card-text class="pt-0">-->
-                <!--<h2 class="display-2 white&#45;&#45;text text-xs-center"><strong>350</strong></h2>-->
-                <!--</v-card-text>-->
-                <!--</v-card>-->
-                <!--</v-flex>-->
-
-                <!--<v-flex xs3>-->
-                <!--<v-card flat class="orange darken-1 white&#45;&#45;text">-->
-                <!--<v-card-title>Highest Customer</v-card-title>-->
-                <!--<v-card-text class="pt-0">-->
-                <!--<h2 class="display-2 white&#45;&#45;text text-xs-center"><strong>350</strong></h2>-->
-                <!--</v-card-text>-->
-                <!--</v-card>-->
-                <!--</v-flex>-->
             </v-layout>
         </v-container>
 
@@ -341,7 +323,6 @@
             selectedProduct(val) {
                 var change_product = '';
                 this.allProductData.forEach(function(product) {
-                    console.log(product);
                     if(val === product.id){
 
                         change_product =  product;
@@ -351,14 +332,11 @@
             },
 
             selectedPaymentStatus(selectedValue){
-                console.log(selectedValue);
             }
         },
 
         created() {
             this.initialize()
-
-            console.log(this.$store.getters.getProduct);
         },
 
         methods: {
@@ -369,7 +347,6 @@
                         this.items = response.data.transactions;
                         this.total_transactions = response.data.total_transactions;
                         this.total_amount_transactions = response.data.total_tk;
-                        console.log(this.items);
                     })
                     .catch((error) => {
                         console.log(error)
@@ -410,73 +387,14 @@
 
             },
 
-            editItem(item) {
-                // get selected categories & all categories
-                let url = '/api/products/' + item.id + '/categories'
-                console.log('Edite item: ');
-                console.log(item);
-                return;
-
-                axios.get(url)
-                    .then((response) => {
-                        let selectedCategories = response.data
-                        selectedCategories.forEach((value) => {
-                            let categories = {}
-                            categories.value = value.id
-                            categories.text = value.name
-                            this.selectedCategories.push(categories)
-                        })
-                    })
-                this.editedIndex = this.items.indexOf(item)
-                this.editedItem = Object.assign({}, item)
-                this.dialog = true
-            },
-
             deleteItem(item) {
                 const index = this.items.indexOf(item)
-                confirm('Are you sure you want to delete this item?') && this.items.splice(index, 1)
+                let url = '/api/transactions/'+item.id;
+                axios.get(url)
+                    .then((response)=>{
+                    });
             },
 
-            close() {
-                this.dialog = false
-                this.selectedCategories = []
-                setTimeout(() => {
-                    this.editedItem = Object.assign({}, this.defaultItem)
-                    this.editedIndex = -1
-                }, 300)
-            },
-
-            save() {
-                let form = new FormData()
-                let url = ' api/products/'+this.selectedProduct+'/customers/'+this.selectedCustomer+'/transactions';
-
-                console.log(url);
-
-                form.append('quantity', this.editedItem.quantity);
-                form.append('payment_status', this.selectedPaymentStatus);
-                form.append('payment_due', this.payment_due);
-                form.append('paied', this.paied);
-
-
-                if (this.editedIndex !== -1) {
-                    // update product
-                    form.append('_method', 'PATCH')
-                    url = url + '/' + this.editedItem.id
-                    axios.post(url, form)
-                        .then((response) => {
-                            Object.assign(this.items[this.editedIndex], this.editedItem)
-                        })
-                } else {
-                    // create product
-                    axios.post(url, form)
-                        .then((response) => {
-                            console.log(response);
-                            this.items.push(response.data)
-                        })
-                }
-
-                this.close()
-            },
 
             changeSort(column) {
                 if (this.pagination.sortBy === column) {
