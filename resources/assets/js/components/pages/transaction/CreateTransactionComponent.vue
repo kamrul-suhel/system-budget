@@ -92,6 +92,8 @@
                 </v-card>
             </v-layout>
         </v-container>
+
+
     </section>
 </template>
 
@@ -121,6 +123,7 @@
             paymentStatus:[{text: 'Paied', value: 1}, {text: 'Due', value:2}, {text: 'Half paied', value:3}],
             selectedPaymentStatus:1,
             active: [1, 2],
+
 
 
 
@@ -207,14 +210,16 @@
                 form.append('total', this.total_amount_transactions - this.discount);
                 form.append('payment_due', this.payment_due);
                 form.append('paied', this.paied);
-
-                console.log(this.$store.getters.getProduct);
+                
                 var products = JSON.stringify(this.$store.getters.getProduct);
                 form.append('products', products);
 
                 axios.post(url, form)
                     .then((response)=>{
-                        console.log(response);
+                        if(response.data){
+                            TransactionEventBus.createProduct('Transaction successfully created');
+                            this.$router.push({'name': 'transaction'});
+                        }
                     });
             },
 
