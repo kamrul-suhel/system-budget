@@ -4,8 +4,8 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <link href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons' rel="stylesheet">
-    <link href="./css/vuetify.min.css" rel="stylesheet">
+    <link href="{{asset('fonts/meterial-icon/material-icons.css')}}" rel="stylesheet">
+    <link href="{{ asset('css/vuetify.min.css') }}" rel="stylesheet">
 
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 

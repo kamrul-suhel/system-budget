@@ -29,7 +29,7 @@
         <v-snackbar
                 v-model="snackbar"
                 right
-                timeout="500"
+                :timeout="timeout"
                 top
                 color="green"
         >
@@ -51,7 +51,8 @@
         data() {
             return {
                 snackbar: false,
-                text:''
+                text:'',
+                timeout: 2000
             }
         },
 

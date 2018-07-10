@@ -13,6 +13,7 @@ const TransactionEventBus = new Vue({
         },
 
         createProduct(message){
+            
             this.$emit('productCreate', message)
         }
     }
