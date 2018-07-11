@@ -16,7 +16,7 @@ Vue.use(Router)
 const routes = [
     {
         path: '/',
-        name: 'login',
+        name: 'catero',
         component: LoginComponent
     },
 
