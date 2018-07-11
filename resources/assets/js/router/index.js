@@ -8,6 +8,7 @@ import SettingComponent from '../components/pages/setting/SettingComponent'
 import CreateTransaction from '../components/pages/transaction/CreateTransactionComponent'
 import TransactionPrint from '../components/pages/transaction/TransactionPrintComponent'
 import EditTransactionComponent from '../components/pages/transaction/EditTransactionComponent'
+import LoginComponent from '../components/pages/login/LoginComponent'
 
 
 Vue.use(Router)
@@ -15,8 +16,8 @@ Vue.use(Router)
 const routes = [
     {
         path: '/',
-        name: 'home',
-        component: CategoryComponent
+        name: 'login',
+        component: LoginComponent
     },
 
     {

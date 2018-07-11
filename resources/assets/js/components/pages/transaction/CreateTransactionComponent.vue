@@ -210,7 +210,7 @@
                 form.append('total', this.total_amount_transactions - this.discount);
                 form.append('payment_due', this.payment_due);
                 form.append('paied', this.paied);
-                
+
                 var products = JSON.stringify(this.$store.getters.getProduct);
                 form.append('products', products);
 
