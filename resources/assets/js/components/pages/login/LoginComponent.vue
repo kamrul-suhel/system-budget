@@ -49,7 +49,7 @@
                     <v-layout row wrap fluid class="text-xs-center">
 
                         <v-flex xs12 v-if="errorLogin">
-                            <p class="mb-0 red--text">Access denied </p>
+                            <p class="mb-0 red--text">Access denied user email & password is not match.</p>
                         </v-flex>
 
                         <v-flex xs12>
@@ -151,31 +151,32 @@
                     // submit data with ajax request
                     axios.post('/login', form_data)
                         .then(response => {
-                            this.login_progress = true;
-                            this.loading = false;
-
-                            let data = response.data;
-                            if (data.error) {
-                                this.login_prosgress = false;
-                                this.loading = false;
-                                this.validation.error = true;
-                                this.validation.message = data.error_message;
-                                return;
-                            }
-
-                            this.$store.commit('setUserState', data);
-                            LoginEventBus.loginSuccess();
-
-                            // if has previous page then do this
-                            let request_url = this.$route.query.request_url;
-                            if(request_url && request_url != ''){
-                                request_url = '/'+ request_url;
-                                this.$router.push({path: request_url});
-                            }
-
-                            if (data.redirect_url != '') {
-                                window.location.href = data.redirect_url;
-                            }
+                            console.log(response);
+                            // this.login_progress = true;
+                            // this.loading = false;
+                            //
+                            // let data = response.data;
+                            // if (data.error) {
+                            //     this.login_prosgress = false;
+                            //     this.loading = false;
+                            //     this.validation.error = true;
+                            //     this.validation.message = data.error_message;
+                            //     return;
+                            // }
+                            //
+                            // this.$store.commit('setUserState', data);
+                            // LoginEventBus.loginSuccess();
+                            //
+                            // // if has previous page then do this
+                            // let request_url = this.$route.query.request_url;
+                            // if(request_url && request_url != ''){
+                            //     request_url = '/'+ request_url;
+                            //     this.$router.push({path: request_url});
+                            // }
+                            //
+                            // if (data.redirect_url != '') {
+                            //     window.location.href = data.redirect_url;
+                            // }
                         })
                         .catch(error => {
                             this.loading = false;
