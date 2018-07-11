@@ -151,7 +151,7 @@
                     // submit data with ajax request
                     axios.post('/login', form_data)
                         .then(response => {
-                            console.log(response);
+                            LoginEventBus.successLogin();
                             // this.login_progress = true;
                             // this.loading = false;
                             //

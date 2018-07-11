@@ -27,6 +27,7 @@
 <script>
     import  HeaderComponent  from '../components/layout/HeaderComonent.vue';
     import  NavigationComponent  from '../components/layout/NavigationComponent.vue';
+    import  LoginEventBus  from '../event_bus/login-event-bus';
 
     export default {
         name: 'App',
@@ -38,8 +39,15 @@
         data: () => ({
             login:false
         }),
+
         props: {
             source: String
+        },
+
+        created(){
+            LoginEventBus.$on('successLogin', ()=> {
+                this.login = true;
+            });
         },
     }
 </script>

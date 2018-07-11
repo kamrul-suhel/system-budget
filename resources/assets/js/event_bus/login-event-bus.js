@@ -14,6 +14,10 @@ const LoginEventBus = new Vue({
         }
     },
     methods: {
+        successLogin(){
+            this.$emit('successLogin');
+        },
+
         openLoginDialog(){
             this.login_dialog = true;
             this.$emit('openLoginDialog', this.login_dialog);
