@@ -23,6 +23,7 @@
 </template>
 
 <script>
+    import  LoginEventBus  from '../../event_bus/login-event-bus';
     export default {
         data() {
             return {
@@ -58,6 +59,12 @@
                         icon: 'settings',
                         text: 'Settings',
                         link: 'settings'
+                    },
+
+                    {
+                        icon: 'settings_power',
+                        text: 'Log out',
+                        link: 'logout'
                     }
                 ]
             }
@@ -65,6 +72,13 @@
 
         methods : {
             onPageChange(item){
+                if(item.link === 'logout'){
+                    axios.get('/logout').then(() => {
+                        LoginEventBus.logoutStateChange();
+                        this.$router.push({name: 'login'});
+                    });
+                    return;
+                }
                 this.$router.push({name: item.link});
             }
         }

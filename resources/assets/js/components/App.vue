@@ -45,8 +45,21 @@
         },
 
         created(){
+
+            axios.get('/islogin').then((response) => {
+                if(!response.data.error){
+                    this.login = true;
+                    this.$router.push({name: 'home'})
+                }
+            })
+
             LoginEventBus.$on('successLogin', ()=> {
                 this.login = true;
+                this.$router.push({name: 'home'})
+            });
+
+            LoginEventBus.$on('logoutChangeState', () => {
+                this.login = false;
             });
         },
     }

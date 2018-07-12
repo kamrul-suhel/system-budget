@@ -65,4 +65,13 @@ class LoginController extends Controller
 
         return Redirect::to($redirect);
     }
+
+    public function isLogin(Request $request){
+        $user = Auth::user();
+        if($user){
+            return response()->json($user);
+        }else{
+            return response()->json(['error'=> 'not login']);
+        }
+    }
 }

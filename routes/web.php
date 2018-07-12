@@ -14,6 +14,7 @@
 
 // Authentication Routes...
 $this->get('login', '\LoginController@showLoginForm')->name('login');
+$this->get('islogin', 'LoginController@isLogin')->name('islogin');
 $this->post('login', 'LoginController@login');
 $this->get('logout', 'Auth\LoginController@logout')->name('logout');
 
