@@ -25,12 +25,26 @@ try {
 
 import Vue from 'vue'
 import Vuetify from 'vuetify'
+import Vuex from 'vuex';
+
+/**
+ * Import filter
+ */
+
+import "./filters/price-filter"
 
 import router from './router'
 Vue.use(Vuetify);
+Vue.use(Vuex);
 
 
 Vue.config.productionTip = true
+
+/**
+ * Event bus
+ */
+
+import TransactionEventBus from './event_bus/transaction_event';
 
 /**
  * Next we will register the CSRF Token as a common header with Axios so that
@@ -40,11 +54,13 @@ Vue.config.productionTip = true
 
 
 import App from './components/App'
+import store from './store';
 
 
 /* eslint-disable no-new */
 new Vue({
     el: '#budgetapp',
+    store,
     router,
     components: {App},
     template: '<App/>'

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Transaction;
 
 use App\Http\Controllers\ApiController;
+use App\Setting;
 use App\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
@@ -21,12 +22,42 @@ class TransactionController extends ApiController
      */
     public function index()
     {
-        $transactions = Transaction::with('product')
-        ->get();
-        $total = $transactions->avg('product.quantity');
-        dd($total);
-        
-        return $this->showAll($transactions);
+        $transactions = Transaction::with('products.seller')
+            ->with('customer')
+            ->orderBy('id', 'DESC')
+            ->get();
+
+        $transactions = $transactions->each(function ($transaction) {
+            foreach ($transaction->products as $product) {
+                $product->sale_quantity = $product->pivot->sale_quantity;
+            }
+        });
+        $total = $transactions->count();
+
+        $amount_transactions = $transactions->sum('total');
+
+        $payment_type = Transaction::getPaymentStatusType();
+
+        $collect = collect([
+            'transactions' => $transactions,
+            'total_tk' => $amount_transactions,
+            'total_transactions' => $total,
+            'payment_type' => $payment_type
+        ]);
+
+        return $this->showAll($collect);
+    }
+
+    public function generateRandomString($length = 11)
+    {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $randomString;
+
     }
 
     /**
@@ -34,15 +65,15 @@ class TransactionController extends ApiController
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        return view('welcome');
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -53,7 +84,7 @@ class TransactionController extends ApiController
     /**
      * Display the specified resource.
      *
-     * @param  \App\Transaction  $transaction
+     * @param  \App\Transaction $transaction
      * @return \Illuminate\Http\Response
      */
     public function show(Transaction $transaction)
@@ -62,22 +93,51 @@ class TransactionController extends ApiController
         return $this->showOne($transaction);
     }
 
+    public function showPrint(Request $request, int $id)
+    {
+        if ($request->ajax()) {
+            $transaction = Transaction::with('products')
+                ->with('customer')
+                ->where('id', '=', $id)
+                ->first();
+
+            foreach ($transaction->products as $product) {
+                $product->sale_quantity = $product->pivot->sale_quantity;
+            }
+            $setting = Setting::find(1);
+
+            $data = collect([
+                'transaction' => $transaction,
+                'setting' => $setting
+            ]);
+            return $data;
+        }
+
+        return view('welcome');
+    }
+
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Transaction  $transaction
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Http\JsonResponse|\Illuminate\View\View
      */
-    public function edit(Transaction $transaction)
+    public function edit(Request $request)
     {
         //
+        if ($request->ajax()) {
+            $transaction = Transaction::with('products.seller')
+                ->with('customer')
+                ->findOrFail($request->id);
+            return $this->showOne($transaction);
+        }
+
+        return view('welcome');
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Transaction  $transaction
+     * @param  \Illuminate\Http\Request $request
+     * @param  \App\Transaction $transaction
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Transaction $transaction)
@@ -88,11 +148,14 @@ class TransactionController extends ApiController
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Transaction  $transaction
+     * @param  \App\Transaction $transaction
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Transaction $transaction)
+    public function destroy(Request $request)
     {
         //
+        $transaction = Transaction::find($request->id);
+        $transaction->products()->detach();
+        dd($transaction->delete());
     }
 }

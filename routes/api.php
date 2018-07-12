@@ -42,7 +42,7 @@ Route::resource('products','Product\ProductController',['only' => ['index', 'sho
 Route::resource('products.transactions','Product\ProductTransactionController',['only' => ['index']]);
 Route::resource('products.buyers','Product\ProductBuyerController',['only' => ['index']]);
 Route::resource('products.categories','Product\ProductCategoryController',['except' => ['edit','show','create','store']]);
-Route::resource('products.buyers.transactions','Product\ProductBuyerTransactionController',['only' => ['store']]);
+Route::resource('customers.transactions','Product\ProductBuyerTransactionController',['only' => ['store']]);
 
 
 /*
@@ -52,6 +52,7 @@ Route::resource('products.buyers.transactions','Product\ProductBuyerTransactionC
 Route::resource('transactions','Transaction\TransactionController',['only' => ['index', 'show']]);
 Route::resource('transactions.categories','Transaction\TransactionCategoryController',['only' => ['index']]);
 Route::resource('transactions.sellers','Transaction\TransactionSellerController',['only' => ['index']]);
+Route::get('transactions/{id}/delete','Transaction\TransactionController@destroy');
 
 
 /*

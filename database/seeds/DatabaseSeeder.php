@@ -1,13 +1,14 @@
 <?php
 
 use App\Customer;
+use App\Setting;
 use App\User;
 use App\Product;
 use App\Category;
 use App\Transaction;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-
+use Faker\Factory as Faker;
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -25,6 +26,7 @@ class DatabaseSeeder extends Seeder
         Product::truncate();
         Transaction::truncate();
         DB::table('category_product')->truncate();
+        DB::table('product_transaction')->truncate();
 
         User::flushEventListeners();
         Product::flushEventListeners();
@@ -106,16 +108,28 @@ class DatabaseSeeder extends Seeder
 
 
         factory(User::class, $usersQuantity)->create();
-        factory(Customer::class, $customerQuantity)->create();
+//        factory(Customer::class, $customerQuantity)->create();
 
-        factory(Product::class, $productsQuantity)->create()->each(
-        	function($product){
-        		$categories = Category::all()->random(mt_rand(1, 5))->pluck('id');
+//        factory(Product::class, $productsQuantity)->create()->each(
+//        	function($product){
+//        		$categories = Category::all()->random(mt_rand(1, 5))->pluck('id');
+//
+//        		$product->categories()->attach($categories);
+//        	}
+//        );
 
-        		$product->categories()->attach($categories);
-        	}
-        );
+//        factory(Transaction::class, $transactionQuantity)->create()->each(
+//            function($transaction){
+//            $products = Product::all()->random(mt_rand(1,5))->pluck('id');
+//            $transaction->products()->attach($products,
+//                [
+//                    'sale_quantity' => Faker::create()->numberBetween(1, 5),
+//                    'created_at'    => Faker::create()->dateTimeBetween($startDate = '-5 month', $endDate = 'now'),
+//                    'updated_at'    => Faker::create()->dateTimeBetween($startDate = '-5 month', $endDate = 'now')
+//                ]);
+//
+//        });
 
-        factory(Transaction::class, $transactionQuantity)->create();
+        factory(Setting::class, 1)->create();
     }
 }

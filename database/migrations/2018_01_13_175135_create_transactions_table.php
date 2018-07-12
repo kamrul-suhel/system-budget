@@ -15,15 +15,17 @@ class CreateTransactionsTable extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('quantity')->unsigned();
             $table->integer('customer_id')->unsigned();
-            $table->integer('product_id')->unsigned();
             $table->integer('payment_status')->unsigned()->nullable();
+            $table->float('payment_due')->unsigned()->nullable();
+            $table->float('paied')->unsigned()->nullable();
+            $table->string('invoice_number')->index();
+            $table->float('discount_amount')->unsigned()->nullable();
+            $table->float('total')->index();
             $table->timestamps();
             $table->softDeletes();
 
             $table->foreign('customer_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
         });
     }
 

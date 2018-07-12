@@ -1,10 +1,6 @@
 <template>
     <section class="categories-page">
 
-        <v-btn raised primary @click="snackbar = !snackbar">
-            Snackbar
-        </v-btn>
-
         <v-dialog v-model="dialog" max-width="500px">
             <v-btn
                     dark
@@ -41,7 +37,7 @@
 
                     <v-btn color="dark" dark raised @click.native="close">Cancel</v-btn>
 
-                    <v-btn color="dark" dark raised @click.native="save">Save</v-btn>
+                    <v-btn color="dark" dark raised @click.native="save">{{ buttonTitle }}</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -64,7 +60,7 @@
                     :rows-per-page-items=row_per_page
                     >
                     <template slot="items" slot-scope="props">
-                        <td>{{ props.item.id }}</td>
+                        <td>{{ props.index + 1 }}</td>
                         <td class="text-xs-left">{{ props.item.name }}</td>
                         <td class="text-xs-left">{{ props.item.description }}</td>
                         <td class="justify-start layout px-0">
@@ -140,12 +136,16 @@
                 name: '',
                 descriptin: '',
             },
-            row_per_page: [5, 30, 50, {'text': 'All', 'value': -1}],
+            row_per_page: [20, 30, 50, {'text': 'All', 'value': -1}],
         }),
 
         computed: {
             formTitle () {
                 return this.editedIndex === -1 ? 'New Category' : 'Edit Category'
+            },
+
+            buttonTitle () {
+                return this.editedIndex === -1 ? 'Create Category' : 'Update Category'
             }
         },
 
@@ -186,25 +186,25 @@
                 setTimeout(() => {
                     this.editedItem = Object.assign({}, this.defaultItem);
                     this.editedIndex = -1;
-                    this.snackbar = true;
                 }, 300)
             },
 
             save () {
                 let form = new FormData();
-                let url = 'api/categories/';
+                let url = 'api/categories';
 
                 form.append('name', this.editedItem.name);
                 form.append('description', this.editedItem.description);
                     
                 if (this.editedIndex > -1) {
                     form.append('_method', 'PUT');
-                    url = url + this.editedItem.id;
+                    url = url +'/'+ this.editedItem.id;
                 
                     axios.post(url, form)
                         .then((response) => {
                             Object.assign(this.items[this.editedIndex], this.editedItem);
                             this.snackbar_message = "Category "+this.editedItem.name+" successfully update.";
+                            this.snackbar = true;
                         })
                     .catch((error)=> {
 
@@ -214,7 +214,7 @@
                     .then((response) => {
                         this.items.push(response.data);
                         this.snackbar_message = "Category "+this.editedItem.name+" successfully created.";
-                        console.log(this.snackbar_message);
+                        this.snackbar = true;
                     });
                 }
                 this.close()

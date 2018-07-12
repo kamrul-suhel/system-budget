@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Restfull api'),
+    'name' => env('APP_NAME', 'NS Software'),
 
     /*
     |--------------------------------------------------------------------------

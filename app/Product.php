@@ -57,7 +57,9 @@ class Product extends Model
     }
 
     public function transitions(){
-        return $this->hasMany(Transaction::class);
+        return $this->belongsToMany(Transaction::class)
+            ->withPivot(['sale_quantity'])
+            ->withTimestamps();
     }
 
     // getter and setter

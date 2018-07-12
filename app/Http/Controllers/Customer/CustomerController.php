@@ -16,8 +16,9 @@ class CustomerController extends ApiController
     public function index(Request $request)
     {
         //
+
         if($request->ajax()){
-            $customers = Customer::all();
+            $customers = Customer::orderBy('id', 'desc')->get();
             return $this->showAll($customers);
         }
 

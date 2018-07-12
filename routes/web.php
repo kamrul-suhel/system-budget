@@ -13,9 +13,9 @@
 
 
 // Authentication Routes...
-$this->get('login', 'Auth\LoginController@showLoginForm')->name('login');
-$this->post('login', 'Auth\LoginController@login');
-$this->post('logout', 'Auth\LoginController@logout')->name('logout');
+$this->get('login', '\LoginController@showLoginForm')->name('login');
+$this->post('login', 'LoginController@login');
+$this->get('logout', 'Auth\LoginController@logout')->name('logout');
 
 // Registration Routes...
 //$this->get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
@@ -51,3 +51,10 @@ Route::get('/transaction', function(){
 
 Route::resource('customers', 'Customer\CustomerController')->only(['store', 'index', 'update']);
 Route::resource('customers.transactions', 'Customer\CustomerTransitionController')->only(['index']);
+
+Route::resource('settings', 'SettingController')->only(['index', 'update']);
+
+Route::get('transaction/{id}/print', 'Transaction\TransactionController@showPrint');
+Route::get('transaction/{id}/edit', 'Transaction\TransactionController@edit');
+Route::get('transaction/create', 'Transaction\TransactionController@create');
+Route::post('transaction/{id}/edit', 'Transaction\TransactionController@edit');
