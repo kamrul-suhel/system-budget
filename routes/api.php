@@ -67,6 +67,16 @@ Route::resource('sellers.products','Seller\SellerProductController',['except' =>
 
 
 /*
+*  Expense route
+*/
+Route::resource('expense', 'Expense\ExpenseController', ['except' => ['edit', 'create', 'show']]);
+
+/*
+*  Expense Categories route
+*/
+Route::resource('expensecategory', 'ExpenseCategory\ExpenseCategoryController', ['except' => ['edit', 'create']]);
+
+/*
 *  User route
 */
 

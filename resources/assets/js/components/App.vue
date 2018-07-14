@@ -1,14 +1,14 @@
 <template>
     <div id="app">
         <v-app
-                light
+                dark
                 id="inspire"
         >
             <navigation-component v-if="login"></navigation-component>
             <header-component v-if="login"></header-component>
 
             <v-content>
-                <v-container fill-height class="pt-0" v-if="login">
+                <v-container fill-height class="" v-if="login">
                     <v-layout justify-left>
                         <v-flex>
                             <router-view ></router-view>

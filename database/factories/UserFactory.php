@@ -3,7 +3,6 @@
 use App\Customer;
 use App\Setting;
 use App\User;
-use App\Seller;
 use App\Product;
 use App\Category;
 use App\Transaction;
@@ -106,6 +105,31 @@ $factory->define(Setting::class, function(Faker $faker){
         'company_shop_number'=> $faker->bankAccountNumber
     ];
 });
+
+/**
+ * Expense section
+ */
+$factory->define(App\Expense::class, function (Faker $faker) {
+    return [
+        //
+        'title' => $faker->title,
+        'expense_categories_id' => $faker->numberBetween(1, 10),
+        'description'   => $faker->paragraph(1),
+        'payment_type'  => $faker->randomElement(['check', 'cash']),
+        'amount'        => $faker->randomFloat($nbMaxDecimals =2, $min = 0, $max = 2000),
+        'created_at'    => $faker->dateTimeBetween($startDate = '-6 month', $endDate = 'now'),
+        'updated_at'    => $faker->dateTimeBetween($startDate = '-5 month', $endDate = 'now')
+    ];
+});
+
+$factory->define(App\ExpenseCategory::class, function (Faker $faker) {
+    return [
+        //
+        'title' => $faker->title,
+        'description'   => $faker->paragraph(1),
+    ];
+});
+
 
 function generateRandomString($length = 11) {
     $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';

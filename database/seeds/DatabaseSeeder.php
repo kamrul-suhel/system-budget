@@ -1,6 +1,8 @@
 <?php
 
 use App\Customer;
+use App\Expense;
+use App\ExpenseCategory;
 use App\Setting;
 use App\User;
 use App\Product;
@@ -25,6 +27,9 @@ class DatabaseSeeder extends Seeder
         Category::truncate();
         Product::truncate();
         Transaction::truncate();
+        Expense::truncate();
+        ExpenseCategory::truncate();
+
         DB::table('category_product')->truncate();
         DB::table('product_transaction')->truncate();
 
@@ -33,6 +38,8 @@ class DatabaseSeeder extends Seeder
         Category::flushEventListeners();
         Transaction::flushEventListeners();
         Customer::flushEventListeners();
+        Expense::flushEventListeners();
+        ExpenseCategory::flushEventListeners();
 
         $usersQuantity = 30;
         $customerQuantity = 10;
@@ -108,28 +115,36 @@ class DatabaseSeeder extends Seeder
 
 
         factory(User::class, $usersQuantity)->create();
-//        factory(Customer::class, $customerQuantity)->create();
+        factory(Customer::class, $customerQuantity)->create();
 
-//        factory(Product::class, $productsQuantity)->create()->each(
-//        	function($product){
-//        		$categories = Category::all()->random(mt_rand(1, 5))->pluck('id');
-//
-//        		$product->categories()->attach($categories);
-//        	}
-//        );
+        factory(Product::class, $productsQuantity)->create()->each(
+        	function($product){
+        		$categories = Category::all()->random(mt_rand(1, 5))->pluck('id');
 
-//        factory(Transaction::class, $transactionQuantity)->create()->each(
-//            function($transaction){
-//            $products = Product::all()->random(mt_rand(1,5))->pluck('id');
-//            $transaction->products()->attach($products,
-//                [
-//                    'sale_quantity' => Faker::create()->numberBetween(1, 5),
-//                    'created_at'    => Faker::create()->dateTimeBetween($startDate = '-5 month', $endDate = 'now'),
-//                    'updated_at'    => Faker::create()->dateTimeBetween($startDate = '-5 month', $endDate = 'now')
-//                ]);
-//
-//        });
+        		$product->categories()->attach($categories);
+        	}
+        );
+
+        factory(Transaction::class, $transactionQuantity)->create()->each(
+            function($transaction){
+            $products = Product::all()->random(mt_rand(1,5))->pluck('id');
+            $transaction->products()->attach($products,
+                [
+                    'sale_quantity' => Faker::create()->numberBetween(1, 5),
+                    'created_at'    => Faker::create()->dateTimeBetween($startDate = '-5 month', $endDate = 'now'),
+                    'updated_at'    => Faker::create()->dateTimeBetween($startDate = '-5 month', $endDate = 'now')
+                ]);
+
+        });
 
         factory(Setting::class, 1)->create();
+
+
+        /**
+         * Expense seeder
+         */
+
+        factory(ExpenseCategory::class, 10)->create();
+        factory(Expense::class, 200)->create();
     }
 }
