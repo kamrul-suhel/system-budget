@@ -9,6 +9,7 @@ import CreateTransaction from '../components/pages/transaction/CreateTransaction
 import TransactionPrint from '../components/pages/transaction/TransactionPrintComponent'
 import EditTransactionComponent from '../components/pages/transaction/EditTransactionComponent'
 import LoginComponent from '../components/pages/login/LoginComponent'
+import ExpenseComponent from '../components/pages/expense/ExpenseComponent'
 
 
 Vue.use(Router)
@@ -71,6 +72,12 @@ const routes = [
         path: '/customers/:id/transitions',
         name: 'customers_transitions',
         component: CustomerComponent
+    },
+
+    {
+        path: '/expense',
+        name: 'expense',
+        component: ExpenseComponent
     },
 
     {
