@@ -1,8 +1,8 @@
 <template>
     <v-card raised width="450px">
-        <v-card-text class="login-section pa-0">
+        <v-card-text class="login-section">
             <v-form method="post" v-model="valid" ref="login_form">
-                <v-container grid-list-lg>
+                <v-container grid-list-xs>
                     <v-layout row wrap id="login-section">
 
                         <v-flex xs12>

@@ -149,6 +149,7 @@
                 form.append('company_address', this.company_address);
                 form.append('company_email', this.company_email);
                 form.append('company_phone', this.company_phone);
+                form.append('company_mobile', this.company_mobile);
                 form.append('company_shop_number', this.company_shop_number);
                 form.append('company_fax', this.company_fax);
                 form.append('_method', 'PATCH');
