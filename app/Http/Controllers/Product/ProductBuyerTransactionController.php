@@ -52,7 +52,7 @@ class ProductBuyerTransactionController extends ApiController
                 'discount_amount'          => $request->discount,
                 'total'          => $request->total,
                 'payment_status'=> $request->payment_status,
-                'payment_due'   => $request->payment_due,
+                'payment_due'   => $request->payment_due ? $request->payment_due : 0,
                 'paied'         => $request->paied
             ]);
 

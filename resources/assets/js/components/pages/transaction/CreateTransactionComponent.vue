@@ -202,13 +202,17 @@
 
             onCreateTransaction(){
                 let form = new FormData()
+                let total = this.total_amount_transactions - this.discount;
 
                 let url = '/api/customers/'+this.selectedCustomer+'/transactions';
 
                 form.append('payment_status', this.selectedPaymentStatus);
                 form.append('discount', this.discount);
-                form.append('total', this.total_amount_transactions - this.discount);
-                form.append('payment_due', this.payment_due);
+                form.append('total', total);
+
+                if(this.selectedPaymentStatus > 1){
+                    form.append('payment_due', total - this.paied);
+                }
                 form.append('paied', this.paied);
 
                 var products = JSON.stringify(this.$store.getters.getProduct);
