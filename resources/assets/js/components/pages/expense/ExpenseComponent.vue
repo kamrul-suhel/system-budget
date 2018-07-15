@@ -1,7 +1,22 @@
 <template>
     <section class="expense-page">
 
-        <v-dialog v-model="dialog" max-width="500px">
+
+        <v-dialog v-model="deleteDialog" persistent max-width="290">
+            <v-card color="error">
+                <v-card-text>
+                    <div class="text-xs-center"><v-icon color="white" size="50">warning</v-icon></div>
+                    <p class="text-xs-center">Are you sure you want to delete {{deleteItem.title}} {{ deleteItem.description}}</p>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="dark darken-1" flat @click.native="deleteDialog = false">Disagree</v-btn>
+                    <v-btn color="dark darken-1" flat @click.native="deleteItemD()">Agree</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+
+        <v-dialog v-model="dialog" max-width="700px">
             <v-btn
                     dark
                     :color="theme"
@@ -32,6 +47,39 @@
                                     v-model="editedItem.description"
                                     multi-line
                                     ></v-text-field>
+                            </v-flex>
+
+                            <v-flex xs6>
+                                <v-select
+                                        :color="theme"
+                                        v-model="editedItem.category"
+                                        :items="expenseCategories"
+                                        item-text="title"
+                                        ite-value="id"
+                                        label="Select Category"
+                                        return-object
+                                ></v-select>
+                            </v-flex>
+
+                            <v-flex xs6>
+                                <v-select
+                                        :color="theme"
+                                        v-model="editedItem.payment_type"
+                                        :items="payment_type"
+                                        item-text="text"
+                                        item-value="type"
+                                        label="Select Payment Type"
+                                ></v-select>
+                            </v-flex>
+
+                            <v-flex xs6>
+                                <v-text-field
+                                :color="theme"
+                                prefix="TK."
+                                label="Amount"
+                                type="number"
+                                v-model="editedItem.amount">
+                                </v-text-field>
                             </v-flex>
                         </v-layout>
                     </v-container>
@@ -88,7 +136,7 @@
                                     :color="theme"
                                     icon
                                     class="mx-0"
-                                    @click="deleteItem(props.item)">
+                                    @click="deleteExpense(props.item)">
                                 <v-icon :color="theme">delete</v-icon>
                             </v-btn>
                         </td>
@@ -124,6 +172,7 @@
     export default {
         data: () => ({
             dialog: false,
+            deleteDialog: false,
             search:'',
             pagination: {
                 sortBy: 'name'
@@ -166,19 +215,27 @@
             ],
             items: [],
             expenseCategories: [],
+            payment_type :['cash','check'],
             editedIndex: -1,
             editedItem: {
                 id:'',
                 title: '',
                 description: '',
-                payment_type:'',
+                payment_type:'cash',
                 amount:'',
-                expense_categories_id:''
+                category:{}
             },
             defaultItem: {
-                name: '',
-                descriptin: '',
+                id:'',
+                title: '',
+                description: '',
+                payment_type:'cash',
+                amount:'',
+                category:{}
             },
+
+            deleteItem: {},
+
             row_per_page: [20, 30, 50, {'text': 'All', 'value': -1}],
         }),
 
@@ -189,12 +246,14 @@
             },
 
             formTitle () {
-                return this.editedIndex === -1 ? 'New Category' : 'Edit Category'
+                return this.editedIndex === -1 ? 'New Expense' : 'Edit '+ this.editedItem.title;
             },
 
             buttonTitle () {
-                return this.editedIndex === -1 ? 'Create Category' : 'Update Category'
-            }
+                return this.editedIndex === -1 ? 'Create Expense' : 'Update expense'
+            },
+
+
         },
 
         watch: {
@@ -212,7 +271,6 @@
                 axios.get('api/expense')
                 .then((response) => {
                     this.items = response.data.expenses;
-                    console.log(this.items[0].category);
                     this.expenseCategories = response.data.expense_categories;
                 })
                 .catch((error) => {
@@ -228,14 +286,15 @@
             },
 
             editItem (item) {
+                // this.editedItem = item;
+                this.editedItem = Object.assign({}, item);
                 this.editedIndex = this.items.indexOf(item)
-                this.editedItem = Object.assign({}, item)
+                this.expenseCategories.forEach((item)=> {
+                    if(item.id === this.editedItem.category.id){
+                        this.editedItem.category = item;
+                    }
+                });
                 this.dialog = true
-            },
-
-            deleteItem (item) {
-                const index = this.items.indexOf(item)
-                confirm('Are you sure you want to delete this item?') && this.items.splice(index, 1)
             },
 
             close () {
@@ -248,20 +307,30 @@
 
             save () {
                 let form = new FormData();
-                let url = 'api/categories';
+                let url = 'api/expense';
 
-                form.append('name', this.editedItem.name);
+                form.append('title', this.editedItem.title);
                 form.append('description', this.editedItem.description);
-                    
+                form.append('payment_type', this.editedItem.payment_type);
+                form.append('amount', this.editedItem.amount);
+
+                if(this.editedItem.category.id){
+                    console.log('not category');
+                    form.append('expense_categories_id', this.editedItem.category.id);
+                }
+
                 if (this.editedIndex > -1) {
                     form.append('_method', 'PUT');
                     url = url +'/'+ this.editedItem.id;
                 
                     axios.post(url, form)
                         .then((response) => {
+                            console.log(this.editedItem);
+                            console.log(response);
                             Object.assign(this.items[this.editedIndex], this.editedItem);
-                            this.snackbar_message = "Category "+this.editedItem.name+" successfully update.";
+                            this.snackbar_message = "Expense "+this.editedItem.title+" successfully update.";
                             this.snackbar = true;
+                            this.close()
                         })
                     .catch((error)=> {
 
@@ -270,12 +339,26 @@
                     axios.post(url, form)
                     .then((response) => {
                         this.items.push(response.data);
-                        this.snackbar_message = "Category "+this.editedItem.name+" successfully created.";
+                        this.snackbar_message = "Expense "+this.editedItem.title+" successfully created.";
                         this.snackbar = true;
+                        this.close()
                     });
                 }
-                this.close()
             
+            },
+
+            deleteExpense (item) {
+                this.deleteItem = item;
+                this.deleteDialog = true;
+            },
+
+            deleteItemD () {
+                let url = 'api/expense/'+this.deleteItem.id;
+                axios.delete(url).then((response) => {
+                    this.deleteDialog = false;
+                    const index = this.items.indexOf(this.deleteItem)
+                    this.items.splice(index, 1)
+                });
             },
 
             changeSort(column) {

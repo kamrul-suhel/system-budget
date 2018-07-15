@@ -53,28 +53,6 @@ class ExpenseController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -84,6 +62,15 @@ class ExpenseController extends Controller
     public function update(Request $request, $id)
     {
         //
+
+        $expense = Expense::findOrfail($id);
+        $update_expense = $request->all();
+
+        $update = $expense->update($update_expense);
+
+        if($update){
+            return $this->successResponse($expense, 200);
+        }
     }
 
     /**
@@ -95,5 +82,11 @@ class ExpenseController extends Controller
     public function destroy($id)
     {
         //
+        $expense = Expense::findOrfail($id);
+        $deleted = $expense->delete();
+
+        if($deleted){
+            return $this->successResponse($expense, 200);
+        }
     }
 }
