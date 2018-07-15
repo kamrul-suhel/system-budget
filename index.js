@@ -3,6 +3,14 @@ const electorn = require('electron');
 const { app, BrowserWindow } = electorn;
 
 app.on('ready', () => {
-	var main_window = new BrowserWindow({fullscreen: true});
+	var main_window = new BrowserWindow(
+		{
+			fullscreen: true,
+            backgroundColor: '#312450',
+            show: false
+		});
+	main_window.once('ready-to-show', () => {
+        mainWindow.show();
+	})
 	main_window.loadURL('http://system.test');
 });
