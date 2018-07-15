@@ -10,6 +10,7 @@ import TransactionPrint from '../components/pages/transaction/TransactionPrintCo
 import EditTransactionComponent from '../components/pages/transaction/EditTransactionComponent'
 import LoginComponent from '../components/pages/login/LoginComponent'
 import ExpenseComponent from '../components/pages/expense/ExpenseComponent'
+import ExpenseCategoryComponent from '../components/pages/expense/ExpenseCategoryComponent'
 
 
 Vue.use(Router)
@@ -78,6 +79,12 @@ const routes = [
         path: '/expense',
         name: 'expense',
         component: ExpenseComponent
+    },
+
+    {
+        path: '/expensecategories',
+        name: 'expense_categories',
+        component: ExpenseCategoryComponent
     },
 
     {

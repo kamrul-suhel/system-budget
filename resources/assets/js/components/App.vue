@@ -49,6 +49,12 @@
             axios.get('/islogin').then((response) => {
                 if(!response.data.error){
                     this.login = true;
+
+                    let route = this.$route.name;
+                    if(route != 'login'){
+                        this.$router.push({name: route});
+                        return;
+                    }
                     this.$router.push({name: 'home'})
                 }
             })

@@ -1,88 +1,85 @@
 <template>
-    <section class="categories-page">
+    <section class="expense-categories-page">
+            <v-layout row wrap>
+                <v-flex xs6>
+                    <v-card>
+                        <v-card-title>
+                            <h2>Categories</h2>
+                            <v-spacer></v-spacer>
+                            <v-text-field
+                                    hide-details
+                                    v-model="search"
+                                    append-icon="search"></v-text-field>
+                        </v-card-title>
 
-        <v-dialog v-model="dialog" max-width="500px">
-            <v-btn
-                    dark
-                    color="dark"
-                    slot="activator"
-                    raised
-                    class="mb-2 ml-0">Add Category</v-btn>
+                        <v-card-text>
+                            <v-data-table
+                                    :headers="headers"
+                                    :items="items"
+                                    :search="search"
+                                    :rows-per-page-items=row_per_page
+                            >
+                                <template slot="items" slot-scope="props">
+                                    <td>{{ props.index + 1 }}</td>
+                                    <td class="text-xs-left">{{ props.item.name }}</td>
+                                    <td class="text-xs-left">{{ props.item.description }}</td>
+                                    <td class="justify-start layout px-0">
+                                        <v-btn icon class="mx-0" @click="editItem(props.item)">
+                                            <v-icon color="primary">edit</v-icon>
+                                        </v-btn>
+                                        <v-btn icon class="mx-0" @click="deleteItem(props.item)">
+                                            <v-icon color="pink">delete</v-icon>
+                                        </v-btn>
+                                    </td>
+                                </template>
 
-            <v-card>
-                <v-card-title>
-                    <span class="headline">{{ formTitle }}</span>
-                </v-card-title>
+                                <v-alert slot="no-results" :value="true" color="error" icon="warning">
+                                    Your search for "{{ search }}" found no results.
+                                </v-alert>
 
-                <v-card-text>
-                    <v-container grid-list-md>
-                        <v-layout wrap>
-                            <v-flex xs12>
-                                <v-text-field label="Title" v-model="editedItem.name"></v-text-field>
-                            </v-flex>
+                                <template slot="no-data">
+                                    <v-btn color="primary" @click="initialize">Reset</v-btn>
+                                </template>
+                            </v-data-table>
+                        </v-card-text>
+                    </v-card>
+                </v-flex>
 
-                            <v-flex xs12>
-                                <v-text-field 
-                                    label="Description" 
-                                    v-model="editedItem.description"
-                                    multi-line
-                                    ></v-text-field>
-                            </v-flex>
-                        </v-layout>
-                    </v-container>
-                </v-card-text>
+                <v-flex xs6 class="pl-4">
+                    <v-card>
+                        <v-card-title>
+                            <span class="headline">{{ formTitle }}</span>
+                        </v-card-title>
 
-                <v-card-actions>
-                    <v-spacer></v-spacer>
+                        <v-card-text>
+                            <v-container grid-list-md>
+                                <v-layout wrap>
+                                    <v-flex xs12>
+                                        <v-text-field label="Title" v-model="editedItem.name"></v-text-field>
+                                    </v-flex>
 
-                    <v-btn color="dark" dark raised @click.native="close">Cancel</v-btn>
+                                    <v-flex xs12>
+                                        <v-text-field
+                                                label="Description"
+                                                v-model="editedItem.description"
+                                                multi-line
+                                        ></v-text-field>
+                                    </v-flex>
+                                </v-layout>
+                            </v-container>
+                        </v-card-text>
 
-                    <v-btn color="dark" dark raised @click.native="save">{{ buttonTitle }}</v-btn>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
+                        <v-card-actions>
+                            <v-spacer></v-spacer>
 
-        <v-card>
-            <v-card-title>
-                Categories
-                <v-spacer></v-spacer>
-                <v-text-field
-                    hide-details
-                    v-model="search"
-                    append-icon="search"></v-text-field>
-            </v-card-title>
+                            <v-btn color="dark" dark raised @click.native="close">Cancel</v-btn>
 
-            <v-card-text>
-                <v-data-table
-                    :headers="headers"
-                    :items="items"
-                    :search="search"
-                    :rows-per-page-items=row_per_page
-                    >
-                    <template slot="items" slot-scope="props">
-                        <td>{{ props.index + 1 }}</td>
-                        <td class="text-xs-left">{{ props.item.name }}</td>
-                        <td class="text-xs-left">{{ props.item.description }}</td>
-                        <td class="justify-start layout px-0">
-                            <v-btn icon class="mx-0" @click="editItem(props.item)">
-                                <v-icon color="primary">edit</v-icon>
-                            </v-btn>
-                            <v-btn icon class="mx-0" @click="deleteItem(props.item)">
-                                <v-icon color="pink">delete</v-icon>
-                            </v-btn>
-                        </td>
-                    </template>
+                            <v-btn color="dark" dark raised @click.native="save">{{ buttonTitle }}</v-btn>
+                        </v-card-actions>
+                    </v-card>
+                </v-flex>
+            </v-layout>
 
-                    <v-alert slot="no-results" :value="true" color="error" icon="warning">
-                        Your search for "{{ search }}" found no results.
-                    </v-alert>    
-
-                    <template slot="no-data">
-                        <v-btn color="primary" @click="initialize">Reset</v-btn>
-                    </template>
-                </v-data-table>
-            </v-card-text>
-        </v-card>
 
         <v-snackbar
                 :timeout="4000"

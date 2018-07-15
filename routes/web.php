@@ -59,3 +59,11 @@ Route::get('transaction/{id}/print', 'Transaction\TransactionController@showPrin
 Route::get('transaction/{id}/edit', 'Transaction\TransactionController@edit');
 Route::get('transaction/create', 'Transaction\TransactionController@create');
 Route::post('transaction/{id}/edit', 'Transaction\TransactionController@edit');
+
+
+
+/**
+ * Expense frontend route
+ */
+
+Route::get('expensecategories', 'ExpenseCategory\ExpenseCategoryController@index')->name('expense.category.show');

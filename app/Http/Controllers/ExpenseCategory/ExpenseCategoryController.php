@@ -15,11 +15,14 @@ class ExpenseCategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //
-        $expenseCategory = ExpenseCategory::all();
-        return $this->successResponse($expenseCategory, 200);
+        if($request->ajax()){
+            $expenseCategory = ExpenseCategory::all();
+            return $this->successResponse($expenseCategory, 200);
+        }
+        return view('welcome');
     }
 
     /**
