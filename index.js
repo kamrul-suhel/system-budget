@@ -6,11 +6,11 @@ app.on('ready', () => {
 	var main_window = new BrowserWindow(
 		{
 			fullscreen: true,
-            backgroundColor: '#312450',
-            show: false
+            backgroundColor: '#312450'
 		});
-	main_window.once('ready-to-show', () => {
-        mainWindow.show();
-	})
-	main_window.loadURL('http://system.test');
+	// main_window.once('ready-to-show', () => {
+	// 	mainWindow.show();
+	// })
+
+    main_window.loadURL('http://system.test');
 });
