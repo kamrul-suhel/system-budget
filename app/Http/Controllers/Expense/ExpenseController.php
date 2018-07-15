@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Expense;
 
 use App\Expense;
+use App\ExpenseCategory;
 use App\Traits\ApiResponser;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -15,11 +16,22 @@ class ExpenseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //
-        $expense = Expense::with('category')->get();
-        return $this->successResponse($expense, 200);
+        if($request->ajax()){
+
+            $expense = Expense::with('category')->get();
+            $category = ExpenseCategory::orderBy('id', 'DESC')->get();
+            $data = [
+                'expenses' => $expense,
+                'expense_categories' => $category
+            ];
+            return $this->successResponse($data, 200);
+        }
+
+        return view('welcome');
+
     }
 
     /**

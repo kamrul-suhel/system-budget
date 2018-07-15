@@ -4,7 +4,7 @@
         <v-dialog v-model="dialog" max-width="500px">
             <v-btn
                     dark
-                    color="dark"
+                    :color="theme"
                     slot="activator"
                     raised
                     class="mb-2 ml-0">Add Expense</v-btn>
@@ -18,11 +18,16 @@
                     <v-container grid-list-md>
                         <v-layout wrap>
                             <v-flex xs12>
-                                <v-text-field label="Title" v-model="editedItem.name"></v-text-field>
+                                <v-text-field
+                                        label="Title"
+                                        v-model="editedItem.title"
+                                        :color="theme"
+                                ></v-text-field>
                             </v-flex>
 
                             <v-flex xs12>
-                                <v-text-field 
+                                <v-text-field
+                                        :color="theme"
                                     label="Description" 
                                     v-model="editedItem.description"
                                     multi-line
@@ -35,18 +40,22 @@
                 <v-card-actions>
                     <v-spacer></v-spacer>
 
-                    <v-btn color="dark" dark raised @click.native="close">Cancel</v-btn>
+                    <v-btn :color="theme"
+                           dark
+                           raised
+                           @click.native="close">Cancel</v-btn>
 
-                    <v-btn color="dark" dark raised @click.native="save">{{ buttonTitle }}</v-btn>
+                    <v-btn :color="theme" dark raised @click.native="save">{{ buttonTitle }}</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
 
         <v-card>
             <v-card-title>
-                Categories
+                <h2>Expense</h2>
                 <v-spacer></v-spacer>
                 <v-text-field
+                        :color="theme"
                     hide-details
                     v-model="search"
                     append-icon="search"></v-text-field>
@@ -59,16 +68,28 @@
                     :search="search"
                     :rows-per-page-items=row_per_page
                     >
+
                     <template slot="items" slot-scope="props">
                         <td>{{ props.index + 1 }}</td>
-                        <td class="text-xs-left">{{ props.item.name }}</td>
+                        <td class="text-xs-left">{{ props.item.title }}</td>
                         <td class="text-xs-left">{{ props.item.description }}</td>
+                        <td class="text-xs-left">TK.{{ props.item.amount }}</td>
+                        <td class="text-xs-left">{{ props.item.payment_type }}</td>
+                        <td class="text-xs-left">{{ getCategory(props.item)}}</td>
                         <td class="justify-start layout px-0">
-                            <v-btn icon class="mx-0" @click="editItem(props.item)">
-                                <v-icon color="primary">edit</v-icon>
+                            <v-btn
+                                    :color="theme"
+                                    icon
+                                    class="mx-0"
+                                    @click="editItem(props.item)">
+                                <v-icon :color="theme">edit</v-icon>
                             </v-btn>
-                            <v-btn icon class="mx-0" @click="deleteItem(props.item)">
-                                <v-icon color="pink">delete</v-icon>
+                            <v-btn
+                                    :color="theme"
+                                    icon
+                                    class="mx-0"
+                                    @click="deleteItem(props.item)">
+                                <v-icon :color="theme">delete</v-icon>
                             </v-btn>
                         </td>
                     </template>
@@ -78,7 +99,9 @@
                     </v-alert>    
 
                     <template slot="no-data">
-                        <v-btn color="primary" @click="initialize">Reset</v-btn>
+                        <v-btn
+                                :color="theme"
+                                @click="initialize">Reset</v-btn>
                     </template>
                 </v-data-table>
             </v-card-text>
@@ -102,18 +125,21 @@
         data: () => ({
             dialog: false,
             search:'',
+            pagination: {
+                sortBy: 'name'
+            },
             snackbar: false,
             snackbar_message:'',
             headers: [
                 {
-                    text: 'Identifier',
+                    text: 'Id',
                     align: 'left',
                     sortable: true,
                     value: 'id'
                 },
                 { 
                     text: 'Title', 
-                    value: 'name',
+                    value: 'title',
                     sortable: true
                 },
                 { 
@@ -121,16 +147,33 @@
                     value: 'description',
                 },
                 {
+                    text: 'Amount',
+                    value: 'amount',
+                },
+                {
+                    text: 'Payment Type',
+                    value: 'payment_type',
+                },
+
+                {
+                    text: 'Category',
+                    value: 'category',
+                },
+                {
                     text: 'Action',
                     value: 'action'
                 }
             ],
             items: [],
+            expenseCategories: [],
             editedIndex: -1,
             editedItem: {
                 id:'',
-                name: '',
+                title: '',
                 description: '',
+                payment_type:'',
+                amount:'',
+                expense_categories_id:''
             },
             defaultItem: {
                 name: '',
@@ -140,6 +183,11 @@
         }),
 
         computed: {
+
+            theme(){
+              return this.$store.getters.getTheme;
+            },
+
             formTitle () {
                 return this.editedIndex === -1 ? 'New Category' : 'Edit Category'
             },
@@ -161,13 +209,22 @@
 
         methods: {
             initialize () {
-                axios.get('api/categories')
+                axios.get('api/expense')
                 .then((response) => {
-                    this.items = response.data;
+                    this.items = response.data.expenses;
+                    console.log(this.items[0].category);
+                    this.expenseCategories = response.data.expense_categories;
                 })
                 .catch((error) => {
                     console.log(error);
                 });
+            },
+
+            getCategory(item){
+                if(item.category){
+                    return item.category.title
+                }
+                return 'unknown';
             },
 
             editItem (item) {
@@ -219,7 +276,16 @@
                 }
                 this.close()
             
-            }
+            },
+
+            changeSort(column) {
+                if (this.pagination.sortBy === column) {
+                    this.pagination.descending = !this.pagination.descending
+                } else {
+                    this.pagination.sortBy = column
+                    this.pagination.descending = false
+                }
+            },
         }
     }
 </script>

@@ -15,7 +15,7 @@
         </v-dialog>
 
             <v-layout row wrap>
-                <v-flex xs6>
+                <v-flex xs8>
                     <v-card>
                         <v-card-title>
                             <h2>Expense Categories</h2>
@@ -59,9 +59,9 @@
                     </v-card>
                 </v-flex>
 
-                <v-flex xs6 class="pl-4">
+                <v-flex xs4 class="pl-4">
                     <v-card>
-                        <v-card-title>
+                        <v-card-title class="pb-0">
                             <span class="headline">{{ formTitle }}</span>
                         </v-card-title>
 
@@ -69,12 +69,17 @@
                             <v-container grid-list-md>
                                 <v-layout wrap>
                                     <v-flex xs12>
-                                        <v-text-field label="Title" v-model="editedItem.title"></v-text-field>
+                                        <v-text-field
+                                                color="dark"
+                                                label="Title"
+                                                v-model="editedItem.title"
+                                        dark></v-text-field>
                                     </v-flex>
 
                                     <v-flex xs12>
                                         <v-text-field
                                                 label="Description"
+                                                color="dark"
                                                 v-model="editedItem.description"
                                                 multi-line
                                         ></v-text-field>
@@ -153,6 +158,9 @@
         }),
 
         computed: {
+            theme(){
+              this.$store.getters.getTheme;
+            },
             formTitle () {
                 return this.editedIndex === -1 ? 'New Expense Category' : 'Edit Expense Category'
             },

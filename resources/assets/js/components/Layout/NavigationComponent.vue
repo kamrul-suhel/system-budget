@@ -95,7 +95,7 @@
                             {
                                 icon: 'assignment',
                                 text: 'Expenses',
-                                link: 'expenses'
+                                link: 'expense'
                             },
 
                             {

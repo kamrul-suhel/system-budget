@@ -15,10 +15,10 @@ class CreateExpensesTable extends Migration
     {
         Schema::create('expenses', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('expense_categories_id')->index();
-            $table->string('title');
-            $table->text('description');
-            $table->string('payment_type', 11, 2);
+            $table->integer('expense_categories_id')->nullable()->index();
+            $table->string('title')->nullable();
+            $table->text('description')->nullable();
+            $table->string('payment_type', 11, 2)->nullable();
             $table->float('amount')->index();
             $table->timestamps();
         });

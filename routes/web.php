@@ -66,4 +66,5 @@ Route::post('transaction/{id}/edit', 'Transaction\TransactionController@edit');
  * Expense frontend route
  */
 
+Route::get('expense', 'Expense\ExpenseController@index')->name('expense.show');
 Route::get('expensecategories', 'ExpenseCategory\ExpenseCategoryController@index')->name('expense.category.show');
