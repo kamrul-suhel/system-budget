@@ -1,10 +1,24 @@
 <template>
     <section class="expense-categories-page">
+        <v-dialog v-model="dialog" persistent max-width="290">
+            <v-card color="error">
+                <v-card-text>
+                    <div class="text-xs-center"><v-icon color="white" size="50">warning</v-icon></div>
+                    <p class="text-xs-center">Are you sure you want to delete {{deleteItem.title}} {{ deleteItem.description}}</p>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="dark darken-1" flat @click.native="dialog = false">Disagree</v-btn>
+                    <v-btn color="dark darken-1" flat @click.native="deleteItemD()">Agree</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+
             <v-layout row wrap>
                 <v-flex xs6>
                     <v-card>
                         <v-card-title>
-                            <h2>Categories</h2>
+                            <h2>Expense Categories</h2>
                             <v-spacer></v-spacer>
                             <v-text-field
                                     hide-details
@@ -21,14 +35,14 @@
                             >
                                 <template slot="items" slot-scope="props">
                                     <td>{{ props.index + 1 }}</td>
-                                    <td class="text-xs-left">{{ props.item.name }}</td>
+                                    <td class="text-xs-left">{{ props.item.title }}</td>
                                     <td class="text-xs-left">{{ props.item.description }}</td>
                                     <td class="justify-start layout px-0">
                                         <v-btn icon class="mx-0" @click="editItem(props.item)">
-                                            <v-icon color="primary">edit</v-icon>
+                                            <v-icon color="dark">edit</v-icon>
                                         </v-btn>
-                                        <v-btn icon class="mx-0" @click="deleteItem(props.item)">
-                                            <v-icon color="pink">delete</v-icon>
+                                        <v-btn icon class="mx-0" @click="openDeleteDialog(props.item)">
+                                            <v-icon color="dark">delete</v-icon>
                                         </v-btn>
                                     </td>
                                 </template>
@@ -38,7 +52,7 @@
                                 </v-alert>
 
                                 <template slot="no-data">
-                                    <v-btn color="primary" @click="initialize">Reset</v-btn>
+                                    <v-btn color="dark" @click="initialize">Reset</v-btn>
                                 </template>
                             </v-data-table>
                         </v-card-text>
@@ -55,7 +69,7 @@
                             <v-container grid-list-md>
                                 <v-layout wrap>
                                     <v-flex xs12>
-                                        <v-text-field label="Title" v-model="editedItem.name"></v-text-field>
+                                        <v-text-field label="Title" v-model="editedItem.title"></v-text-field>
                                     </v-flex>
 
                                     <v-flex xs12>
@@ -110,7 +124,7 @@
                 },
                 { 
                     text: 'Title', 
-                    value: 'name',
+                    value: 'title',
                     sortable: true
                 },
                 { 
@@ -126,29 +140,25 @@
             editedIndex: -1,
             editedItem: {
                 id:'',
-                name: '',
+                title: '',
                 description: '',
             },
             defaultItem: {
-                name: '',
+                title: '',
                 descriptin: '',
             },
-            row_per_page: [20, 30, 50, {'text': 'All', 'value': -1}],
+            row_per_page: [10, 30, 50, {'text': 'All', 'value': -1}],
+
+            deleteItem:{},
         }),
 
         computed: {
             formTitle () {
-                return this.editedIndex === -1 ? 'New Category' : 'Edit Category'
+                return this.editedIndex === -1 ? 'New Expense Category' : 'Edit Expense Category'
             },
 
             buttonTitle () {
                 return this.editedIndex === -1 ? 'Create Category' : 'Update Category'
-            }
-        },
-
-        watch: {
-            dialog (val) {
-                val || this.close()
             }
         },
 
@@ -158,7 +168,7 @@
 
         methods: {
             initialize () {
-                axios.get('api/categories')
+                axios.get('api/expensecategory')
                 .then((response) => {
                     this.items = response.data;
                 })
@@ -170,52 +180,60 @@
             editItem (item) {
                 this.editedIndex = this.items.indexOf(item)
                 this.editedItem = Object.assign({}, item)
-                this.dialog = true
             },
 
-            deleteItem (item) {
-                const index = this.items.indexOf(item)
-                confirm('Are you sure you want to delete this item?') && this.items.splice(index, 1)
+            openDeleteDialog(deleteItem){
+                this.deleteItem = deleteItem;
+                this.dialog = true;
+            },
+
+            deleteItemD () {
+                let url = 'api/expensecategory/'+this.deleteItem.id;
+                axios.delete(url).then((response) => {
+                    this.dialog = false;
+                    const index = this.items.indexOf(this.deleteItem)
+                    this.items.splice(index, 1)
+                });
             },
 
             close () {
-                this.dialog = false
-                setTimeout(() => {
-                    this.editedItem = Object.assign({}, this.defaultItem);
-                    this.editedIndex = -1;
-                }, 300)
+
+                this.editedItem = Object.assign({}, this.defaultItem);
+                this.editedIndex = -1;
             },
 
             save () {
                 let form = new FormData();
-                let url = 'api/categories';
+                let url = 'api/expensecategory';
 
-                form.append('name', this.editedItem.name);
+                form.append('title', this.editedItem.title);
                 form.append('description', this.editedItem.description);
-                    
+
+
                 if (this.editedIndex > -1) {
                     form.append('_method', 'PUT');
                     url = url +'/'+ this.editedItem.id;
                 
                     axios.post(url, form)
                         .then((response) => {
-                            Object.assign(this.items[this.editedIndex], this.editedItem);
-                            this.snackbar_message = "Category "+this.editedItem.name+" successfully update.";
+                            Object.assign(this.items[this.editedIndex], response.data);
+                            this.snackbar_message = "Category "+this.editedItem.title+" successfully update.";
                             this.snackbar = true;
+                            this.close()
+
                         })
                     .catch((error)=> {
-
+                        console.log(error);
                     });
                 } else {
                     axios.post(url, form)
                     .then((response) => {
-                        this.items.push(response.data);
-                        this.snackbar_message = "Category "+this.editedItem.name+" successfully created.";
+                        this.items.unshift(response.data);
+                        this.snackbar_message = "Category "+this.editedItem.title+" successfully created.";
                         this.snackbar = true;
+                        this.close()
                     });
                 }
-                this.close()
-            
             }
         }
     }

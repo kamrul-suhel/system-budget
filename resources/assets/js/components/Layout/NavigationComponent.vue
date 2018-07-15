@@ -100,7 +100,32 @@
 
                             {
                                 icon: 'category',
-                                text: 'Expenses Categories',
+                                text: 'Ex Categories',
+                                link: 'expense_categories'
+                            }
+
+                        ]
+                    },
+
+                    {
+                        icon: 'timeline',
+                        text: 'Accounting',
+                        navs: [
+                            {
+                                icon: 'timeline',
+                                text: 'A Expense',
+                                link: 'expenses'
+                            },
+
+                            {
+                                icon: 'timeline',
+                                text: 'A Product',
+                                link: 'expenses'
+                            },
+
+                            {
+                                icon: 'category',
+                                text: 'A Transaction',
                                 link: 'expense_categories'
                             }
 

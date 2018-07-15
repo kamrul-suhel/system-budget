@@ -19,7 +19,7 @@ class ExpenseCategoryController extends Controller
     {
         //
         if($request->ajax()){
-            $expenseCategory = ExpenseCategory::all();
+            $expenseCategory = ExpenseCategory::orderBy('id', 'DESC')->get();
             return $this->successResponse($expenseCategory, 200);
         }
         return view('welcome');
