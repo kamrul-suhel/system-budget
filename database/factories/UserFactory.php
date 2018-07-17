@@ -1,5 +1,6 @@
 <?php
 
+use App\Company;
 use App\Customer;
 use App\Setting;
 use App\User;
@@ -117,7 +118,7 @@ $factory->define(App\Expense::class, function (Faker $faker) {
         'description'   => $faker->paragraph(1),
         'payment_type'  => $faker->randomElement(['check', 'cash']),
         'amount'        => $faker->randomFloat($nbMaxDecimals =2, $min = 0, $max = 2000),
-        'created_at'    => $faker->dateTimeBetween($startDate = '-6 month', $endDate = 'now'),
+        'created_at'    => $faker->dateTimeBetween($startDate = '-12 month', $endDate = 'now'),
         'updated_at'    => $faker->dateTimeBetween($startDate = '-5 month', $endDate = 'now')
     ];
 });
@@ -129,6 +130,48 @@ $factory->define(App\ExpenseCategory::class, function (Faker $faker) {
         'description'   => $faker->paragraph(1),
     ];
 });
+
+
+
+/**
+ * Company
+ */
+$factory->define(App\Company::class, function (Faker $faker) {
+    return [
+        //
+        'name' => $faker->company,
+        'address' => $faker->address,
+        'description' => $faker->paragraph(1),
+        'reference_number'  => generateRandomString(),
+        'phone'        => $faker->phoneNumber,
+        'mobile'        => $faker->phoneNumber,
+        'email'        => $faker->email,
+        'city'          => $faker->city,
+        'status'        => $faker->numberBetween(1,2),
+        'fax'        => $faker->phoneNumber,
+        'websiteurl'        => $faker->url,
+        'created_at'    => $faker->dateTimeBetween($startDate = '-12 month', $endDate = 'now'),
+        'updated_at'    => $faker->dateTimeBetween($startDate = '-5 month', $endDate = 'now')
+    ];
+});
+
+
+$factory->define(\App\CompanyTransaction::class, function (Faker $faker) {
+    return [
+        //
+
+        'company_id' => Company::all()->random()->id,
+        'payment_type' => $faker->randomElement(['cash', 'check']),
+        'reference' => generateRandomString(),
+        'remarks'  => $faker->randomElement(['remarks', 'unremarks']),
+        'debit'        => $faker->randomFloat(2,30000,  90000),
+        'credit'        => $faker->randomFloat(2, 20000, 25000),
+        'balance'        => $faker->randomFloat(2, 50000, 10000),
+        'created_at'    => $faker->dateTimeBetween($startDate = '-12 month', $endDate = 'now'),
+        'updated_at'    => $faker->dateTimeBetween($startDate = '-5 month', $endDate = 'now')
+    ];
+});
+
 
 
 function generateRandomString($length = 11) {

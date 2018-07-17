@@ -1,5 +1,7 @@
 <?php
 
+use App\Company;
+use App\CompanyTransaction;
 use App\Customer;
 use App\Expense;
 use App\ExpenseCategory;
@@ -29,6 +31,8 @@ class DatabaseSeeder extends Seeder
         Transaction::truncate();
         Expense::truncate();
         ExpenseCategory::truncate();
+        Company::truncate();
+        CompanyTransaction::truncate();
 
         DB::table('category_product')->truncate();
         DB::table('product_transaction')->truncate();
@@ -40,6 +44,8 @@ class DatabaseSeeder extends Seeder
         Customer::flushEventListeners();
         Expense::flushEventListeners();
         ExpenseCategory::flushEventListeners();
+        Company::flushEventListeners();
+        CompanyTransaction::flushEventListeners();
 
         $usersQuantity = 30;
         $customerQuantity = 10;
@@ -131,7 +137,7 @@ class DatabaseSeeder extends Seeder
             $transaction->products()->attach($products,
                 [
                     'sale_quantity' => Faker::create()->numberBetween(1, 5),
-                    'created_at'    => Faker::create()->dateTimeBetween($startDate = '-5 month', $endDate = 'now'),
+                    'created_at'    => Faker::create()->dateTimeBetween($startDate = '-12 month', $endDate = 'now'),
                     'updated_at'    => Faker::create()->dateTimeBetween($startDate = '-5 month', $endDate = 'now')
                 ]);
 
@@ -146,5 +152,14 @@ class DatabaseSeeder extends Seeder
 
         factory(ExpenseCategory::class, 10)->create();
         factory(Expense::class, 200)->create();
+
+
+        /**
+         * Company seeder
+         */
+
+        factory(Company::class, 20)->create();
+
+        factory(CompanyTransaction::class, 200)->create();
     }
 }
