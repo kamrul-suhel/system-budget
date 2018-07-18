@@ -108,6 +108,25 @@
                     },
 
                     {
+                        icon: 'assignment',
+                        text: 'Company',
+                        navs: [
+                            {
+                                icon: 'assignment',
+                                text: 'Companies',
+                                link: 'company'
+                            },
+
+                            {
+                                icon: 'compare_arrows',
+                                text: 'C. Transaction',
+                                link: 'company_transaction'
+                            }
+
+                        ]
+                    },
+
+                    {
                         icon: 'timeline',
                         text: 'Accounting',
                         navs: [

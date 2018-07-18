@@ -7,4 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class CompanyTransaction extends Model
 {
     //
+
+
+    public function company(){
+        return $this->belongsTo(Company::class);
+    }
 }

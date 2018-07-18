@@ -76,6 +76,12 @@ Route::resource('expense', 'Expense\ExpenseController', ['except' => ['edit', 'c
 */
 Route::resource('expensecategory', 'ExpenseCategory\ExpenseCategoryController', ['except' => ['edit', 'create']]);
 
+
+/*
+*  Company route
+*/
+Route::resource('company', 'Company\CompanyController', ['except' => ['edit', 'create']]);
+
 /*
 *  User route
 */
