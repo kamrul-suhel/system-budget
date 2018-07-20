@@ -116,7 +116,7 @@ $factory->define(App\Expense::class, function (Faker $faker) {
         'title' => $faker->title,
         'expense_categories_id' => $faker->numberBetween(1, 10),
         'description'   => $faker->paragraph(1),
-        'payment_type'  => $faker->randomElement(['check', 'cash']),
+        'payment_type'  => $faker->randomElement(['check', 'cheque']),
         'amount'        => $faker->randomFloat($nbMaxDecimals =2, $min = 0, $max = 2000),
         'created_at'    => $faker->dateTimeBetween($startDate = '-12 month', $endDate = 'now'),
         'updated_at'    => $faker->dateTimeBetween($startDate = '-5 month', $endDate = 'now')
@@ -161,7 +161,7 @@ $factory->define(\App\CompanyTransaction::class, function (Faker $faker) {
         //
 
         'company_id' => Company::all()->random()->id,
-        'payment_type' => $faker->randomElement(['cash', 'check']),
+        'payment_type' => $faker->randomElement(['cash', 'cheque']),
         'reference' => generateRandomString(),
         'remarks'  => $faker->randomElement(['remarks', 'unremarks']),
         'debit'        => $faker->randomFloat(2,30000,  90000),

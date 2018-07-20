@@ -1,9 +1,9 @@
 <template>
-    <div class="products">
+    <div class="company-transaction">
         <v-container grid-list-md>
             <v-layout row wrap>
                 <v-flex xs12>
-                    <h2>Customers</h2>
+                    <h2>Company</h2>
                 </v-flex>
             </v-layout>
 
@@ -12,7 +12,7 @@
             <v-layout row wrap>
                 <v-flex xs3>
                     <v-card flat class="cyan lighten-1 white--text">
-                        <v-card-title>Total Customers</v-card-title>
+                        <v-card-title>Total Companies</v-card-title>
                         <v-card-text class="pt-0">
                             <h2 class="display-2 white--text text-xs-center"><strong>350</strong></h2>
                         </v-card-text>
@@ -21,7 +21,7 @@
 
                 <v-flex xs3>
                     <v-card flat class="light-blue white--text">
-                        <v-card-title>Active Customers</v-card-title>
+                        <v-card-title>Active Company</v-card-title>
                         <v-card-text class="pt-0">
                             <h2 class="display-2 white--text text-xs-center"><strong>350</strong></h2>
                         </v-card-text>
@@ -30,7 +30,7 @@
 
                 <v-flex xs3>
                     <v-card flat class="light-green lighten-1 white--text">
-                        <v-card-title>Deactive Customer</v-card-title>
+                        <v-card-title>Deactive Company</v-card-title>
                         <v-card-text class="pt-0">
                             <h2 class="display-2 white--text text-xs-center"><strong>350</strong></h2>
                         </v-card-text>
@@ -47,6 +47,130 @@
                 </v-flex>
             </v-layout>
         </v-container>
+
+        <v-dialog
+                v-model="dialog"
+                max-width="800px"
+                height="1000px"
+                persistent>
+            <v-card class="px-2 py-2">
+                <v-card-title>
+                    <span class="headline">{{ formTitle }}</span>
+                </v-card-title>
+
+                <v-card-text class="pt-0">
+                    <v-container grid-list-md>
+                        <v-layout wrap>
+                            <v-flex xs6>
+                                <v-text-field
+                                        label="Customer Name"
+                                        v-model="editedItem.name"></v-text-field>
+                            </v-flex>
+
+                            <v-flex xs6>
+                                <v-text-field
+                                        label="Email"
+                                        v-model="editedItem.email"
+                                ></v-text-field>
+                            </v-flex>
+
+                            <v-flex xs6>
+                                <v-text-field
+                                        label="Phone"
+                                        type="phone"
+                                        hint="Phone number"
+                                        v-model="editedItem.phone"
+                                ></v-text-field>
+                            </v-flex>
+
+                            <v-flex xs6>
+                                <v-text-field
+                                        label="mobile"
+                                        type="mobile"
+                                        hint="Mobile number"
+                                        v-model="editedItem.mobile">
+                                </v-text-field>
+                            </v-flex>
+
+                            <v-flex xs6>
+                                <v-text-field
+                                        label="Fax"
+                                        hint="Fax number"
+                                        v-model="editedItem.fax">
+                                </v-text-field>
+                            </v-flex>
+
+                            <v-flex xs6>
+                                <v-text-field
+                                        label="website"
+                                        hint="Web site URL"
+                                        v-model="editedItem.websiteurl">
+                                </v-text-field>
+                            </v-flex>
+
+
+                            <v-flex xs6>
+                                <v-text-field
+                                        v-model="editedItem.address"
+                                        label="Address"
+                                        multi-line
+                                ></v-text-field>
+                            </v-flex>
+
+                            <v-flex xs6>
+                                <v-text-field
+                                        v-model="editedItem.description"
+                                        label="Description"
+                                        multi-line
+                                ></v-text-field>
+                            </v-flex>
+
+                            <v-flex xs6>
+                                <v-text-field
+                                        label="City"
+                                        hint="Location of company"
+                                        v-model="editedItem.city">
+                                </v-text-field>
+                            </v-flex>
+
+                            <v-flex xs6>
+                                <v-select
+                                        :items="active"
+                                        label="Status"
+                                        hint="Company status"
+                                        v-model="editedItem.status">
+                                </v-select>
+                            </v-flex>
+                        </v-layout>
+                    </v-container>
+                </v-card-text>
+
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+
+                    <v-btn dark color="dark" raised @click.native="close">Cancel</v-btn>
+
+                    <v-btn dark color="dark" raised @click.native="save">{{ editedIndex == -1 ? 'Create customer' :
+                        'Update customer' }}
+                    </v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+
+
+        <v-dialog v-model="deleteDialog" persistent max-width="290">
+            <v-card color="error">
+                <v-card-text>
+                    <div class="text-xs-center"><v-icon color="white" size="50">warning</v-icon></div>
+                    <p class="text-xs-center">Are you sure you want to delete {{deleteItem.title}} {{ deleteItem.description}}</p>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="dark darken-1" flat @click.native="deleteDialog = false">Disagree</v-btn>
+                    <v-btn color="dark darken-1" flat @click.native="deleteItemD()">Agree</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
 
         <v-container grid-list-lg>
             <v-layout row wrap>
@@ -101,7 +225,7 @@
                                     <v-btn icon class="mx-0" @click="viewTransition(props.item)">
                                         <v-icon clor="dark">view_comfy</v-icon>
                                     </v-btn>
-                                    <v-btn icon class="mx-0" @click="deleteItem(props.item)">
+                                    <v-btn icon class="mx-0" @click="openDeleteDialog(props.item)">
                                         <v-icon color="pink">delete</v-icon>
                                     </v-btn>
                                 </td>
@@ -119,6 +243,16 @@
                 </v-card>
             </v-layout>
         </v-container>
+
+        <v-snackbar
+                :timeout="4000"
+                top
+                right
+                color="success"
+                multi-line
+                v-model="snackbar">
+            {{ snackbar_message }}
+        </v-snackbar>
     </div>
 </template>
 <script>
@@ -128,11 +262,15 @@
 
     export default {
         data: () => ({
-            dialog: true,
+            dialog: false,
+            deleteDialog:false,
             search: '',
             pagination: {
                 sortBy: 'name'
             },
+
+            snackbar: false,
+            snackbar_message: '',
 
             headers: [
                 {
@@ -166,14 +304,18 @@
             editedIndex: -1,
             editedItem: {
                 id: '',
-                name: 'New title',
-                email: 'new Description',
+                name: 'Name title',
+                address: 'address',
+                description: 'description',
+                email: 'email',
                 phone: '01622296755',
                 mobile: '075493188',
-                address: 'available',
-                active: '1'
+                fax: 'fax',
+                websiteurl: 'kam-port.co.uk',
+                city: 'london',
+                status: 'Active'
             },
-            active: [1,2],
+            active: ['Active', 'Inactive'],
 
 
             defaultItem: {
@@ -182,11 +324,13 @@
             },
             row_per_page: [20, 30, 50, {'text': 'All', 'value': -1}],
 
+            deleteItem:{},
+
         }),
 
         computed: {
             formTitle() {
-                return this.editedIndex === -1 ? 'New Customer' : 'Edit Customer'
+                return this.editedIndex === -1 ? 'New Company' : 'Update Company'
             }
         },
 
@@ -203,7 +347,7 @@
         methods: {
             initialize() {
                 // get all product
-                axios.get('/customers')
+                axios.get('/company')
                     .then((response) => {
                         this.items = response.data
                     })
@@ -213,77 +357,80 @@
 
             },
 
-            editItem(item) {
-                // get selected categories & all categories
-                let url = '/api/products/' + item.id + '/categories'
-
-                axios.get(url)
-                    .then((response) => {
-                        let selectedCategories = response.data
-                        selectedCategories.forEach((value) => {
-                            let categories = {}
-                            categories.value = value.id
-                            categories.text = value.name
-                            this.selectedCategories.push(categories)
-                        })
-                    })
-                this.editedIndex = this.items.indexOf(item)
-                this.editedItem = Object.assign({}, item)
-                this.dialog = true
+            openDeleteDialog(deleteItem){
+                this.deleteItem = deleteItem;
+                this.deleteDialog = true;
             },
 
-            deleteItem(item) {
-                const index = this.items.indexOf(item)
-                confirm('Are you sure you want to delete this item?') && this.items.splice(index, 1)
+            deleteItemD () {
+                let url = 'api/company/'+this.deleteItem.id;
+                axios.delete(url).then((response) => {
+                    this.deleteDialog = false;
+                    const index = this.items.indexOf(this.deleteItem)
+                    this.items.splice(index, 1)
+                });
             },
 
             close() {
                 this.dialog = false
-                this.selectedCategories = []
+                this.selectedCategories = [];
                 setTimeout(() => {
-                    this.editedItem = Object.assign({}, this.defaultItem)
+                    this.editedItem = Object.assign({}, this.defaultItem);
                     this.editedIndex = -1
                 }, 300)
             },
 
+            editItem(item) {
+                // get selected categories & all categories
+                this.editedIndex = this.items.indexOf(item);
+                this.editedItem = Object.assign({}, item);
+                this.dialog = true
+            },
+
             save() {
-                let form = new FormData()
-                let url = '/customers'
+                let form = new FormData();
+                let url = '/api/company';
 
-                form.append('name', this.editedItem.name)
-                form.append('email', this.editedItem.email)
-                form.append('phone', this.editedItem.phone)
-                form.append('mobile', this.editedItem.mobile)
-                form.append('address', this.editedItem.address)
-
-                if (this.selectedCategories) {
-                    form.append('categories', JSON.stringify(this.selectedCategories))
-                }
+                form.append('name', this.editedItem.name);
+                form.append('email', this.editedItem.email);
+                form.append('phone', this.editedItem.phone);
+                form.append('mobile', this.editedItem.mobile);
+                form.append('fax', this.editedItem.fax);
+                form.append('address', this.editedItem.address);
+                form.append('description', this.editedItem.description);
+                form.append('websiteurl', this.editedItem.websiteurl);
+                form.append('city', this.editedItem.city);
+                form.append('status', this.editedItem.status);
 
                 if (this.editedIndex !== -1) {
                     // update product
-                    form.append('_method', 'PATCH')
-                    url = url + '/'+this.editedItem.id
+                    form.append('_method', 'PATCH');
+                    url = url + '/'+this.editedItem.id;
                     axios.post(url, form)
                         .then((response) => {
-                            Object.assign(this.items[this.editedIndex], this.editedItem)
+                            Object.assign(this.items[this.editedIndex], this.editedItem);
+                            this.snackbar_message = 'Company '+this.editedItem.name + ' successfully updated.';
+                            this.snackbar = true;
+                            this.close();
                         })
                 } else {
                     // create product
                     axios.post(url, form)
                         .then((response) => {
-                            this.items.push(response.data)
+                            this.items.push(response.data);
+                            this.snackbar_message = 'Company '+this.editedItem.name + ' successfully created.';
+                            this.snackbar = true;
+                            this.close()
                         })
                 }
 
-                this.close()
             },
 
             changeSort(column) {
                 if (this.pagination.sortBy === column) {
                     this.pagination.descending = !this.pagination.descending
                 } else {
-                    this.pagination.sortBy = column
+                    this.pagination.sortBy = column;
                     this.pagination.descending = false
                 }
             },

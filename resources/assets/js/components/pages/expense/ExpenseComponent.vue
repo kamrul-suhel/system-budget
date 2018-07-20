@@ -215,7 +215,7 @@
             ],
             items: [],
             expenseCategories: [],
-            payment_type :['cash','check'],
+            payment_type :['cash','cheque'],
             editedIndex: -1,
             editedItem: {
                 id:'',

@@ -13,6 +13,7 @@ import ExpenseComponent from '../components/pages/expense/ExpenseComponent'
 import ExpenseCategoryComponent from '../components/pages/expense/ExpenseCategoryComponent'
 import CompanyComponent from '../components/pages/company/CompanyComponent'
 import CompanyTransaction from '../components/pages/company/CompanyTransitionsComponent'
+import AccountExpenseComponent from '../components/pages/accounting/expense/ExpenseAccountingComponent'
 
 
 Vue.use(Router)
@@ -99,6 +100,12 @@ const routes = [
         path: '/expensecategories',
         name: 'expense_categories',
         component: ExpenseCategoryComponent
+    },
+
+    {
+        path: '/account/expense',
+        name:'account_expense',
+        component: AccountExpenseComponent
     },
 
     {

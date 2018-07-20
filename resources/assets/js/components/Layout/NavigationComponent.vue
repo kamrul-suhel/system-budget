@@ -133,7 +133,7 @@
                             {
                                 icon: 'timeline',
                                 text: 'A Expense',
-                                link: 'expenses'
+                                link: 'account_expense'
                             },
 
                             {
