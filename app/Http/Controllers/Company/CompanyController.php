@@ -15,18 +15,21 @@ class CompanyController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //
-//        $companies = Company::with('transactions')->get();
-        $companies = Company::with(['transactions' => function($query){
-            $query->sum('company_transactions.balance');
-        }])->get()
-        ->pluck('transactions')->each(function($product){
-            $product->total = $product->sum('balance');
-            });
-        return $this->successResponse($companies, 200);
+        $companies = Company::with('transactions')->orderBy('id', 'DESC')->get();
+//        $companies = Company::with(['transactions' => function($query){
+//            $query->sum('company_transactions.balance');
+//        }])->get()
+//        ->pluck('transactions')->each(function($product){
+//            $product->total = $product->sum('balance');
+//            });
+        if($request->ajax()){
+            return $this->successResponse($companies, 200);
+        }
 
+        return view('welcome');
     }
 
     /**
@@ -38,6 +41,35 @@ class CompanyController extends Controller
     public function store(Request $request)
     {
         //
+        $data = $request->all();
+        $string ='';
+        while(true){
+            $string = $this->generateRandomString();
+            $exists = Company::where('reference_number', $string)->first();
+            echo $exists;
+            if(!$exists){
+                break;
+            }
+            continue;
+        }
+        $data['reference_number'] = $string;
+
+        $company = Company::create($data);
+        if($company){
+            return $this->successResponse($company, 200);
+        }
+    }
+
+    public function generateRandomString($length = 11)
+    {
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $charactersLength = strlen($characters);
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, $charactersLength - 1)];
+        }
+        return $randomString;
+
     }
 
     /**
@@ -49,17 +81,8 @@ class CompanyController extends Controller
     public function show($id)
     {
         //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        $company = Company::findOrfail($id);
+        return $this->successResponse($company, 200);
     }
 
     /**
@@ -72,6 +95,13 @@ class CompanyController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $exCompany = Company::findOrfail($id);
+        $requestCompany = $request->all();
+        $save = $exCompany->update($requestCompany);
+        if($save){
+            return $this->successResponse($exCompany, 200);
+        }
+
     }
 
     /**
@@ -83,5 +113,11 @@ class CompanyController extends Controller
     public function destroy($id)
     {
         //
+        $company = Company::findOrfail($id);
+        $deleteCompany = $company->delete();
+        if($deleteCompany){
+            return $this->successResponse($company, 200);
+        }
+
     }
 }

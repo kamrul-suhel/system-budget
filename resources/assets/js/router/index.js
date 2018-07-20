@@ -11,6 +11,8 @@ import EditTransactionComponent from '../components/pages/transaction/EditTransa
 import LoginComponent from '../components/pages/login/LoginComponent'
 import ExpenseComponent from '../components/pages/expense/ExpenseComponent'
 import ExpenseCategoryComponent from '../components/pages/expense/ExpenseCategoryComponent'
+import CompanyComponent from '../components/pages/company/CompanyComponent'
+import CompanyTransaction from '../components/pages/company/CompanyTransitionsComponent'
 
 
 Vue.use(Router)
@@ -79,6 +81,18 @@ const routes = [
         path: '/expense',
         name: 'expense',
         component: ExpenseComponent
+    },
+
+    {
+        path: '/company',
+        name: 'company',
+        component: CompanyComponent
+    },
+
+    {
+        path: '/companytransaction',
+        name: 'companytransaction',
+        component: CompanyTransaction
     },
 
     {

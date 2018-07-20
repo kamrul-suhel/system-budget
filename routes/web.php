@@ -68,3 +68,11 @@ Route::post('transaction/{id}/edit', 'Transaction\TransactionController@edit');
 
 Route::get('expense', 'Expense\ExpenseController@index')->name('expense.show');
 Route::get('expensecategories', 'ExpenseCategory\ExpenseCategoryController@index')->name('expense.category.show');
+
+
+/**
+ * Company frontend route
+ */
+
+Route::get('company', 'Company\CompanyController@index')->name('company');
+//Route::get('companytransaction', 'Company\CompanyController@index')->name('company');

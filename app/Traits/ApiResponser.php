@@ -152,7 +152,7 @@ trait ApiResponser
     protected function getUniqueId()
     {
         $unique_id = '';
-        while ($is_exists = true) {
+        while (true) {
             $unique_id = self::generateRandomString(11);
             $unique_id_exists = Transaction::where('invoice_number', '=', $unique_id)->first();
             if ($unique_id_exists) {
