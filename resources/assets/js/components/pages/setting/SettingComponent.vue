@@ -69,7 +69,14 @@
                             <v-text-field
                                     label="Fax"
                                     v-model="company_website"
-                                    hint="Company fax"></v-text-field>
+                                    hint="Company website"></v-text-field>
+                        </v-flex>
+
+                        <v-flex xs6>
+                            <v-text-field
+                                    label="Fax"
+                                    v-model="company_logo"
+                                    hint="Company logo"></v-text-field>
                         </v-flex>
 
 
@@ -116,6 +123,7 @@
             company_mobile: '',
             company_fax: '',
             company_website:'',
+            company_logo:'',
             company_shop_number:'',
             setting_id:'',
 
@@ -143,6 +151,7 @@
                         this.company_fax = response.data.company_fax;
                         this.setting_id = response.data.id;
                         this.company_website = response.data.company_website;
+                        this.company_logo = response.data.company_logo;
                     })
                     .catch((error) => {
                         console.log(error);
@@ -162,6 +171,7 @@
                 form.append('company_shop_number', this.company_shop_number);
                 form.append('company_fax', this.company_fax);
                 form.append('company_website', this.company_website);
+                form.append('company_logo', this.company_logo);
                 form.append('_method', 'PATCH');
 
 
@@ -176,6 +186,7 @@
                         form.append('company_shop_number', this.company_shop_number);
                         form.append('company_fax', this.company_fax);
                         form.append('company_website', this.company_website);
+                        form.append('company_logo', this.company_website);
                         form.append('_method', 'PATCH');
 
                         this.snackbar_message = "Setting data update successfully.";

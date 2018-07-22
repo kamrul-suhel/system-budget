@@ -103,7 +103,9 @@ $factory->define(Setting::class, function(Faker $faker){
         'company_mobile'    => $faker->phoneNumber,
         'company_email'     => $faker->email,
         'company_fax'       => $faker->phoneNumber,
-        'company_shop_number'=> $faker->bankAccountNumber
+        'company_shop_number'=> $faker->bankAccountNumber,
+        'company_website'=> $faker->url,
+        'company_log'=> 'logo',
     ];
 });
 
