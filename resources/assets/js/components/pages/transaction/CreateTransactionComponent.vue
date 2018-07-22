@@ -82,6 +82,8 @@
 
                             <v-layout row wrap>
                                 <v-flex xs12 class="text-xs-right">
+                                    <v-btn dark color="dark" raised @click.native="onCancelTransaction()">Cancel</v-btn>
+
                                     <v-btn dark raised @click="onCreateTransaction()">
                                         Create transaction
                                     </v-btn>
@@ -225,6 +227,10 @@
                             this.$router.push({'name': 'transaction'});
                         }
                     });
+            },
+
+            onCancelTransaction(){
+              this.$router.push({name: 'transaction'});
             },
 
 
