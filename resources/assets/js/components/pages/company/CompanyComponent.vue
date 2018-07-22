@@ -150,8 +150,8 @@
 
                     <v-btn dark color="dark" raised @click.native="close">Cancel</v-btn>
 
-                    <v-btn dark color="dark" raised @click.native="save">{{ editedIndex == -1 ? 'Create customer' :
-                        'Update customer' }}
+                    <v-btn dark color="dark" raised @click.native="save">{{ editedIndex == -1 ? 'Create Company' :
+                        'Update Company' }}
                     </v-btn>
                 </v-card-actions>
             </v-card>
