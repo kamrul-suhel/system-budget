@@ -67,14 +67,14 @@
 
                         <v-flex xs6>
                             <v-text-field
-                                    label="Fax"
+                                    label="Company website"
                                     v-model="company_website"
                                     hint="Company website"></v-text-field>
                         </v-flex>
 
                         <v-flex xs6>
                             <v-text-field
-                                    label="Fax"
+                                    label="Company logo"
                                     v-model="company_logo"
                                     hint="Company logo"></v-text-field>
                         </v-flex>
