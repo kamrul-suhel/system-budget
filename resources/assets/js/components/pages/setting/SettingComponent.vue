@@ -186,7 +186,7 @@
                         form.append('company_shop_number', this.company_shop_number);
                         form.append('company_fax', this.company_fax);
                         form.append('company_website', this.company_website);
-                        form.append('company_logo', this.company_website);
+                        form.append('company_logo', this.company_logo);
                         form.append('_method', 'PATCH');
 
                         this.snackbar_message = "Setting data update successfully.";
