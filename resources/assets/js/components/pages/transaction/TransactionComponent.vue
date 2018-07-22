@@ -125,6 +125,20 @@
             </v-card>
         </v-dialog>
 
+        <v-dialog v-model="deleteDialog" persistent max-width="290">
+            <v-card color="error">
+                <v-card-text>
+                    <div class="text-xs-center"><v-icon color="white" size="50">warning</v-icon></div>
+                    <p class="text-xs-center">Are you sure you want to delete {{deleteItem.title}} {{ deleteItem.description}}</p>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="dark darken-1" flat @click.native="deleteDialog = false">Disagree</v-btn>
+                    <v-btn color="dark darken-1" flat @click.native="deleteItemD()">Agree</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+
         <v-container grid-list-lg>
             <v-layout row wrap>
                 <v-card
@@ -184,7 +198,7 @@
                                         <v-icon clor="dark">view_comfy</v-icon>
                                     </v-btn>
 
-                                    <v-btn icon class="mx-0" @click="deleteItem(props.item)">
+                                    <v-btn icon class="mx-0" @click="openDeleteDialog(props.item)">
                                         <v-icon color="dark">delete</v-icon>
                                     </v-btn>
 
@@ -218,6 +232,8 @@
             dialog: false,
             total_transactions: 0,
             total_amount_transactions: 0,
+            deleteDialog:false,
+            deleteItem:{},
 
             search: '',
             pagination: {
@@ -387,12 +403,18 @@
 
             },
 
-            deleteItem(item) {
-                const index = this.items.indexOf(item)
-                let url = '/api/transactions/'+item.id;
-                axios.get(url)
-                    .then((response)=>{
-                    });
+            openDeleteDialog(deleteItem){
+                this.deleteItem = deleteItem;
+                this.deleteDialog = true;
+            },
+
+            deleteItemD () {
+                let url = 'api/transactions/'+this.deleteItem.id+'/delete ';
+                axios.get(url).then((response) => {
+                    this.deleteDialog = false;
+                    const index = this.items.indexOf(this.deleteItem)
+                    this.items.splice(index, 1)
+                });
             },
 
 

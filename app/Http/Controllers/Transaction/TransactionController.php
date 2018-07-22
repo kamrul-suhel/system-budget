@@ -4,12 +4,14 @@ namespace App\Http\Controllers\Transaction;
 
 use App\Http\Controllers\ApiController;
 use App\Setting;
+use App\Traits\ApiResponser;
 use App\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Route;
 
 class TransactionController extends ApiController
 {
+    use ApiResponser;
     public function __construct()
     {
         parent::__construct();
@@ -156,6 +158,8 @@ class TransactionController extends ApiController
         //
         $transaction = Transaction::find($request->id);
         $transaction->products()->detach();
-        dd($transaction->delete());
+        if($transaction->delete()){
+            return $this->successResponse($transaction, 200);
+        }
     }
 }
