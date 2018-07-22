@@ -391,6 +391,7 @@
                 // get selected categories & all categories
                 this.editedIndex = this.items.indexOf(item);
                 this.editedItem = Object.assign({}, item);
+                console.log(this.editedItem);
                 this.dialog = true
             },
 
