@@ -368,7 +368,12 @@
             },
 
             onCompanyChange(value){
-                console.log(this.selectedCompany);
+                let url =  'api/selectedcompany/' + this.selectedCompany;
+                axios.get(url).then((response) => {
+                    if(response.data) {
+                        this.editedItem.credit = response.data.balance;
+                    }
+                });
             },
 
             openDeleteDialog(deleteItem){
@@ -398,7 +403,6 @@
                 // get selected categories & all categories
                 this.editedIndex = this.items.indexOf(item);
                 this.editedItem = Object.assign({}, item);
-                console.log(this.editedItem);
                 this.dialog = true
             },
 

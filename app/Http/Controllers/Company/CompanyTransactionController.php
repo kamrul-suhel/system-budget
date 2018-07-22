@@ -107,6 +107,17 @@ class CompanyTransactionController extends Controller
         //
     }
 
+
+    public function selectedCompany($id){
+        $company_id = $id;
+        $company_transaction = CompanyTransaction::where('company_id', $company_id)
+            ->orderBy('id', 'DESC')
+            ->first();
+        if($company_transaction){
+            return $this->successResponse($company_transaction, 200);
+        }
+    }
+
     private function generateRandomString($length = 11)
     {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';

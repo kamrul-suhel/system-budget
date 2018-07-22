@@ -81,6 +81,7 @@ Route::resource('expensecategory', 'ExpenseCategory\ExpenseCategoryController', 
 *  Company route
 */
 Route::resource('company', 'Company\CompanyController', ['except' => ['edit', 'create']]);
+Route::get('selectedcompany/{id}', 'Company\CompanyTransactionController@selectedCompany')->name('selected_company');
 Route::resource('ctransaction', 'Company\CompanyTransactionController', ['except' => ['edit', 'create', 'show']]);
 
 /*
