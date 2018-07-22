@@ -102,6 +102,7 @@
                                 <v-text-field
                                         label="Debit"
                                         hint="How much"
+                                        @input="changeBalance()"
                                         v-model="editedItem.debit">
                                 </v-text-field>
                             </v-flex>
@@ -110,6 +111,7 @@
                                 <v-text-field
                                         label="Credit"
                                         hint="Credit"
+                                        @input="changeBalance()"
                                         v-model="editedItem.credit">
                                 </v-text-field>
                             </v-flex>
@@ -358,6 +360,11 @@
                     return item.company[name]
                 }
                 return 'unknown';
+            },
+
+
+            changeBalance(){
+              this.editedItem.balance = this.editedItem.credit - this.editedItem.debit;
             },
 
             onCompanyChange(value){
