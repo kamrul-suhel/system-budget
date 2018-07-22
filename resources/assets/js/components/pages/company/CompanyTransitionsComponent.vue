@@ -3,7 +3,7 @@
         <v-container grid-list-md>
             <v-layout row wrap>
                 <v-flex xs12>
-                    <h2>Company</h2>
+                    <h2>Company Transitions</h2>
                 </v-flex>
             </v-layout>
 
@@ -12,7 +12,7 @@
             <v-layout row wrap>
                 <v-flex xs3>
                     <v-card flat class="cyan lighten-1 white--text">
-                        <v-card-title>Total Companies</v-card-title>
+                        <v-card-title>Total Transaction</v-card-title>
                         <v-card-text class="pt-0">
                             <h2 class="display-2 white--text text-xs-center"><strong>350</strong></h2>
                         </v-card-text>
@@ -39,7 +39,7 @@
 
                 <v-flex xs3>
                     <v-card flat class="orange darken-1 white--text">
-                        <v-card-title>Highest Customer</v-card-title>
+                        <v-card-title>Last Transaction</v-card-title>
                         <v-card-text class="pt-0">
                             <h2 class="display-2 white--text text-xs-center"><strong>350</strong></h2>
                         </v-card-text>
@@ -62,84 +62,64 @@
                     <v-container grid-list-md>
                         <v-layout wrap>
                             <v-flex xs6>
-                                <v-text-field
-                                        label="Customer Name"
-                                        v-model="editedItem.name"></v-text-field>
-                            </v-flex>
-
-                            <v-flex xs6>
-                                <v-text-field
-                                        label="Email"
-                                        v-model="editedItem.email"
-                                ></v-text-field>
-                            </v-flex>
-
-                            <v-flex xs6>
-                                <v-text-field
-                                        label="Phone"
-                                        type="phone"
-                                        hint="Phone number"
-                                        v-model="editedItem.phone"
-                                ></v-text-field>
-                            </v-flex>
-
-                            <v-flex xs6>
-                                <v-text-field
-                                        label="mobile"
-                                        type="mobile"
-                                        hint="Mobile number"
-                                        v-model="editedItem.mobile">
-                                </v-text-field>
-                            </v-flex>
-
-                            <v-flex xs6>
-                                <v-text-field
-                                        label="Fax"
-                                        hint="Fax number"
-                                        v-model="editedItem.fax">
-                                </v-text-field>
-                            </v-flex>
-
-                            <v-flex xs6>
-                                <v-text-field
-                                        label="website"
-                                        hint="Web site URL"
-                                        v-model="editedItem.websiteurl">
-                                </v-text-field>
-                            </v-flex>
-
-
-                            <v-flex xs6>
-                                <v-text-field
-                                        v-model="editedItem.address"
-                                        label="Address"
-                                        multi-line
-                                ></v-text-field>
-                            </v-flex>
-
-                            <v-flex xs6>
-                                <v-text-field
-                                        v-model="editedItem.description"
-                                        label="Description"
-                                        multi-line
-                                ></v-text-field>
-                            </v-flex>
-
-                            <v-flex xs6>
-                                <v-text-field
-                                        label="City"
-                                        hint="Location of company"
-                                        v-model="editedItem.city">
-                                </v-text-field>
+                                <v-select
+                                        :items="companies"
+                                        item-text="name"
+                                        item-value="id"
+                                        label="Select A Company"
+                                        required
+                                        @input="onCompanyChange()"
+                                        v-model="selectedCompany"></v-select>
                             </v-flex>
 
                             <v-flex xs6>
                                 <v-select
-                                        :items="active"
-                                        label="Status"
-                                        hint="Company status"
-                                        v-model="editedItem.status">
-                                </v-select>
+                                        :items="payment_type"
+                                        label="Payment type"
+                                        v-model="editedItem.payment_type"
+                                ></v-select>
+                            </v-flex>
+
+                            <v-flex xs6>
+                                <v-text-field
+                                        label="Reference"
+                                        disabled
+                                        hint="Reference number will auto generate"
+                                        persistent-hint
+                                        v-model="editedItem.reference"
+                                ></v-text-field>
+                            </v-flex>
+
+                            <v-flex xs6>
+                                <v-text-field
+                                        label="Remarks"
+                                        hint="Remarks"
+                                        v-model="editedItem.remarks">
+                                </v-text-field>
+                            </v-flex>
+
+                            <v-flex xs6>
+                                <v-text-field
+                                        label="Debit"
+                                        hint="How much"
+                                        v-model="editedItem.debit">
+                                </v-text-field>
+                            </v-flex>
+
+                            <v-flex xs6>
+                                <v-text-field
+                                        label="Credit"
+                                        hint="Credit"
+                                        v-model="editedItem.credit">
+                                </v-text-field>
+                            </v-flex>
+
+
+                            <v-flex xs6>
+                                <v-text-field
+                                        v-model="editedItem.balance"
+                                        label="Balance"
+                                ></v-text-field>
                             </v-flex>
                         </v-layout>
                     </v-container>
@@ -150,8 +130,8 @@
 
                     <v-btn dark color="dark" raised @click.native="close">Cancel</v-btn>
 
-                    <v-btn dark color="dark" raised @click.native="save">{{ editedIndex == -1 ? 'Create customer' :
-                        'Update customer' }}
+                    <v-btn dark color="dark" raised @click.native="save">{{ editedIndex == -1 ? 'Create Transaction' :
+                        'Update Transaction' }}
                     </v-btn>
                 </v-card-actions>
             </v-card>
@@ -214,10 +194,12 @@
                             </template>
 
                             <template slot="items" slot-scope="props">
-                                <td class="text-xs-center">{{ props.item.name }}</td>
-                                <td class="text-xs-center">{{ props.item.phone }}</td>
-                                <td class="text-xs-center">{{ props.item.mobile }}</td>
-                                <td class="text-xs-center">{{ props.item.address }}</td>
+                                <td class="text-xs-center">{{ getNestedItem(props.item, 'name') }}</td>
+                                <td class="text-xs-center">{{ getNestedItem(props.item, 'mobile') }}</td>
+                                <td class="text-xs-center">{{ props.item.payment_type }}</td>
+                                <td class="text-xs-center">TK.{{ props.item.debit }}</td>
+                                <td class="text-xs-center">TK.{{ props.item.credit }}</td>
+                                <td class="text-xs-center">TK.{{ props.item.balance }}</td>
                                 <td class="justify-start layout px-0">
                                     <v-btn icon class="mx-0" @click="editItem(props.item)">
                                         <v-icon color="dark">edit</v-icon>
@@ -280,18 +262,28 @@
                 },
 
                 {
-                    text: 'Phone',
-                    value: 'phone',
-                    sortable: false
-                },
-                {
                     text: 'Mobile',
                     value: 'mobile',
                     sortable: false
                 },
                 {
-                    text: 'Address',
-                    value: 'address',
+                    text: 'Payment Type',
+                    value: 'payment_type',
+                    sortable: true
+                },
+                {
+                    text: 'Debit',
+                    value: 'debit',
+                    sortable: true
+                },
+                {
+                    text: 'Credit',
+                    value: 'credit',
+                    sortable: true
+                },
+                {
+                    text: 'Balance',
+                    value: 'balance',
                     sortable: true
                 },
                 {
@@ -300,27 +292,30 @@
             ],
             total_customer: '',
             items: [],
+            companies: [],
 
             editedIndex: -1,
             editedItem: {
                 id: '',
-                name: 'Name title',
-                address: 'address',
-                description: 'description',
-                email: 'email',
-                phone: '01622296755',
-                mobile: '075493188',
-                fax: 'fax',
-                websiteurl: 'kam-port.co.uk',
-                city: 'london',
-                status: 'Active'
+                company_id:'',
+                payment_type:'',
+                reference:'',
+                remarks:'',
+                debit:'',
+                credit:'',
+                balance:'',
             },
-            active: ['Active', 'Inactive'],
 
-
+            selectedCompany:'',
+            payment_type:['cash', 'cheque'],
             defaultItem: {
-                name: '',
-                descriptin: ''
+                id: '',
+                payment_type:'',
+                reference:'',
+                remarks:'',
+                debit:'',
+                credit:'',
+                balance:'',
             },
             row_per_page: [20, 30, 50, {'text': 'All', 'value': -1}],
 
@@ -330,7 +325,7 @@
 
         computed: {
             formTitle() {
-                return this.editedIndex === -1 ? 'New Company' : 'Update Company'
+                return this.editedIndex === -1 ? 'New Transaction' : 'Update Transaction'
             }
         },
 
@@ -347,14 +342,26 @@
         methods: {
             initialize() {
                 // get all product
-                axios.get('/company')
+                axios.get('/api/ctransaction')
                     .then((response) => {
-                        this.items = response.data
+                        this.items = response.data.transactions;
+                        this.companies = response.data.companies;
                     })
                     .catch((error) => {
                         console.log(error)
                     })
 
+            },
+
+            getNestedItem(item, name){
+                if(item.company){
+                    return item.company[name]
+                }
+                return 'unknown';
+            },
+
+            onCompanyChange(value){
+                console.log(this.selectedCompany);
             },
 
             openDeleteDialog(deleteItem){
@@ -389,18 +396,14 @@
 
             save() {
                 let form = new FormData();
-                let url = '/api/company';
-
-                form.append('name', this.editedItem.name);
-                form.append('email', this.editedItem.email);
-                form.append('phone', this.editedItem.phone);
-                form.append('mobile', this.editedItem.mobile);
-                form.append('fax', this.editedItem.fax);
-                form.append('address', this.editedItem.address);
-                form.append('description', this.editedItem.description);
-                form.append('websiteurl', this.editedItem.websiteurl);
-                form.append('city', this.editedItem.city);
-                form.append('status', this.editedItem.status);
+                let url = '/api/ctransaction';
+                form.append('company_id', this.selectedCompany);
+                form.append('payment_type', this.editedItem.payment_type);
+                form.append('emreferenceail', this.editedItem.reference);
+                form.append('remarks', this.editedItem.remarks);
+                form.append('debit', this.editedItem.debit);
+                form.append('credit', this.editedItem.credit);
+                form.append('balance', this.editedItem.balance);
 
                 if (this.editedIndex !== -1) {
                     // update product
@@ -409,7 +412,7 @@
                     axios.post(url, form)
                         .then((response) => {
                             Object.assign(this.items[this.editedIndex], this.editedItem);
-                            this.snackbar_message = 'Company '+this.editedItem.name + ' successfully updated.';
+                            this.snackbar_message = 'Transaction '+this.editedItem.name + ' successfully updated.';
                             this.snackbar = true;
                             this.close();
                         })
@@ -418,7 +421,7 @@
                     axios.post(url, form)
                         .then((response) => {
                             this.items.push(response.data);
-                            this.snackbar_message = 'Company '+this.editedItem.name + ' successfully created.';
+                            this.snackbar_message = 'Transaction '+this.editedItem.name + ' successfully created.';
                             this.snackbar = true;
                             this.close()
                         })

@@ -92,7 +92,7 @@ const routes = [
 
     {
         path: '/companytransaction',
-        name: 'companytransaction',
+        name: 'ctransaction',
         component: CompanyTransaction
     },
 

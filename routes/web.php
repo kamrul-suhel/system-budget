@@ -76,7 +76,7 @@ Route::get('expensecategories', 'ExpenseCategory\ExpenseCategoryController@index
 
 Route::get('company', 'Company\CompanyController@index')->name('company');
 
-//Route::get('companytransaction', 'Company\CompanyController@index')->name('company');
+Route::get('companytransaction', 'Company\CompanyController@index')->name('company');
 
 
 

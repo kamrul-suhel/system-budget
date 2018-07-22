@@ -120,7 +120,7 @@
                             {
                                 icon: 'compare_arrows',
                                 text: 'C. Transaction',
-                                link: 'companytransaction'
+                                link: 'ctransaction'
                             }
 
                         ]
