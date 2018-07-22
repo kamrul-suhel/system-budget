@@ -101,6 +101,7 @@
                             <v-flex xs6>
                                 <v-text-field
                                         label="Debit"
+                                        type="number"
                                         hint="How much"
                                         @input="changeBalance()"
                                         v-model="editedItem.debit">
@@ -111,6 +112,7 @@
                                 <v-text-field
                                         label="Credit"
                                         hint="Credit"
+                                        type="number"
                                         @input="changeBalance()"
                                         v-model="editedItem.credit">
                                 </v-text-field>
@@ -120,6 +122,7 @@
                             <v-flex xs6>
                                 <v-text-field
                                         v-model="editedItem.balance"
+                                        disabled
                                         label="Balance"
                                 ></v-text-field>
                             </v-flex>
@@ -312,7 +315,7 @@
             payment_type:['cash', 'cheque'],
             defaultItem: {
                 id: '',
-                payment_type:'',
+                payment_type:'cash',
                 reference:'',
                 remarks:'',
                 debit:'',
@@ -393,6 +396,7 @@
             close() {
                 this.dialog = false
                 this.selectedCategories = [];
+                this.selectedCompany = '',
                 setTimeout(() => {
                     this.editedItem = Object.assign({}, this.defaultItem);
                     this.editedIndex = -1
@@ -435,7 +439,7 @@
                             this.items.push(response.data);
                             this.snackbar_message = 'Transaction '+this.editedItem.name + ' successfully created.';
                             this.snackbar = true;
-                            this.close()
+                            this.close();
                         })
                 }
 
