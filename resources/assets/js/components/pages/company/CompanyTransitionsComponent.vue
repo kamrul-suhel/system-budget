@@ -126,6 +126,14 @@
                                         label="Balance"
                                 ></v-text-field>
                             </v-flex>
+
+                            <v-flex xs6>
+                                <v-text-field
+                                        type="number"
+                                        v-model="newcreditamount"
+                                        label="New credit amount"
+                                ></v-text-field>
+                            </v-flex>
                         </v-layout>
                     </v-container>
                 </v-card-text>
@@ -325,6 +333,7 @@
             row_per_page: [20, 30, 50, {'text': 'All', 'value': -1}],
 
             deleteItem:{},
+            newcreditamount:'',
 
         }),
 
@@ -337,6 +346,11 @@
         watch: {
             dialog(val) {
                 val || this.close()
+            },
+
+            newcreditamount(value){
+                this.editedItem.credit = Number(this.editedItem.credit) + Number(value);
+                this.editedItem.balance = (Number(this.editedItem.credit) + Number(value)) - Number(this.editedItem.debit);
             }
         },
 
@@ -377,6 +391,12 @@
                         this.editedItem.credit = response.data.balance;
                     }
                 });
+            },
+
+            onNewCreditAmount(){
+                let newCreditAmount = parseFloat(this.newcreditamount);
+                console.log(newCreditAmount);
+
             },
 
             openDeleteDialog(deleteItem){
