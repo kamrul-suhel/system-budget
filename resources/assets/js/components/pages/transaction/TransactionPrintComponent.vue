@@ -94,6 +94,7 @@
                         <v-layout row wrap class="print-footer">
                             <v-flex xs6>
                                 <p>Please Check Before You Buy. After Used No Return. Thanks For Business With Us.</p>
+                                <p>{{ data.setting.company_website }}</p>
                             </v-flex>
                             <v-flex xs6></v-flex>
                         </v-layout>

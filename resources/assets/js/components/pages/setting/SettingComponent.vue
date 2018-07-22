@@ -65,6 +65,13 @@
                                     hint="Company fax"></v-text-field>
                         </v-flex>
 
+                        <v-flex xs6>
+                            <v-text-field
+                                    label="Fax"
+                                    v-model="company_website"
+                                    hint="Company fax"></v-text-field>
+                        </v-flex>
+
 
                     </v-layout>
                 </v-card-text>
@@ -108,6 +115,7 @@
             company_phone: '',
             company_mobile: '',
             company_fax: '',
+            company_website:'',
             company_shop_number:'',
             setting_id:'',
 
@@ -134,6 +142,7 @@
                         this.company_mobile = response.data.company_mobile;
                         this.company_fax = response.data.company_fax;
                         this.setting_id = response.data.id;
+                        this.company_website = response.data.company_website;
                     })
                     .catch((error) => {
                         console.log(error);
@@ -152,6 +161,7 @@
                 form.append('company_mobile', this.company_mobile);
                 form.append('company_shop_number', this.company_shop_number);
                 form.append('company_fax', this.company_fax);
+                form.append('company_website', this.company_website);
                 form.append('_method', 'PATCH');
 
 
@@ -165,6 +175,7 @@
                         form.append('company_phone', this.company_phone);
                         form.append('company_shop_number', this.company_shop_number);
                         form.append('company_fax', this.company_fax);
+                        form.append('company_website', this.company_website);
                         form.append('_method', 'PATCH');
 
                         this.snackbar_message = "Setting data update successfully.";
