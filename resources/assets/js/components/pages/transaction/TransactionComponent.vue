@@ -213,7 +213,7 @@
                             </v-alert>
 
                             <template slot="no-data">
-                                Sorry no products found
+                                Sorry no transition found
                             </template>
                         </v-data-table>
                     </v-card-text>
