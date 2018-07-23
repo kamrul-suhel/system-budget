@@ -385,7 +385,7 @@
 
             onUpdateBalance(){
                 console.log('lasdkj');
-                this.editedItem.balance = (this.editedItem.balance +  this.editedItem.credit) - this.editedItem.debit;
+                this.editedItem.balance = (parseFloat(this.editedItem.balance) +  parseFloat(this.editedItem.credit)) - parseFloat(this.editedItem.debit);
             },
 
 
