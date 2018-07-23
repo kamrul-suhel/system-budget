@@ -407,7 +407,7 @@
             },
 
             deleteItemD () {
-                let url = 'api/company/'+this.deleteItem.id;
+                let url = 'api/ctransaction/'+this.deleteItem.id;
                 axios.delete(url).then((response) => {
                     this.deleteDialog = false;
                     const index = this.items.indexOf(this.deleteItem)
