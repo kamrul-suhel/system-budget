@@ -103,7 +103,6 @@
                                         label="Debit"
                                         type="number"
                                         hint="How much"
-                                        @input="changeBalance()"
                                         v-model="editedItem.debit">
                                 </v-text-field>
                             </v-flex>
@@ -113,7 +112,6 @@
                                         label="Credit"
                                         hint="Credit"
                                         type="number"
-                                        @input="changeBalance()"
                                         v-model="editedItem.credit">
                                 </v-text-field>
                             </v-flex>
@@ -128,12 +126,7 @@
                             </v-flex>
 
                             <v-flex xs6>
-                                <v-text-field
-                                        type="number"
-                                        v-model="newcreditamount"
-                                        @blur="onchangenewCreditAmount()"
-                                        label="New credit amount"
-                                ></v-text-field>
+                                <v-btn dark color="dark" raised @click.native="onUpdateBalance()">Update balance</v-btn>
                             </v-flex>
                         </v-layout>
                     </v-container>
@@ -213,7 +206,6 @@
                                 <td class="text-xs-center">{{ props.item.payment_type }}</td>
                                 <td class="text-xs-center">TK.{{ props.item.debit }}</td>
                                 <td class="text-xs-center">TK.{{ props.item.credit }}</td>
-                                <td class="text-xs-center">TK.{{ props.item.invest_amount }}</td>
                                 <td class="text-xs-center">TK.{{ props.item.balance }}</td>
                                 <td class="justify-start layout px-0">
                                     <v-btn icon class="mx-0" @click="editItem(props.item)">
@@ -297,11 +289,6 @@
                     sortable: true
                 },
                 {
-                    text: 'N.Invest amount',
-                    value: 'invest_amount',
-                    sortable: true
-                },
-                {
                     text: 'Balance',
                     value: 'balance',
                     sortable: true
@@ -340,7 +327,6 @@
             row_per_page: [20, 30, 50, {'text': 'All', 'value': -1}],
 
             deleteItem:{},
-            newcreditamount:'',
 
         }),
 
@@ -375,11 +361,6 @@
 
             },
 
-            onchangenewCreditAmount(){
-                this.editedItem.credit = Number(this.editedItem.credit) + Number(this.newcreditamount);
-                this.editedItem.balance = Number(this.editedItem.credit) - Number(this.editedItem.debit);
-            },
-
             getNestedItem(item, name){
                 if(item.company){
                     return item.company[name]
@@ -389,6 +370,7 @@
 
 
             changeBalance(){
+                console.log(this.editedItem.balance);
               this.editedItem.balance = this.editedItem.credit - this.editedItem.debit;
             },
 
@@ -396,16 +378,16 @@
                 let url =  'api/selectedcompany/' + this.selectedCompany;
                 axios.get(url).then((response) => {
                     if(response.data) {
-                        this.editedItem.credit = response.data.balance;
+                        this.editedItem.balance = response.data.balance;
                     }
                 });
             },
 
-            onNewCreditAmount(){
-                let newCreditAmount = parseFloat(this.newcreditamount);
-                console.log(newCreditAmount);
-
+            onUpdateBalance(){
+                console.log('lasdkj');
+                this.editedItem.balance = (this.editedItem.balance +  this.editedItem.credit) - this.editedItem.debit;
             },
+
 
             openDeleteDialog(deleteItem){
                 this.deleteItem = deleteItem;
@@ -425,7 +407,6 @@
                 this.dialog = false
                 this.selectedCategories = [];
                 this.selectedCompany = '',
-                this.newcreditamount = '',
                 setTimeout(() => {
                     this.editedItem = Object.assign({}, this.defaultItem);
                     this.editedIndex = -1
