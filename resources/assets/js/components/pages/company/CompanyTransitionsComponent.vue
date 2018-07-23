@@ -131,6 +131,7 @@
                                 <v-text-field
                                         type="number"
                                         v-model="newcreditamount"
+                                        @blur="onchangenewCreditAmount()"
                                         label="New credit amount"
                                 ></v-text-field>
                             </v-flex>
@@ -348,10 +349,6 @@
                 val || this.close()
             },
 
-            newcreditamount(value){
-                this.editedItem.credit = Number(this.editedItem.credit) + Number(value);
-                this.editedItem.balance = (Number(this.editedItem.credit) + Number(value)) - Number(this.editedItem.debit);
-            }
         },
 
         created() {
@@ -370,6 +367,11 @@
                         console.log(error)
                     })
 
+            },
+
+            onchangenewCreditAmount(){
+                this.editedItem.credit = Number(this.editedItem.credit) + Number(this.newcreditamount);
+                this.editedItem.balance = Number(this.editedItem.credit) - Number(this.editedItem.debit);
             },
 
             getNestedItem(item, name){
