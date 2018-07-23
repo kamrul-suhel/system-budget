@@ -384,8 +384,31 @@
             },
 
             onUpdateBalance(){
-                console.log('lasdkj');
-                this.editedItem.balance = (parseFloat(this.editedItem.balance) +  parseFloat(this.editedItem.credit)) - parseFloat(this.editedItem.debit);
+
+
+                let url =  'api/selectedcompany/' + this.selectedCompany;
+                axios.get(url).then((response) => {
+                    if(response.data) {
+                        this.editedItem.balance = response.data.balance;
+                        let balance = this.convertNumber(this.editedItem.balance);
+                        let credit = this.convertNumber(this.editedItem.credit)
+                        let debit = this.convertNumber(this.editedItem.debit)
+                        console.log(balance);
+                        console.log(credit);
+                        console.log(debit);
+                        this.editedItem.balance = balance + credit - debit;
+                    }
+                });
+
+
+            },
+
+            convertNumber(value){
+                if(value === ''){
+                    return parseFloat('0');
+                }
+
+                return parseFloat(value);
             },
 
 
@@ -429,7 +452,6 @@
                 form.append('remarks', this.editedItem.remarks);
                 form.append('debit', this.editedItem.debit);
                 form.append('credit', this.editedItem.credit);
-                form.append('invest_amount', this.newcreditamount);
                 form.append('balance', this.editedItem.balance);
 
                 if (this.editedIndex !== -1) {
