@@ -419,6 +419,7 @@
                 this.dialog = false
                 this.selectedCategories = [];
                 this.selectedCompany = '',
+                this.newcreditamount = '',
                 setTimeout(() => {
                     this.editedItem = Object.assign({}, this.defaultItem);
                     this.editedIndex = -1
