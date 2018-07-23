@@ -213,6 +213,7 @@
                                 <td class="text-xs-center">{{ props.item.payment_type }}</td>
                                 <td class="text-xs-center">TK.{{ props.item.debit }}</td>
                                 <td class="text-xs-center">TK.{{ props.item.credit }}</td>
+                                <td class="text-xs-center">TK.{{ props.item.invest_amount }}</td>
                                 <td class="text-xs-center">TK.{{ props.item.balance }}</td>
                                 <td class="justify-start layout px-0">
                                     <v-btn icon class="mx-0" @click="editItem(props.item)">
@@ -293,6 +294,11 @@
                 {
                     text: 'Credit',
                     value: 'credit',
+                    sortable: true
+                },
+                {
+                    text: 'N.Invest amount',
+                    value: 'invest_amount',
                     sortable: true
                 },
                 {
@@ -442,6 +448,7 @@
                 form.append('remarks', this.editedItem.remarks);
                 form.append('debit', this.editedItem.debit);
                 form.append('credit', this.editedItem.credit);
+                form.append('invest_amount', this.newcreditamount);
                 form.append('balance', this.editedItem.balance);
 
                 if (this.editedIndex !== -1) {

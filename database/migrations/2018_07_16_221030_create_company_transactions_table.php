@@ -21,6 +21,7 @@ class CreateCompanyTransactionsTable extends Migration
             $table->string('remarks')->nullable();
             $table->double('debit')->unsigned();
             $table->double('credit')->unsigned();
+            $table->double('invest_amount')->nullable()->unsigned();
             $table->double('balance');
             $table->timestamps();
         });

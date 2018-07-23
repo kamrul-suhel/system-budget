@@ -168,6 +168,7 @@ $factory->define(\App\CompanyTransaction::class, function (Faker $faker) {
         'remarks'  => $faker->randomElement(['remarks', 'unremarks']),
         'debit'        => $faker->randomFloat(2,30000,  90000),
         'credit'        => $faker->randomFloat(2, 20000, 25000),
+        'invest_amount'        => $faker->randomFloat(2, 20000, 25000),
         'balance'        => $faker->randomFloat(2, 50000, 10000),
         'created_at'    => $faker->dateTimeBetween($startDate = '-12 month', $endDate = 'now'),
         'updated_at'    => $faker->dateTimeBetween($startDate = '-5 month', $endDate = 'now')
