@@ -127,6 +127,13 @@
                                 ></v-text-field>
                             </v-flex>
 
+                            <v-flex xs6>
+                                <v-text-field
+                                        v-model="editedItem.manuel_date"
+                                        label="Manuel date"
+                                ></v-text-field>
+                            </v-flex>
+
                         </v-layout>
                     </v-container>
                 </v-card-text>
@@ -206,6 +213,8 @@
                                 <td class="text-xs-center">TK.{{ props.item.debit }}</td>
                                 <td class="text-xs-center">TK.{{ props.item.credit }}</td>
                                 <td class="text-xs-center">TK.{{ props.item.balance }}</td>
+                                <td class="text-xs-center">{{ props.item.created_at }}</td>
+                                <td class="text-xs-center">{{ props.item.manuel_date }}</td>
                                 <td class="justify-start layout px-0">
                                     <v-btn icon class="mx-0" @click="editItem(props.item)">
                                         <v-icon color="dark">edit</v-icon>
@@ -293,6 +302,18 @@
                     sortable: true
                 },
                 {
+                    text: 'Date',
+                    value: 'created_at',
+                    sortable: true
+                },
+                {
+                    text: 'Manuel date',
+                    value: 'menuel_date',
+                    sortable: true
+                },
+
+
+                {
                     text: 'Actions'
                 }
             ],
@@ -310,6 +331,7 @@
                 debit:'',
                 credit:'',
                 balance:'',
+                manuel_date:'',
             },
 
             selectedCompany:'',
@@ -322,6 +344,7 @@
                 debit:0,
                 credit:0,
                 balance:'',
+                manuel_date:''
             },
             row_per_page: [20, 30, 50, {'text': 'All', 'value': -1}],
 
@@ -392,20 +415,6 @@
                 });
             },
 
-            onUpdateBalance(){
-
-                this.editedItem.balance = response.data.balance;
-                let balance = this.convertNumber(this.editedItem.balance);
-                let credit = this.convertNumber(this.editedItem.credit)
-                let debit = this.convertNumber(this.editedItem.debit)
-                console.log(this.editedItem.balance);
-                console.log(credit);
-                console.log(debit);
-                this.editedItem.balance = balance + credit - debit;
-
-
-            },
-
             convertNumber(value){
                 if(value === ''){
                     return parseFloat('0');
@@ -456,6 +465,7 @@
                 form.append('debit', this.editedItem.debit);
                 form.append('credit', this.editedItem.credit);
                 form.append('balance', this.editedItem.balance);
+                form.append('manuel_date', this.editedItem.manuel_date);
 
                 if (this.editedIndex !== -1) {
                     // update product

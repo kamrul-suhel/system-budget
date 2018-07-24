@@ -22,6 +22,7 @@ class CreateCompanyTransactionsTable extends Migration
             $table->double('debit')->unsigned();
             $table->double('credit')->unsigned();
             $table->double('balance');
+            $table->string('manuel_date')->nullable();
             $table->timestamps();
         });
     }
