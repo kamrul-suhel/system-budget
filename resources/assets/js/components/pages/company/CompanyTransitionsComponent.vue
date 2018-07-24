@@ -103,7 +103,7 @@
                                         label="Debit"
                                         type="number"
                                         hint="How much"
-                                        @input="changeBalance()"
+                                        @input="onDebitUpdate()"
                                         v-model="editedItem.debit">
                                 </v-text-field>
                             </v-flex>
@@ -113,7 +113,7 @@
                                         label="Credit"
                                         hint="Credit"
                                         type="number"
-                                        @input="changeBalance()"
+                                        @input="onCreditUpdate()"
                                         v-model="editedItem.credit">
                                 </v-text-field>
                             </v-flex>
@@ -127,13 +127,6 @@
                                 ></v-text-field>
                             </v-flex>
 
-                            <v-flex xs6>
-                                <v-text-field
-                                        type="number"
-                                        v-model="newcreditamount"
-                                        label="New credit amount"
-                                ></v-text-field>
-                            </v-flex>
                         </v-layout>
                     </v-container>
                 </v-card-text>
@@ -326,14 +319,14 @@
                 payment_type:'cash',
                 reference:'',
                 remarks:'',
-                debit:'',
-                credit:'',
+                debit:0,
+                credit:0,
                 balance:'',
             },
             row_per_page: [20, 30, 50, {'text': 'All', 'value': -1}],
 
             deleteItem:{},
-            newcreditamount:'',
+            balance:0,
 
         }),
 
@@ -348,10 +341,6 @@
                 val || this.close()
             },
 
-            newcreditamount(value){
-                this.editedItem.credit = Number(this.editedItem.credit) + Number(value);
-                this.editedItem.balance = (Number(this.editedItem.credit) + Number(value)) - Number(this.editedItem.debit);
-            }
         },
 
         created() {
@@ -379,8 +368,17 @@
                 return 'unknown';
             },
 
+            onDebitUpdate(){
+                this.editedItem.balance = Number(this.balance) + Number(this.editedItem.credit) - Number(this.editedItem.debit);
+            },
+
+            onCreditUpdate(){
+                this.editedItem.balance = Number(this.balance) + Number(this.editedItem.credit) - Number(this.editedItem.debit);
+            },
+
 
             changeBalance(){
+                console.log(this.editedItem.balance);
               this.editedItem.balance = this.editedItem.credit - this.editedItem.debit;
             },
 
@@ -388,16 +386,34 @@
                 let url =  'api/selectedcompany/' + this.selectedCompany;
                 axios.get(url).then((response) => {
                     if(response.data) {
-                        this.editedItem.credit = response.data.balance;
+                        this.balance = response.data.balance;
+                        this.editedItem.balance = response.data.balance;
                     }
                 });
             },
 
-            onNewCreditAmount(){
-                let newCreditAmount = parseFloat(this.newcreditamount);
-                console.log(newCreditAmount);
+            onUpdateBalance(){
+
+                this.editedItem.balance = response.data.balance;
+                let balance = this.convertNumber(this.editedItem.balance);
+                let credit = this.convertNumber(this.editedItem.credit)
+                let debit = this.convertNumber(this.editedItem.debit)
+                console.log(this.editedItem.balance);
+                console.log(credit);
+                console.log(debit);
+                this.editedItem.balance = balance + credit - debit;
+
 
             },
+
+            convertNumber(value){
+                if(value === ''){
+                    return parseFloat('0');
+                }
+
+                return parseFloat(value);
+            },
+
 
             openDeleteDialog(deleteItem){
                 this.deleteItem = deleteItem;
@@ -405,7 +421,7 @@
             },
 
             deleteItemD () {
-                let url = 'api/company/'+this.deleteItem.id;
+                let url = 'api/ctransaction/'+this.deleteItem.id;
                 axios.delete(url).then((response) => {
                     this.deleteDialog = false;
                     const index = this.items.indexOf(this.deleteItem)
