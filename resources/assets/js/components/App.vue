@@ -7,16 +7,13 @@
             <navigation-component v-if="login"></navigation-component>
             <header-component v-if="login"></header-component>
             <v-content>
-                <v-container fill-height class="" v-if="login">
-                    <v-layout justify-left>
+                <v-container fill-height :class="{'fill-height justify-center align-content-center': !login}">
+                    <v-layout >
                         <v-flex>
-                            <router-view ></router-view>
+                            <router-view></router-view>
                         </v-flex>
                     </v-layout>
                 </v-container>
-                <!--<v-container fill-height justify-center align-content-center v-else>-->
-                    <!--<router-view></router-view>-->
-                <!--</v-container>-->
             </v-content>
         </v-app>
     </div>

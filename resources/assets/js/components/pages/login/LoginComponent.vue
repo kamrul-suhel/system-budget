@@ -1,4 +1,5 @@
 <template>
+    <v-container fill-height justify-center align-content-center v-else>
     <v-card raised width="450px">
         <v-card-text class="login-section">
             <v-form method="post" v-model="valid" ref="login_form">
@@ -74,6 +75,7 @@
             </v-form>
         </v-card-text>
     </v-card>
+    </v-container>
 </template>
 <script>
     import LoginEventBus from '../../../event_bus/login-event-bus';
