@@ -15,8 +15,7 @@ class CompanyTransaction extends Model
         'remarks',
         'debit',
         'credit',
-        'balance',
-        'invest_amount'
+        'balance'
     ];
 
     public function company(){

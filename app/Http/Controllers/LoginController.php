@@ -74,4 +74,8 @@ class LoginController extends Controller
             return response()->json(['error'=> 'not login']);
         }
     }
+
+    public function showLoginForm(){
+        return view('welcome');
+    }
 }

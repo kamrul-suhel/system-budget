@@ -16,6 +16,7 @@ import CompanyTransaction from '../components/pages/company/CompanyTransitionsCo
 import AccountExpenseComponent from '../components/pages/accounting/expense/ExpenseAccountingComponent'
 
 
+
 Vue.use(Router)
 
 const routes = [

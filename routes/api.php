@@ -107,3 +107,11 @@ Route::post('oauth/token', '\Laravel\Passport\Http\Controllers\AccessTokenContro
  */
 
 Route::resource('customers', 'Customer\CustomerController');
+
+
+/*
+ * ************************************************
+ * Accounting go here
+ * ************************************************
+ */
+Route::get('accounting/transaction', 'Accounting\TransactionAccountingController@index')->name('transaction.accounting');
