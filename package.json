@@ -2,7 +2,7 @@
   "private": true,
   "main": "index.js",
   "scripts": {
-	"electron": "electron .",
+    "electron": "electron .",
     "build": "electron-packager . System",
     "dev": "npm run development",
     "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
@@ -13,18 +13,19 @@
     "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
   },
   "dependencies": {
+    "amcharts3": "amcharts/amcharts3"
   },
   "devDependencies": {
     "axios": "^0.18",
     "cross-env": "^5.1",
+    "electron": "^2.0.1",
+    "electron-packager": "^12.1.0",
     "jquery": "^3.2",
     "laravel-mix": "^2.0",
     "lodash": "^4.17.4",
     "vue": "^2.5.7",
     "vue-router": "^3.0.1",
     "vuetify": "^1.0.17",
-    "vuex": "^3.0.1",
-	"electron": "^2.0.1",
-    "electron-packager": "^12.1.0"
+    "vuex": "^3.0.1"
   }
 }

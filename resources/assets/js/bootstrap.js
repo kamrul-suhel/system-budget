@@ -47,6 +47,12 @@ Vue.config.productionTip = true
 import TransactionEventBus from './event_bus/transaction_event';
 
 /**
+ * Plugins 
+ */
+import AmCharts from 'amcharts3'
+import AmSerial from 'amcharts3/amcharts/serial'
+
+/**
  * Next we will register the CSRF Token as a common header with Axios so that
  * all outgoing HTTP requests automatically have it attached. This is just
  * a simple convenience so we don't have to attach every token manually.

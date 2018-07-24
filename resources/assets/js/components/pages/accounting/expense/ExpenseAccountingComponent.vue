@@ -1,26 +1,26 @@
 <template>
-    <v-container fluid fill-height>
-        <v-layout justify-center align-center>
-            <v-flex shrink>
-                <v-card width="400px">
-                    <v-card-title>
-                        <h1 class="text-white">Coming soon...</h1>
-                    </v-card-title>
-                </v-card>
+    <v-container grid-list-lg>
+        <v-layout row wrap>
+            <v-flex xs12>
+
+                <chart-component></chart-component>
+
             </v-flex>
         </v-layout>
     </v-container>
 </template>
 
 <script>
-    import axios from 'axios'
+    import ChartComponent from '../../../Partials/ChartComponent'
     export default {
         data: () => ({
 
         }),
+        components: {
+            chartComponent: ChartComponent
+        },
 
         computed: {
-
 
         },
 
@@ -29,7 +29,7 @@
         },
 
         created () {
-
+            console.log('expense');
         },
 
         methods: {
