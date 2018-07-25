@@ -1,8 +1,21 @@
 <template>
+    <v-layout row wrap>
+        <v-flex xs12>
+            <v-card>
+                <v-card-text>
+                    <v-layout row wrap>
+                        <v-flex xs12>
+                            <div id="app2">
+                                <div id="chartdiv" style="width: 100%; height: 250px;"></div>
+                            </div>
+                        </v-flex>
+                    </v-layout>
+                </v-card-text>
+            </v-card>
+        </v-flex>
 
-            <div id="app2">
-                <div id="chartdiv" style="width: 100%; height: 400px;"></div>
-            </div>
+    </v-layout>
+
 
 </template>
 
@@ -10,7 +23,6 @@
     export default {
         data () {
             return {
-                msg: 'Welcome to Your Vue chart App',
                 dataProvider: [{
                     "country": "USA",
                     "visits": 3025,
@@ -60,11 +72,7 @@
                     "visits": 441,
                     "color": "#CD0D74"
                 }],
-                "valueAxes": [{
-                    "axisAlpha": 0,
-                    "position": "left",
-                    "title": "Visitors from country"
-                }],
+
             }
         },
         created(){
@@ -76,6 +84,11 @@
                     "theme": "light",
                     "marginRight": 70,
                     "dataProvider":this.dataProvider,
+                    "valueAxes": [{
+                        "axisAlpha": 0,
+                        "position": "left",
+                        "title": "Today transaction"
+                    }],
 
                     "startDuration": 1,
                     "graphs": [{
@@ -114,7 +127,6 @@
         -moz-osx-font-smoothing: grayscale;
         text-align: center;
         color: #2c3e50;
-        margin-top: 60px;
     }
 
     h1, h2 {

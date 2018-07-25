@@ -170,8 +170,9 @@ $factory->define(\App\CompanyTransaction::class, function (Faker $faker) {
         'credit'        => $faker->randomFloat(2, 20000, 25000),
         'balance'        => $faker->randomFloat(2, 50000, 10000),
         'manuel_date'        => $faker->dateTimeBetween($startDate = '-12 month', $endDate = 'now'),
-        'created_at'    => $faker->dateTimeBetween($startDate = '-12 month', $endDate = 'now'),
-        'updated_at'    => $faker->dateTimeBetween($startDate = '-5 month', $endDate = 'now')
+        'created_at'    => $created_at = $faker->dateTimeBetween($startDate = '-1 day', $endDate = 'now'),
+        'updated_at'    => $faker->dateTimeBetween($startDate = $created_at, 'now + 1 hour')
+//        'updated_at'    => $faker->dateTimeBetween($startDate = '-5 month', $endDate = 'now')
     ];
 });
 

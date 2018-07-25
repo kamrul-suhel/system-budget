@@ -14,6 +14,7 @@ import ExpenseCategoryComponent from '../components/pages/expense/ExpenseCategor
 import CompanyComponent from '../components/pages/company/CompanyComponent'
 import CompanyTransaction from '../components/pages/company/CompanyTransitionsComponent'
 import AccountExpenseComponent from '../components/pages/accounting/expense/ExpenseAccountingComponent'
+import ProductTransaction from '../components/pages/accounting/product_transaction/TransactionAccountingComponent'
 
 
 
@@ -101,6 +102,12 @@ const routes = [
         path: '/expensecategories',
         name: 'expense_categories',
         component: ExpenseCategoryComponent
+    },
+
+    {
+        path: '/account/transaction',
+        name:'accounting_product_transaction',
+        component: ProductTransaction
     },
 
     {

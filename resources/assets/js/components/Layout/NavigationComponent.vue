@@ -108,11 +108,11 @@
                     },
 
                     {
-                        icon: 'assignment',
+                        icon: 'store',
                         text: 'Company',
                         navs: [
                             {
-                                icon: 'assignment',
+                                icon: 'store',
                                 text: 'Companies',
                                 link: 'company'
                             },
@@ -131,6 +131,11 @@
                         text: 'Accounting',
                         navs: [
                             {
+                                icon: 'transform',
+                                text: 'A Transaction',
+                                link: 'accounting_product_transaction'
+                            },
+                            {
                                 icon: 'timeline',
                                 text: 'A Expense',
                                 link: 'account_expense'
@@ -140,14 +145,7 @@
                                 icon: 'timeline',
                                 text: 'A Product',
                                 link: 'expenses'
-                            },
-
-                            {
-                                icon: 'category',
-                                text: 'A Transaction',
-                                link: 'expense_categories'
                             }
-
                         ]
                     },
 

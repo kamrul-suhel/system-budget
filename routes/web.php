@@ -86,3 +86,7 @@ Route::get('companytransaction', 'Company\CompanyController@index')->name('compa
 Route::get('account/expense', function(){
     return view('welcome');
 });
+
+Route::get('account/transaction', function(){
+    return view('welcome');
+});
