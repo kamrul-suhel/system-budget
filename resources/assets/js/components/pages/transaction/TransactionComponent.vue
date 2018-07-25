@@ -184,7 +184,7 @@
                                 <td class="text-xs-center">{{ props.item.customer.name }}</td>
                                 <td class="text-xs-center">{{ props.item.invoice_number.toUpperCase() }}</td>
                                 <td class="text-xs-center">{{ props.item.products.length ? props.item.products.length : 0 }}</td>
-                                <td class="text-xs-center">{{ props.item.payment_status }}</td>
+                                <td class="text-xs-center">{{ getPaymentStatus(props.item.payment_status) }}</td>
                                 <td class="text-xs-center">TK. {{ props.item.total? price_format(props.item.total): 0 }}</td>
                                 <td class="text-xs-center">TK. {{ props.item.discount_amount? price_format(props.item.discount_amount): 0 }}</td>
                                 <td class="text-xs-center">TK. {{ props.item.paied ? price_format(props.item.paied): 0 }}</td>
@@ -312,7 +312,7 @@
                 active: '1',
 
             },
-            paymentStatus:[{text: 'Paied', value: 1}, {text: 'Due', value:2}, {text: 'Half paied', value:3}],
+            paymentStatus:[{text: 'Paid', value: 1}, {text: 'Due', value:2}, {text: 'Half paid', value:3}],
             selectedPaymentStatus:1,
             active: [1, 2],
 
@@ -443,6 +443,19 @@
 
             onPrintTransaction(item){
                 this.$router.push({name: 'print_transaction', params: { id: item.id}});
+            },
+
+            getPaymentStatus(value){
+                if(value === 1){
+                    return 'Paid'
+                }
+                if(value === 2){
+                    return 'Due'
+                }
+
+                if(value === 3){
+                    return 'Half paid'
+                }
             }
         }
     }

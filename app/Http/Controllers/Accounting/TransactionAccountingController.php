@@ -13,7 +13,8 @@ class TransactionAccountingController extends Controller
     //
     use ApiResponser;
 
-    public function index(Request $request){
+    public function index(Request $request)
+    {
         $transactions = Transaction::with('products')
             ->where('created_at', '>', Carbon::now()->startOfDay())
             ->where('created_at', '<', Carbon::now()->endOfDay())
@@ -26,11 +27,11 @@ class TransactionAccountingController extends Controller
         $total_product = $transactions->pluck('products')->collapse()->count();
 
         $data = [
-          'total' => $total,
-          'payment_due' => $paymentDue,
-          'discount'    => $discount,
-          'total_product' => $total_product,
-          'paid'    => $paid,
+            'total' => $total,
+            'payment_due' => $paymentDue,
+            'discount' => $discount,
+            'total_product' => $total_product,
+            'paid' => $paid,
             'transactions' => $transactions
         ];
 
