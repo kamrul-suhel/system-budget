@@ -26,13 +26,31 @@ class TransactionAccountingController extends Controller
         $paid = $transactions->sum('paied');
         $total_product = $transactions->pluck('products')->collapse()->count();
 
+        $chartData = [];
+
+        $transactions->each(function($transaction) use (&$chartData){
+            $data = [];
+            $data['total'] = $transaction->total;
+            $productName = '';
+            if($transaction->products->count()){
+                $transaction->products->each(function($product) use (&$productName){
+                    $productName .= $product->name. ', ';
+                });
+            }
+            $data['products'] = $productName . '('. $transaction->products->count(). ')';
+            $data['color'] = $this->rand_color();
+            $chartData[] = $data;
+        });
+
+
         $data = [
             'total' => $total,
             'payment_due' => $paymentDue,
             'discount' => $discount,
             'total_product' => $total_product,
             'paid' => $paid,
-            'transactions' => $transactions
+            'transactions' => $transactions,
+            'chart_data'    => $chartData
         ];
 
         return $this->successResponse($data, 200);
