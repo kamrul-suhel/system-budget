@@ -61,6 +61,7 @@ $factory->define(Product::class, function (Faker $faker) {
         'status' => $faker->randomElement([Product::UNAVAILABLE_PRODUCT, Product::ABAILABLE_PRODUCT]),
         'quantity_type' => $faker->randomElement([Product::PRODUCTTYPEITEM, Product::PRODUCTTYPEKG, Product::PRODUCTTYPLITTER]),
         'image' => $faker->randomElement(['1.jpg', '2.jpg', '3.jpg', '4.jpg']),
+        'barcode' => $faker->ean13,
         'seller_id' => User::all()->random()->id,
 
     ];

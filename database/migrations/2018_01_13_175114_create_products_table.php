@@ -24,6 +24,7 @@ class CreateProductsTable extends Migration
             $table->string('quantity_type')->nullable();
             $table->string('status')->default(Product::UNAVAILABLE_PRODUCT);
             $table->string('image');
+            $table->string('barcode')->nullable()->index();
             $table->integer('seller_id')->unsigned();
             $table->timestamps();
             $table->softDeletes();

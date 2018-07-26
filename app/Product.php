@@ -36,7 +36,8 @@ class Product extends Model
     	'seller_id',
         'quantity_type',
         'sale_price',
-        'purchase_price'
+        'purchase_price',
+        'barcode'
     ];
 
     protected $hidden = [
