@@ -15,10 +15,17 @@ class TransactionAccountingController extends Controller
 
     public function index(Request $request)
     {
+
+        // Today
         $transactions = Transaction::with('products')
             ->where('created_at', '>', Carbon::now()->startOfDay())
             ->where('created_at', '<', Carbon::now()->endOfDay())
             ->get();
+
+        //Yesterday
+//        $transactions = Transaction::with('products')
+//            ->where('created_at', '>', Carbon::yesterday())
+//            ->get();
 
         $total = number_format((float)$transactions->sum('total'), 2, '.', '');
         $paymentDue = $transactions->sum('payment_due');
@@ -44,11 +51,11 @@ class TransactionAccountingController extends Controller
 
 
         $data = [
-            'total' => $total,
-            'payment_due' => $paymentDue,
-            'discount' => $discount,
+            'total' => number_format((float)$total, 2, '.', ''),
+            'payment_due' => number_format((float)$paymentDue, 2, '.', ''),
+            'discount' => number_format((float)$discount, 2, '.', ''),
             'total_product' => $total_product,
-            'paid' => $paid,
+            'paid' => number_format((float)$paid, 2, '.', ''),
             'transactions' => $transactions,
             'chart_data'    => $chartData
         ];

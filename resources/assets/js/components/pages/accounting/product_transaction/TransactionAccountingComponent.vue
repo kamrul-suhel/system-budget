@@ -20,8 +20,9 @@
     import SearchComponent from '../partials/SearchComponent'
     import OverViewComponent from '../partials/OverviewComponent'
     import ChartComponent from '../../../Partials/ChartComponent'
-    export default {
 
+    import {mapActions} from 'vuex';
+    export default {
         data: () => ({
         }),
         components: {
@@ -39,10 +40,14 @@
         },
 
         created () {
-            console.log('expense');
+            this.getTransaction()
         },
 
         methods: {
+            ...mapActions({
+                getTransaction: 'fetchAllTransaction'
+            }),
+
         }
     }
 </script>
