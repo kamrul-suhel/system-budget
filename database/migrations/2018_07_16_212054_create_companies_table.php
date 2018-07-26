@@ -26,6 +26,7 @@ class CreateCompaniesTable extends Migration
             $table->string('websiteurl')->nullable();
             $table->string('city')->nullable();
             $table->tinyInteger('status')->nullable()->index();
+            $table->softDeletes();
 
             $table->timestamps();
         });

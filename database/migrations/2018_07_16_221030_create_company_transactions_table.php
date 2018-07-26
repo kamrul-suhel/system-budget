@@ -24,6 +24,7 @@ class CreateCompanyTransactionsTable extends Migration
             $table->double('balance');
             $table->string('manuel_date')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

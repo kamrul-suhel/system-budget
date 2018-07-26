@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Category extends Node
 {
     //
+    use SoftDeletes;
 
     public $transformer = CategoryTransformer::class;
 

@@ -22,6 +22,7 @@ class CreateCustomersTable extends Migration
             $table->string('address')->nullable();
             $table->tinyInteger('active')->default(1)->index()->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

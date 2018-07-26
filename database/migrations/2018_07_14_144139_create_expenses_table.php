@@ -21,6 +21,7 @@ class CreateExpensesTable extends Migration
             $table->string('payment_type', 11, 2)->nullable();
             $table->float('amount', 11, 2)->index();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

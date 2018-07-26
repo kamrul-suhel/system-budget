@@ -24,6 +24,8 @@ class CreateCategoriesTable extends Migration
             $table->integer('lft')->nullable()->index();
             $table->integer('rgt')->nullable()->index();
             $table->integer('depth')->nullable();
+
+            $table->softDeletes();
         });
     }
 

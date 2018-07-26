@@ -18,6 +18,7 @@ class CreateExpenseCategoriesTable extends Migration
             $table->string('title')->nullable();
             $table->text('description')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
