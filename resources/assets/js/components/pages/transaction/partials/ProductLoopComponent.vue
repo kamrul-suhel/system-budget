@@ -1,7 +1,7 @@
 <template>
     <v-layout row wrap>
         <v-flex xs6>
-            <v-select
+            <v-autocomplete
                     label="Select Product"
                     :items="products"
                     :hint="'Per unit sale price: '+ current_product_sale_price"
@@ -10,7 +10,7 @@
                     chips
                     return-object
                     persistent-hint
-            ></v-select>
+            ></v-autocomplete>
         </v-flex>
 
         <v-flex xs6>
@@ -38,7 +38,7 @@
                 selectedProduct: [],
                 current_product_quantity: '',
                 current_product_sale_price:0,
-                selectedQuantity:1,
+                selectedQuantity:0,
                 allProductData:'',
                 previous_selected_id:''
             }
@@ -47,12 +47,10 @@
         props:['index'],
         watch: {
             selectedProduct(val) {
-                console.log(this.selectedProduct);
                 this.updateStore(val.value);
             },
 
             selectedQuantity(val){
-                console.log(this.selectedProduct);
                 this.updateStore(this.selectedProduct.value);
             },
 
@@ -86,10 +84,6 @@
                         console.log(error)
                     });
             },
-
-            // onBlueQuantity(){
-            //     this.updateStore(this.selectedProduct.value);
-            // },
 
             updateStore(val){
                 var change_product = {};
