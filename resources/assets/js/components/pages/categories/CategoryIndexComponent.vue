@@ -22,11 +22,11 @@
                             </v-flex>
 
                             <v-flex xs12>
-                                <v-text-field 
-                                    label="Description" 
+                                <v-textarea
+                                    label="Description"
                                     v-model="editedItem.description"
-                                    multi-line
-                                    ></v-text-field>
+
+                                    ></v-textarea>
                             </v-flex>
                         </v-layout>
                     </v-container>
@@ -49,7 +49,7 @@
                 <v-text-field
                     hide-details
                     v-model="search"
-                    append-icon="search"></v-text-field>
+                    @click:append="search"></v-text-field>
             </v-card-title>
 
             <v-card-text>
@@ -75,7 +75,7 @@
 
                     <v-alert slot="no-results" :value="true" color="error" icon="warning">
                         Your search for "{{ search }}" found no results.
-                    </v-alert>    
+                    </v-alert>
 
                     <template slot="no-data">
                         <v-btn color="primary" @click="initialize">Reset</v-btn>
@@ -111,13 +111,13 @@
                     sortable: true,
                     value: 'id'
                 },
-                { 
-                    text: 'Title', 
+                {
+                    text: 'Title',
                     value: 'name',
                     sortable: true
                 },
-                { 
-                    text: 'Description', 
+                {
+                    text: 'Description',
                     value: 'description',
                 },
                 {
@@ -195,11 +195,11 @@
 
                 form.append('name', this.editedItem.name);
                 form.append('description', this.editedItem.description);
-                    
+
                 if (this.editedIndex > -1) {
                     form.append('_method', 'PUT');
                     url = url +'/'+ this.editedItem.id;
-                
+
                     axios.post(url, form)
                         .then((response) => {
                             Object.assign(this.items[this.editedIndex], this.editedItem);
@@ -218,7 +218,7 @@
                     });
                 }
                 this.close()
-            
+
             }
         }
     }

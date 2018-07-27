@@ -167,7 +167,6 @@
                                 :search="search"
                                 :pagination.sync="pagination"
                                 :rows-per-page-items="row_per_page"
-                                item-key="name"
                         >
 
                             <template slot="headers" slot-scope="props">
@@ -460,5 +459,5 @@
     .products table.table thead th:first-child{
         padding:0 15px;
     }
-    
+
 </style>
