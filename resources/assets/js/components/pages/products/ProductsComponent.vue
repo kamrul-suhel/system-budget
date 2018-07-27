@@ -17,11 +17,10 @@
                             </v-flex>
 
                             <v-flex xs12>
-                                <v-text-field
+                                <v-textarea
                                         label="Description"
                                         v-model="editedItem.description"
-                                        multi-line
-                                ></v-text-field>
+                                ></v-textarea>
                             </v-flex>
 
                             <v-flex xs6>
@@ -169,19 +168,19 @@
                                 :rows-per-page-items="row_per_page"
                         >
 
-                            <template slot="headers" slot-scope="props">
-                                <tr>
-                                    <th
-                                            v-for="header in props.headers"
-                                            :key="header.value"
-                                            :class="['column sortable', pagination.descending ? 'desc' : 'asc', header.value === pagination.sortBy ? 'active' : '']"
-                                            @click="changeSort(header.value)"
-                                    >
-                                        <v-icon small>arrow_upward</v-icon>
-                                        {{ header.text}}
-                                    </th>
-                                </tr>
-                            </template>
+                            <!--<template slot="headers" slot-scope="props">-->
+                                <!--<tr>-->
+                                    <!--<th-->
+                                            <!--v-for="header in props.headers"-->
+                                            <!--:key="header.value"-->
+                                            <!--:class="['column sortable', pagination.descending ? 'desc' : 'asc', header.value === pagination.sortBy ? 'active' : '']"-->
+                                            <!--@click="changeSort(header.value)"-->
+                                    <!--&gt;-->
+                                        <!--<v-icon small>arrow_upward</v-icon>-->
+                                        <!--{{ header.text}}-->
+                                    <!--</th>-->
+                                <!--</tr>-->
+                            <!--</template>-->
 
                             <template slot="items" slot-scope="props">
                                 <td>{{ props.index +=1 }}</td>

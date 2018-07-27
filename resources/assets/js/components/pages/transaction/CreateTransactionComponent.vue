@@ -10,7 +10,7 @@
                         <v-container grid-list-md>
                             <v-layout row wrap>
                                 <v-flex xs12>
-                                    <v-select
+                                    <v-autocomplete
                                             label="Select Customer"
                                             :items="customers"
                                             v-model="selectedCustomer"
@@ -18,7 +18,7 @@
                                             chips
                                             persistent-hint
                                     >
-                                    </v-select>
+                                    </v-autocomplete>
                                 </v-flex>
                             </v-layout>
 

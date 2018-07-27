@@ -48,8 +48,9 @@
                 <v-spacer></v-spacer>
                 <v-text-field
                     hide-details
+                    label="Search"
                     v-model="search"
-                    @click:append="search"></v-text-field>
+                    append-icon="search"></v-text-field>
             </v-card-title>
 
             <v-card-text>

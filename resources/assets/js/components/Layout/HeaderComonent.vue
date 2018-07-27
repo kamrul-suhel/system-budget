@@ -17,8 +17,7 @@
                 <v-text-field
                         placeholder="Search..."
                         single-line
-                        @click:append="search"
-                        :append-icon-cb="() => {}"
+                        append-icon="search"
                         color="white"
                         hide-details
                 ></v-text-field>
@@ -51,7 +50,6 @@
         data() {
             return {
                 snackbar: false,
-                search:'',
                 text:'',
                 timeout: 2000
             }

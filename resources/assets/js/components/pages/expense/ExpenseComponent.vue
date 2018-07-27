@@ -41,12 +41,11 @@
                             </v-flex>
 
                             <v-flex xs12>
-                                <v-text-field
+                                <v-textarea
                                         :color="theme"
-                                    label="Description" 
+                                    label="Description"
                                     v-model="editedItem.description"
-                                    multi-line
-                                    ></v-text-field>
+                                    ></v-textarea>
                             </v-flex>
 
                             <v-flex xs6>
@@ -144,7 +143,7 @@
 
                     <v-alert slot="no-results" :value="true" color="error" icon="warning">
                         Your search for "{{ search }}" found no results.
-                    </v-alert>    
+                    </v-alert>
 
                     <template slot="no-data">
                         <v-btn
@@ -186,13 +185,13 @@
                     sortable: true,
                     value: 'id'
                 },
-                { 
-                    text: 'Title', 
+                {
+                    text: 'Title',
                     value: 'title',
                     sortable: true
                 },
-                { 
-                    text: 'Description', 
+                {
+                    text: 'Description',
                     value: 'description',
                 },
                 {
@@ -322,7 +321,7 @@
                 if (this.editedIndex > -1) {
                     form.append('_method', 'PUT');
                     url = url +'/'+ this.editedItem.id;
-                
+
                     axios.post(url, form)
                         .then((response) => {
                             console.log(this.editedItem);
@@ -344,7 +343,7 @@
                         this.close()
                     });
                 }
-            
+
             },
 
             deleteExpense (item) {

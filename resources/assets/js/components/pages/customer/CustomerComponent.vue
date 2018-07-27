@@ -91,11 +91,11 @@
                             </v-flex>
 
                             <v-flex xs6>
-                                <v-text-field
+                                <v-textarea
                                     v-model="editedItem.address"
                                     label="Address"
                                     multi-line
-                                ></v-text-field>
+                                ></v-textarea>
                             </v-flex>
                         </v-layout>
                     </v-container>

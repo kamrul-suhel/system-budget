@@ -77,12 +77,11 @@
                                     </v-flex>
 
                                     <v-flex xs12>
-                                        <v-text-field
+                                        <v-textarea
                                                 label="Description"
                                                 color="dark"
                                                 v-model="editedItem.description"
-                                                multi-line
-                                        ></v-text-field>
+                                        ></v-textarea>
                                     </v-flex>
                                 </v-layout>
                             </v-container>
@@ -127,13 +126,13 @@
                     sortable: true,
                     value: 'id'
                 },
-                { 
-                    text: 'Title', 
+                {
+                    text: 'Title',
                     value: 'title',
                     sortable: true
                 },
-                { 
-                    text: 'Description', 
+                {
+                    text: 'Description',
                     value: 'description',
                 },
                 {
@@ -221,7 +220,7 @@
                 if (this.editedIndex > -1) {
                     form.append('_method', 'PUT');
                     url = url +'/'+ this.editedItem.id;
-                
+
                     axios.post(url, form)
                         .then((response) => {
                             Object.assign(this.items[this.editedIndex], response.data);
