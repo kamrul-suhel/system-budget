@@ -77,9 +77,8 @@
         },
         created(){
             setTimeout(()=> {
-                console.log('yes');
-                console.log(this.dataProvider);
                 AmCharts.makeChart("chartdiv", {
+                    "hideCredits":true,
                     "type": "serial",
                     "theme": "light",
                     "marginRight": 70,
