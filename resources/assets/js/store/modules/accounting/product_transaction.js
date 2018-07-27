@@ -2,82 +2,50 @@ const state = {
     tPaymentDue: 0,
     tPaid: 0,
     tDiscount: 0,
-    tTotal:0,
-    tChartData: '',
-    tTableData: '',
+    tTotal:0
 }
 
 const getters = {
-    getTPaymentDue(state) {
+    getTPaymentDue(state){
         return state.tPaymentDue;
     },
 
-    getTPaid(state) {
+    getTPaid(state){
         return state.tPaid;
     },
 
-    getTDiscount(state) {
+    getTDiscount(state){
         return state.tDiscount;
     },
 
-    getTTotal(state) {
+    getTTotal(state){
         return state.tTotal;
-    },
-
-    getTChartData(state) {
-        return state.tChartData;
-    },
-
-    getTTableData(state) {
-        return state.tTableData;
     }
 }
 
 const mutations = {
-    setTPaymentDue(state, value) {
+    setTPaymentDue(state, value){
         state.tPaymentDue = value;
     },
 
-    setTPaid(state, value) {
+    setTPaid(state, value){
         state.tPaid = value;
     },
 
-    setTDiscount(state, value) {
+    setTDiscount(state, value){
         state.tDiscount = value;
     },
 
-    setTTotal(state, value) {
+    setTTotal(state, value){
         state.tTotal = value;
-    },
-
-    setTChartData(state, value) {
-        state.tChartData = value;
-    },
-
-    setTTableData(state, value) {
-        state.tTableData = value;
-    },
-
-    setResetTAll(state) {
-        state.tPaymentDue = '';
-        state.tPaid = '';
-        state.tDiscount = '';
-        state.tTotal = '';
-        state.chartData = ''
     }
 }
 
 const actions = {
-    fetchAllTransaction({commit}) {
-        axios.get('/api/accounting/transaction')
+    fetchAllTransaction({commit}){
+        axios.get('')
             .then((response) => {
-                console.log(response);
-                commit('setTPaymentDue', response.data.payment_due);
-                commit('setTPaid',response.data.paid);
-                commit('setTDiscount', response.data.discount);
-                commit('setTTotal', response.data.total);
-                commit('setTChartData', response.data.chart_data);
-                commit('setTTableData', response.data.transactions);
+
             });
     }
 }
