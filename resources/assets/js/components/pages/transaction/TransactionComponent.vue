@@ -105,7 +105,7 @@
                                         label="How much paied"
                                         v-model="paied"
                                         hint="Put how much paied">
-                                        
+
                                     </v-text-field>
                                 </v-flex>
 
@@ -243,7 +243,7 @@
             headers: [
                 {
                     text: 'C Name',
-                    value: 'customer_name',
+                    value: 'customer.name',
                     sortable: true
                 },
 
@@ -261,7 +261,7 @@
                 {
                     text: 'Status',
                     value: 'transaction_status',
-                    sortable: true
+                    sortable: false
                 },
 
                 {
@@ -279,7 +279,7 @@
                 {
                     text: 'Paied',
                     value: 'paied',
-                    sortable: true
+                    sortable: false
                 },
 
                 {
@@ -395,7 +395,7 @@
                             array_customer.push(customer);
                         })
                         this.customers = array_customer;
-                    
+
                     })
                     .catch((error) => {
                         console.log(error)

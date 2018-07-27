@@ -17,7 +17,7 @@
                 <v-text-field
                         placeholder="Search..."
                         single-line
-                        append-icon="search"
+                        prepend-icon="search"
                         color="white"
                         hide-details
                 ></v-text-field>
