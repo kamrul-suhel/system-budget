@@ -36,6 +36,7 @@ class TransactionAccountingController extends Controller
         $transactions->each(function($transaction) use (&$chartData){
             $data = [];
             $data['total'] = $transaction->total;
+            $data['date'] = Carbon::parse($transaction->created_at)->diffForHumans();
             $productName = '';
             if($transaction->products->count()){
                 $transaction->products->each(function($product) use (&$productName){

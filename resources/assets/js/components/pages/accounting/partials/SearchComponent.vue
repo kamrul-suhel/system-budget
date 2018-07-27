@@ -13,6 +13,7 @@
                                     item-value="abbr"
                                     label="Choose a field"
                                     persistent-hint
+                                    @input="onSelected()"
                                     return-object
                                     single-line
                             ></v-select>
@@ -48,7 +49,9 @@
         },
 
         methods:{
-
+            onSelected(){
+                console.log(this.select);
+            }
         }
     }
 </script>
