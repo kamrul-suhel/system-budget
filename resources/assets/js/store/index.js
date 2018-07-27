@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 
 import settings from './modules/settings';
+import productTransaction from './modules/accounting/product_transaction'
 
 Vue.use(Vuex);
 
@@ -43,7 +44,8 @@ const store = new Vuex.Store({
     },
 
     modules: {
-        settings
+        settings,
+        productTransaction
     }
 });
 
