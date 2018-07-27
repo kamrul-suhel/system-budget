@@ -23,6 +23,8 @@
     export default {
         data () {
             return {
+                title: "Today transaction",
+                
                 dataProvider: [{
                     "country": "USA",
                     "visits": 3025,
@@ -84,9 +86,12 @@
                     "marginRight": 70,
                     "dataProvider":this.dataProvider,
                     "valueAxes": [{
-                        "axisAlpha": 0,
+                        "axisAlpha": 1,
+                        "axisColor": "#fff",
+                        "color":"#fff",
+                        "titleColor":"#fff",
                         "position": "left",
-                        "title": "Today transaction"
+                        "title": this.title,
                     }],
 
                     "startDuration": 1,
