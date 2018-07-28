@@ -124,7 +124,19 @@
         watch: {
             date (val) {
                 this.dateFormatted = this.formatDate(this.date)
-            }
+            },
+
+            startDate(){
+                let data = this.generateData();
+                this.getTransaction(data);
+            },
+
+            endDate(){
+                let data = this.generateData();
+                this.getTransaction(data);
+            },
+
+
         },
 
         methods: {
@@ -135,14 +147,11 @@
                 let data = this.generateData();
                 console.log(data);
                 this.$store.dispatch('fetchAllTransaction', data);
-
             },
 
             generateData(){
                 this.customDate = false;
                 this.customRangeDate = false;
-                this.startdate = '';
-                this.endDate = '';
                 let data = {};
                 if(this.select.abbr === 'CDT'){
                     this.customDate = true;
@@ -160,7 +169,7 @@
                     data.range = true;
                 }
 
-                data.startdate = this.startdate;
+                data.startdate = this.startDate;
                 data.enddate = this.endDate;
                 data.select = this.select;
                 return data;

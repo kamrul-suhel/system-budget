@@ -5,6 +5,7 @@ const state = {
     tTotal:0,
     tChartData: '',
     tTableData: '',
+    chartTitle:'',
 }
 
 const getters = {
@@ -30,6 +31,9 @@ const getters = {
 
     getTTableData(state) {
         return state.tTableData;
+    },
+    getChartTitle(state){
+        return state.chartTitle;
     }
 }
 
@@ -64,11 +68,50 @@ const mutations = {
         state.tDiscount = '';
         state.tTotal = '';
         state.chartData = ''
+    },
+
+    setChartTitle(state, value){
+        state.chartTitle = value;
     }
 }
 
 const actions = {
     fetchAllTransaction({commit}, payload) {
+        if(payload.select.abbr === 'TDT'){
+            commit('setChartTitle', 'Today')
+        }
+
+        if(payload.select.abbr === 'YDT'){
+            commit('setChartTitle', 'Yesterday')
+        }
+
+        if(payload.select.abbr === 'TWT'){
+            commit('setChartTitle', 'This Week')
+        }
+
+        if(payload.select.abbr === 'LWT'){
+            commit('setChartTitle', 'Last Week')
+        }
+
+        if(payload.select.abbr === 'TMT'){
+            commit('setChartTitle', 'This Month')
+        }
+
+        if(payload.select.abbr === 'LMT'){
+            commit('setChartTitle', 'Last Month')
+        }
+
+        if(payload.select.abbr === 'TYT'){
+            commit('setChartTitle', 'This Year')
+        }
+        if(payload.select.abbr === 'LYT'){
+            commit('setChartTitle', 'Last Year')
+        }
+
+        if(payload.select.abbr === 'CRT' || payload.select.abbr === 'CDT'){
+            commit('setChartTitle', 'Custom Day')
+        }
+
         axios.post('/api/accounting/transaction', payload)
             .then((response) => {
                 commit('setTPaymentDue', response.data.payment_due);

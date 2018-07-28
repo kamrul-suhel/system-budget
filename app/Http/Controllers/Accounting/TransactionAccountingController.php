@@ -16,17 +16,63 @@ class TransactionAccountingController extends Controller
     public function index(Request $request)
     {
         $transactions = Transaction::with('products');
-        if($request->select['abbr'] === 'YDT'){
-            $transactions =  $transactions->where('created_at', '>', Carbon::yesterday());
-        }
-
         if($request->select['abbr'] === 'TDT'){
             $transactions = $transactions->where('created_at', '>', Carbon::now()->startOfDay())
                 ->where('created_at', '<', Carbon::now()->endOfDay());
         }
-        $transactions = $transactions->get();
+
+        if($request->select['abbr'] === 'YDT'){
+            $transactions =  $transactions->where('created_at', '>', Carbon::yesterday());
+        }
+
+        if($request->select['abbr'] === 'TWT'){
+            $transactions = $transactions->where('created_at','>', Carbon::now()->startOfWeek());
+        }
+        if($request->select['abbr'] === 'LWT'){
+            $currentDate = Carbon::now();
+            $agoDate = $currentDate->subDays($currentDate->dayOfWeek)->subWeek();
+            $currentDate = Carbon::now();
+            $endDate = $currentDate->subDays($currentDate->dayOfWeek);
+            $transactions = $transactions->whereBetween('created_at', [$agoDate, $endDate]);
+        }
+
+        if($request->select['abbr'] === 'TMT'){
+            $currentDate = Carbon::now();
+            $agoDate = $currentDate->startOfMonth();
+            $currentDate = Carbon::now();
+            $endDate = $currentDate->endOfMonth();
+            $transactions = $transactions->whereBetween('created_at', [$agoDate, $endDate]);
+        }
+
+        if($request->select['abbr'] === 'LMT'){
+            $transactions = $transactions->whereMonth('created_at', Carbon::now()->subMonth()->month);
+        }
+
+        if($request->select['abbr'] === 'TYT'){
+            $currentDate = Carbon::now();
+            $agoDate = $currentDate->startOfYear();
+            $currentDate = Carbon::now();
+            $endDate = $currentDate->endOfYear();
+            $transactions = $transactions->whereBetween('created_at', [$agoDate, $endDate]);
+        }
 
 
+
+        if($request->customdate){
+            $begainDate = Carbon::parse($request->startdate)->startOfDay();
+            $endDate = Carbon::parse($request->startdate)->endOfDay();
+            $transactions = $transactions->whereBetween('created_at', [$begainDate, $endDate]);
+        }
+
+        if($request->customdate && $request->customrangerate){
+            $agoDate = Carbon::parse($request->startdate)->startOfDay();
+            $endDate = Carbon::parse($request->enddate)->endOfDay();
+            $transactions = $transactions->whereBetween('created_at', [$agoDate, $endDate]);
+        }
+
+        $transactions = $transactions->orderBy('created_at', 'desc')->get();
+//        $transactions = $transactions->toSql();
+//        dd($transactions);
         $total = number_format((float)$transactions->sum('total'), 2, '.', '');
         $paymentDue = $transactions->sum('payment_due');
         $discount = $transactions->sum('discount_amount');
@@ -38,7 +84,7 @@ class TransactionAccountingController extends Controller
         $transactions->each(function($transaction) use (&$chartData){
             $data = [];
             $data['total'] = $transaction->total;
-            $data['date'] = Carbon::parse($transaction->created_at)->diffForHumans();
+            $data['date'] = Carbon::parse($transaction->created_at)->toFormattedDateString();
             $productName = '';
             if($transaction->products->count()){
                 $transaction->products->each(function($product) use (&$productName){
