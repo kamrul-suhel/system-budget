@@ -102,9 +102,9 @@
 
                                 <v-flex xs6 v-if="selectedPaymentStatus > 1">
                                     <v-text-field
-                                        label="How much paied"
-                                        v-model="paied"
-                                        hint="Put how much paied">
+                                        label="How much paid"
+                                        v-model="paid"
+                                        hint="Put how much paid">
 
                                     </v-text-field>
                                 </v-flex>
@@ -187,7 +187,7 @@
                                 <td class="text-xs-center">{{ getPaymentStatus(props.item.payment_status) }}</td>
                                 <td class="text-xs-center">TK. {{ props.item.total? price_format(props.item.total): 0 }}</td>
                                 <td class="text-xs-center">TK. {{ props.item.discount_amount? price_format(props.item.discount_amount): 0 }}</td>
-                                <td class="text-xs-center">TK. {{ props.item.paied ? price_format(props.item.paied): 0 }}</td>
+                                <td class="text-xs-center">TK. {{ props.item.paid ? price_format(props.item.paid): 0 }}</td>
                                 <td class="text-xs-center">TK. {{ props.item.payment_due? price_format(props.item.payment_due): 0 }}</td>
                                 <td class="justify-start layout px-0">
                                     <v-btn icon class="mx-0" @click="editItem(props.item)">
@@ -277,8 +277,8 @@
                 },
 
                 {
-                    text: 'Paied',
-                    value: 'paied',
+                    text: 'paid',
+                    value: 'paid',
                     sortable: false
                 },
 
@@ -301,7 +301,7 @@
             customers: [],
             selectedCustomer:[],
             payment_due:'',
-            paied:'',
+            paid:'',
 
             editedIndex: -1,
             editedItem: {

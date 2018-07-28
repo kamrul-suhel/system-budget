@@ -87,7 +87,7 @@ $factory->define(Transaction::class, function (Faker $faker) {
         'customer_id' => $customer->id,
         'payment_status' => $faker->randomElement([Transaction::TRANSACTION_STATUS_DUE, Transaction::TRANSICTION_STATUS_OK]),
         'payment_due'   => $faker->randomFloat($nbMaxDecimals = 2, $min = 0, $max = 4000),
-        'paied'         => $faker->randomFloat($nbMaxDecimals =2, $min = 0, $max = 2000),
+        'paid'         => $faker->randomFloat($nbMaxDecimals =2, $min = 0, $max = 2000),
         'discount_amount' => $faker->numberBetween(20, 50),
         'invoice_number' => $unique_id,
         'total' => $faker->numberBetween(3000, 4000),

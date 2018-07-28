@@ -68,8 +68,8 @@ const mutations = {
 }
 
 const actions = {
-    fetchAllTransaction({commit}) {
-        axios.get('/api/accounting/transaction')
+    fetchAllTransaction({commit}, payload) {
+        axios.post('/api/accounting/transaction', payload)
             .then((response) => {
                 commit('setTPaymentDue', response.data.payment_due);
                 commit('setTPaid',response.data.paid);

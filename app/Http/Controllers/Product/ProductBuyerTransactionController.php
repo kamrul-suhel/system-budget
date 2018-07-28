@@ -53,7 +53,7 @@ class ProductBuyerTransactionController extends ApiController
                 'total'          => $request->total,
                 'payment_status'=> $request->payment_status,
                 'payment_due'   => $request->payment_due ? $request->payment_due : 0,
-                'paied'         => $request->paied
+                'paid'         => $request->paid
             ]);
 
             $transaction->products()->sync($attach_product);

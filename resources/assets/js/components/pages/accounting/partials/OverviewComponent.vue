@@ -14,7 +14,7 @@
 
         <v-flex xs6>
             <v-card flat class="light-blue white--text">
-                <v-card-title>Paied today</v-card-title>
+                <v-card-title>paid today</v-card-title>
                 <v-card-text class="pt-0">
                     <h2 class="display-2 white--text text-xs-center">
                         <span style="font-size:12px">TK.</span>

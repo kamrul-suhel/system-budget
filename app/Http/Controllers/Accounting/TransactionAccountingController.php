@@ -28,7 +28,7 @@ class TransactionAccountingController extends Controller
         $total = number_format((float)$transactions->sum('total'), 2, '.', '');
         $paymentDue = $transactions->sum('payment_due');
         $discount = $transactions->sum('discount_amount');
-        $paid = $transactions->sum('paied');
+        $paid = $transactions->sum('paid');
         $total_product = $transactions->pluck('products')->collapse()->count();
 
         $chartData = [];

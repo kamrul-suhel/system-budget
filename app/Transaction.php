@@ -20,9 +20,9 @@ class Transaction extends Model
     const TRANSICTION_STATUS_OK = 1;
     const TRANSACTION_STATUS_DUE = 2;
 
-    const PAYMENT_PAIED = 1;
+    const PAYMENT_PAID = 1;
     const PAYMENT_DUE = 2;
-    const PAYMENT_HALF_PAIED = 3;
+    const PAYMENT_HALF_PAID = 3;
 
     //
     protected $fillable = [
@@ -31,7 +31,7 @@ class Transaction extends Model
     	'product_id',
         'payment_status',
         'payment_due',
-        'paied',
+        'paid',
         'discount_amount',
         'total',
         'invoice_number'
@@ -53,8 +53,8 @@ class Transaction extends Model
 
      public static function getPaymentStatusType(){
         return [
-            'paied' => self::PAYMENT_PAIED,
-            'half_paied' => self::PAYMENT_HALF_PAIED,
+            'paid' => self::PAYMENT_PAID,
+            'half_paid' => self::PAYMENT_HALF_PAID,
             'due'   => self::PAYMENT_DUE
         ];
      }

@@ -47,7 +47,7 @@
                                             label="Discount amount"
                                             v-model="discount"
                                             type="number"
-                                            hint="Put how much paied">
+                                            hint="Put how much paid">
 
                                     </v-text-field>
                                 </v-flex>
@@ -56,10 +56,10 @@
                             <v-layout row wrap>
                                 <v-flex xs6 v-if="selectedPaymentStatus > 1">
                                     <v-text-field
-                                            label="How much paied"
-                                            v-model="paied"
+                                            label="How much paid"
+                                            v-model="paid"
                                             type="number"
-                                            hint="Put how much paied">
+                                            hint="Put how much paid">
 
                                     </v-text-field>
                                 </v-flex>
@@ -70,10 +70,10 @@
                                 <v-spacer></v-spacer>
                                 <v-flex xs3 class="text-xs-right">
                                     <p><strong>Total: {{ total_amount_transactions }}</strong></p>
-                                    <p v-if="paied > 0"><strong>Paied: {{ paied }}</strong></p>
+                                    <p v-if="paid > 0"><strong>paid: {{ paid }}</strong></p>
                                 </v-flex>
                                 <v-flex xs3 class="text-xs-right">
-                                    <p v-if="selectedPaymentStatus > 1"><strong>Due: {{ total_amount_transactions - paied }}</strong></p>
+                                    <p v-if="selectedPaymentStatus > 1"><strong>Due: {{ total_amount_transactions - paid }}</strong></p>
                                     <p><strong>Discount: {{ discount }}</strong></p>
                                     <p><strong>Grand total: {{ total_amount_transactions - discount }}</strong></p>
 
@@ -119,10 +119,10 @@
             customers: [{text: '', value: 1}],
             selectedCustomer:[],
             payment_due:'',
-            paied:'',
+            paid:'',
             discount:0,
 
-            paymentStatus:[{text: 'Paied', value: 1}, {text: 'Due', value:2}, {text: 'Half paied', value:3}],
+            paymentStatus:[{text: 'paid', value: 1}, {text: 'Due', value:2}, {text: 'Half paid', value:3}],
             selectedPaymentStatus:1,
             active: [1, 2],
 
@@ -213,9 +213,9 @@
                 form.append('total', total);
 
                 if(this.selectedPaymentStatus > 1){
-                    form.append('payment_due', total - this.paied);
+                    form.append('payment_due', total - this.paid);
                 }
-                form.append('paied', this.paied);
+                form.append('paid', this.paid);
 
                 var products = JSON.stringify(this.$store.getters.getProduct);
                 form.append('products', products);
