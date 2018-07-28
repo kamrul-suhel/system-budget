@@ -15,15 +15,17 @@ class TransactionAccountingController extends Controller
 
     public function index(Request $request)
     {
-        $transactions = Transaction::with('products')
-            ->where('created_at', '>', Carbon::now()->startOfDay())
-            ->where('created_at', '<', Carbon::now()->endOfDay())
-            ->get();
+        $transactions = Transaction::with('products');
+        if($request->select['abbr'] === 'YDT'){
+            $transactions =  $transactions->where('created_at', '>', Carbon::yesterday());
+        }
 
-        //Yesterday
-//        $transactions = Transaction::with('products')
-//            ->where('created_at', '>', Carbon::yesterday())
-//            ->get();
+        if($request->select['abbr'] === 'TDT'){
+            $transactions = $transactions->where('created_at', '>', Carbon::now()->startOfDay())
+                ->where('created_at', '<', Carbon::now()->endOfDay());
+        }
+        $transactions = $transactions->get();
+
 
         $total = number_format((float)$transactions->sum('total'), 2, '.', '');
         $paymentDue = $transactions->sum('payment_due');

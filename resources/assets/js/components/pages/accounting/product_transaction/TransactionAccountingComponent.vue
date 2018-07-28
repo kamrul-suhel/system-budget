@@ -40,13 +40,17 @@
         },
 
         created () {
-            this.getTransaction()
+            // this.getTransaction()
         },
 
         methods: {
             ...mapActions({
                 getTransaction: 'fetchAllTransaction'
             }),
+        },
+
+        destroyed(){
+            this.$store.commit('setResetTAll');
         }
     }
 </script>

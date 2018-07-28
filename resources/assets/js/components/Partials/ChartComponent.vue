@@ -92,6 +92,7 @@
             setTimeout(() => {
                 AmCharts.makeChart("chartdiv", {
                     "hideCredits":true,
+                    "pathToImages": "/images/",
                     "type": "serial",
                     "theme": "light",
                     "marginRight": 70,
@@ -122,7 +123,8 @@
                     "categoryField": "date",
                     "categoryAxis": {
                         "gridPosition": "start",
-                        "labelRotation": 45
+                        "labelRotation": 45,
+                        "color":"#fff"
                     },
                     "export": {
                         "enabled": true

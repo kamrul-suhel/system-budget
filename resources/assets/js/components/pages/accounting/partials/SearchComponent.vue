@@ -21,7 +21,7 @@
 
                         <v-flex xs6 v-if="customDate">
                             <v-layout row wrap>
-                                <v-flex xs6>
+                                <v-flex :class="{'xs6': customDate && customRangeDate, 'xs12': customDate && !customRangeDate}">
                                     <v-menu
                                             ref="startDate"
                                             :close-on-content-click="false"
@@ -37,16 +37,16 @@
                                         <v-text-field
                                                 slot="activator"
                                                 label="Start Date"
-                                                v-model="dateFormatted"
+                                                v-model="startDate"
                                                 persistent-hint
                                                 prepend-icon="event"
                                                 @blur="date = parseDate(dateFormatted)"
                                         ></v-text-field>
-                                        <v-date-picker v-model="date" no-title @input="startDateDialog = false"></v-date-picker>
+                                        <v-date-picker v-model="startDate" no-title @input="startDateDialog = false"></v-date-picker>
                                     </v-menu>
                                 </v-flex>
 
-                                <v-flex xs6>
+                                <v-flex xs6 v-if="customRangeDate">
                                     <v-menu
                                             :close-on-content-click="false"
                                             v-model="endDateDialog"
@@ -60,13 +60,13 @@
                                     >
                                         <v-text-field
                                                 slot="activator"
-                                                v-model="computedDateFormatted"
+                                                v-model="endDate"
                                                 label="End date"
                                                 persistent-hint
                                                 prepend-icon="event"
                                                 readonly
                                         ></v-text-field>
-                                        <v-date-picker v-model="date" no-title @input="endDateDialog = false"></v-date-picker>
+                                        <v-date-picker v-model="endDate" no-title @input="endDateDialog = false"></v-date-picker>
                                     </v-menu>
                                 </v-flex>
                             </v-layout>
@@ -80,15 +80,19 @@
 </template>
 
 <script>
+    import {mapActions} from 'vuex';
     export default {
         data(){
             return {
                 select: { state: 'Today transaction', abbr: 'TDT' },
                 customDate : false,
+                customRangeDate: false,
                 date: null,
                 dateFormatted: null,
                 startDateDialog: false,
                 endDateDialog: false,
+                startDate:'',
+                endDate:'',
 
 
                 items: [
@@ -107,7 +111,8 @@
         },
 
         created(){
-
+            let data = this.generateData();
+            this.getTransaction(data);
         },
 
         computed: {
@@ -123,6 +128,44 @@
         },
 
         methods: {
+            ...mapActions({
+                getTransaction: 'fetchAllTransaction'
+            }),
+            onSelected(){
+                let data = this.generateData();
+                console.log(data);
+                this.$store.dispatch('fetchAllTransaction', data);
+
+            },
+
+            generateData(){
+                this.customDate = false;
+                this.customRangeDate = false;
+                this.startdate = '';
+                this.endDate = '';
+                let data = {};
+                if(this.select.abbr === 'CDT'){
+                    this.customDate = true;
+                    data.customdate = true;
+                }
+                if(this.select.abbr === 'CRT'){
+                    this.customDate = true;
+                    this.customRangeDate = true;
+                    data.customRangeDate = true;
+                }
+
+
+                // if range detection run this code
+                if(this.customDate && this.customRangeDate){
+                    data.range = true;
+                }
+
+                data.startdate = this.startdate;
+                data.enddate = this.endDate;
+                data.select = this.select;
+                return data;
+            },
+
             formatDate (date) {
                 if (!date) return null
 
@@ -134,15 +177,6 @@
 
                 const [month, day, year] = date.split('/')
                 return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`
-            },
-
-            onSelected(){
-                if(this.select.abbr === 'CDT'){
-                    this.customDate = true;
-                    return false;
-                }
-
-                console.log(this.select);
             }
         }
     }
