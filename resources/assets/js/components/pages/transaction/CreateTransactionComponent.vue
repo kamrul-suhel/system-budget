@@ -154,7 +154,6 @@
             active: [1, 2],
 
             isWarranty: false,
-            selectedWarranty:'',
             warranty: [{text: 'Yes', value:1 }, {text: 'No', value :0}],
 
             serial_number:'',
