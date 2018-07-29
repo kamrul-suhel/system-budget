@@ -78,6 +78,7 @@
                                         multiple
                                         chips
                                         persistent-hint
+                                        return-object
                                 >
                                 </v-select>
                             </v-flex>
@@ -416,18 +417,18 @@
 
                 if (this.selectedCategories) {
                     form.append('categories', JSON.stringify(this.selectedCategories));
-                    console.log(this.selectedCategories);
                 }
 
                 if (this.editedIndex > -1) {
                     // update product
                     form.append('_method', 'PATCH')
-                    url = url +'/'+ this.editedItem.id
+                    url = url +'/'+ this.editedItem.id;
                     axios.post(url, form)
                         .then((response) => {
                             Object.assign(this.items[this.editedIndex], this.editedItem);
                             this.snackbar_message = 'Product '+this.editedItem.name + ' successfully updated.';
                             this.snackbar = true;
+                            this.close()
                         })
                 } else {
                     // create product
@@ -436,10 +437,10 @@
                             this.items.push(response.data);
                             this.snackbar_message = 'Product '+this.editedItem.name + ' successfully created.';
                             this.snackbar = true;
+                            // this.close()
                         })
                 }
 
-                 this.close()
             },
 
             changeSort(column) {
