@@ -47,7 +47,9 @@
         props:['index'],
         watch: {
             selectedProduct(val) {
-                this.updateStore(val.value);
+                if(val){
+                    this.updateStore(val.value);
+                }
             },
 
             selectedQuantity(val){
@@ -66,19 +68,21 @@
                 //get all product
                 axios.get('/api/products')
                     .then((response) => {
-                        this.products = response.data.products;
-                        this.allProductData = response.data.products;
-                        var array_products = [];
-                        this.products.forEach((product)=> {
-                            var product = { text: product.name, value : product.id, quantity: product.quantity, current_product_sale_price: product.sale_price};
-                            array_products.push(product);
-                        })
-                        this.products = array_products;
-                        this.selectedProduct = this.products[0];
-                        this.current_product_quantity = this.products[0].quantity;
-                        this.current_product_sale_price = this.products[0].current_product_sale_price;
+                        if(response.data.products){
+                            this.products = response.data.products;
+                            this.allProductData = response.data.products;
+                            var array_products = [];
+                            this.products.forEach((product)=> {
+                                var product = { text: product.name, value : product.id, quantity: product.quantity, current_product_sale_price: product.sale_price};
+                                array_products.push(product);
+                            })
+                            this.products = array_products;
+                            this.selectedProduct = this.products[0];
+                            this.current_product_quantity = this.products[0].quantity;
+                            this.current_product_sale_price = this.products[0].current_product_sale_price;
 
-                        this.updateStore(this.selectedProduct.value);
+                            this.updateStore(this.selectedProduct.value);
+                        }
                     })
                     .catch((error) => {
                         console.log(error)

@@ -143,7 +143,7 @@
 
             total_product: 1,
 
-            customers: [{text: '', value: 1}],
+            customers: [{text: 'No customer', value: 1}],
             selectedCustomer:[],
             payment_due:'',
             paid:'',
@@ -198,14 +198,17 @@
                 //get all product
                 axios.get('/api/products')
                     .then((response) => {
-                        this.products = response.data.products;
-                        this.allProductData = response.data.products;
-                        var array_products = [];
-                        this.products.forEach((product)=> {
-                            var product = { text: product.name, value : product.id};
-                            array_products.push(product);
-                        })
-                        this.products = array_products;
+                        if(response.data.products){
+                            this.products = response.data.products;
+                            this.allProductData = response.data.products;
+                            var array_products = [];
+                            this.products.forEach((product)=> {
+                                var product = { text: product.name, value : product.id};
+                                array_products.push(product);
+                            })
+                            this.products = array_products;
+                        }
+
                     })
                     .catch((error) => {
                         console.log(error)
@@ -215,13 +218,16 @@
                 // get all customers
                 axios.get('/customers')
                     .then((response) => {
-                        this.customers = response.data;
-                        var array_customer = [];
-                        this.customers.forEach((customer)=> {
-                            var customer = { text: customer.name, value : customer.id};
-                            array_customer.push(customer);
-                        })
-                        this.customers = array_customer;
+                        if(response.data.length > 0){
+                            this.customers = response.data;
+                            var array_customer = [];
+                            this.customers.forEach((customer)=> {
+                                var customer = { text: customer.name, value : customer.id};
+                                array_customer.push(customer);
+                            })
+                            this.customers = array_customer;
+                        }
+
 
                     })
                     .catch((error) => {
