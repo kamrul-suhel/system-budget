@@ -9,7 +9,7 @@
                         <h2>Create Transaction</h2>
                         <v-container grid-list-md>
                             <v-layout row wrap>
-                                <v-flex xs12>
+                                <v-flex xs6>
                                     <v-autocomplete
                                             label="Select Customer"
                                             :items="customers"
@@ -19,6 +19,33 @@
                                             persistent-hint
                                     >
                                     </v-autocomplete>
+                                </v-flex>
+
+                                <v-flex xs6>
+                                    <v-select
+                                            label="Is warranty product"
+                                            @input="selectedWarranty()"
+                                    :items="warranty"
+                                    :item-text="text"
+                                    :item-value="value"
+                                    >
+                                    </v-select>
+                                </v-flex>
+                            </v-layout>
+
+                            <v-layout row wrap v-if="isWarranty">
+                                <v-flex xs6>
+                                    <v-text-field
+                                        label="Serial number"
+                                    v-model="serial_number">
+                                    </v-text-field>
+                                </v-flex>
+                                    <v-text-field
+                                        label="Length Of Warranty"
+                                        v-model="length_warranty">
+                                    </v-text-field>
+                                <v-flex xs6>
+
                                 </v-flex>
                             </v-layout>
 
@@ -126,10 +153,12 @@
             selectedPaymentStatus:1,
             active: [1, 2],
 
+            isWarranty: false,
+            selectedWarranty:'',
+            warranty: [{text: 'Yes', value:1 }, {text: 'No', value :0}],
 
-
-
-
+            serial_number:'',
+            length_warranty:''
         }),
 
         computed: {
@@ -202,6 +231,17 @@
 
             },
 
+            selectedWarranty(value){
+                this.isWarranty = false;
+                if(value === 1){
+                    this.isWarranty = true;
+                }
+
+                if(value === 0){
+                    this.isWarranty = false;
+                }
+            },
+
             onCreateTransaction(){
                 let form = new FormData()
                 let total = this.total_amount_transactions - this.discount;
@@ -210,6 +250,8 @@
 
                 form.append('payment_status', this.selectedPaymentStatus);
                 form.append('discount', this.discount);
+                form.append('serial_number', this.serial_number);
+                form.append('length_warranty', this.length_warranty);
                 form.append('total', total);
 
                 if(this.selectedPaymentStatus > 1){

@@ -34,7 +34,9 @@ class Transaction extends Model
         'paid',
         'discount_amount',
         'total',
-        'invoice_number'
+        'invoice_number',
+        'serial_number',
+        'length_warranty'
     ];
 
     protected $hidden =[
