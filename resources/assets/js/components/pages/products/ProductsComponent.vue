@@ -111,7 +111,9 @@
                     <v-card flat class="cyan lighten-1 white--text">
                         <v-card-title>Total product</v-card-title>
                         <v-card-text class="pt-0">
-                            <h2 class="display-2 white--text text-xs-center"><strong>{{total_product}}</strong></h2>
+                            <h2 class="display-2 white--text text-xs-center">
+                                <strong>{{total_product}}</strong>
+                            </h2>
                         </v-card-text>
                     </v-card>
                 </v-flex>
@@ -120,7 +122,9 @@
                     <v-card flat class="light-blue white--text">
                         <v-card-title>Product Available</v-card-title>
                         <v-card-text class="pt-0">
-                            <h2 class="display-2 white--text text-xs-center"><strong>{{avaliable_product}}</strong></h2>
+                            <h2 class="display-2 white--text text-xs-center">
+                                <strong>{{avaliable_product}}</strong>
+                            </h2>
                         </v-card-text>
                     </v-card>
                 </v-flex>
@@ -129,7 +133,9 @@
                     <v-card flat class="light-green lighten-1 white--text">
                         <v-card-title>Not is stock</v-card-title>
                         <v-card-text class="pt-0">
-                            <h2 class="display-2 white--text text-xs-center"><strong>{{unavaliable_product}}</strong></h2>
+                            <h2 class="display-2 white--text text-xs-center">
+                                <strong>{{unavaliable_product}}</strong>
+                            </h2>
                         </v-card-text>
                     </v-card>
                 </v-flex>
@@ -138,7 +144,10 @@
                     <v-card flat class="orange darken-1 white--text">
                         <v-card-title>Total Stock</v-card-title>
                         <v-card-text class="pt-0">
-                            <h2 class="display-2 white--text text-xs-center"><strong>{{total_stock}}</strong></h2>
+                            <h2 class="display-2 white--text text-xs-center">
+                                <span style="font-size:12px">TK.</span>
+                                <strong>{{total_stock}}</strong>
+                            </h2>
                         </v-card-text>
                     </v-card>
                 </v-flex>
@@ -290,7 +299,7 @@
                     value: 'action'
                 }
             ],
-            total_product: '',
+
             items: [],
             status: [
                 {
@@ -305,12 +314,12 @@
             editedIndex: -1,
             editedItem: {
                 id: '',
-                name: '',
-                description: '',
-                quantity: '',
+                name: 'asldf',
+                description: 'alsdkfj',
+                quantity: '3',
                 status: 'available',
                 sale_price: '200',
-                purchase_price: '150',
+                purchase_price: '200',
                 quantity_type: 'kg'
             },
 
@@ -446,7 +455,13 @@
                             this.items.push(response.data);
                             this.snackbar_message = 'Product '+this.editedItem.name + ' successfully created.';
                             this.snackbar = true;
-                            // this.close()
+                            // update total product & stock
+                            this.total_product++;
+
+                            let total = this.total_stock.replace(',', '');
+                            total = Number(total);
+                            this.total_stock = total + this.editedItem.quantity * this.editedItem.purchase_price;
+                            this.close()
                         })
                 }
 

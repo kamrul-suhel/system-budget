@@ -190,9 +190,9 @@
                                 <td class="text-xs-center">TK. {{ props.item.paid ? price_format(props.item.paid): 0 }}</td>
                                 <td class="text-xs-center">TK. {{ props.item.payment_due? price_format(props.item.payment_due): 0 }}</td>
                                 <td class="justify-start layout px-0">
-                                    <v-btn icon class="mx-0" @click="editItem(props.item)">
-                                        <v-icon color="dark">edit</v-icon>
-                                    </v-btn>
+                                    <!--<v-btn icon class="mx-0" @click="editItem(props.item)">-->
+                                        <!--<v-icon color="dark">edit</v-icon>-->
+                                    <!--</v-btn>-->
 
                                     <v-btn icon class="mx-0" @click="viewTransition(props.item)">
                                         <v-icon clor="dark">view_comfy</v-icon>
