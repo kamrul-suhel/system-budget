@@ -335,7 +335,7 @@
             },
 
             selectedCompany:'',
-            payment_type:['cash', 'cheque'],
+            payment_type:['cash', 'cheque', 'product', 'other'],
             defaultItem: {
                 id: '',
                 payment_type:'cash',

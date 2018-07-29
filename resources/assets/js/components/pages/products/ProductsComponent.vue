@@ -111,34 +111,34 @@
                     <v-card flat class="cyan lighten-1 white--text">
                         <v-card-title>Total product</v-card-title>
                         <v-card-text class="pt-0">
-                            <h2 class="display-2 white--text text-xs-center"><strong>350</strong></h2>
+                            <h2 class="display-2 white--text text-xs-center"><strong>{{total_product}}</strong></h2>
                         </v-card-text>
                     </v-card>
                 </v-flex>
 
                 <v-flex xs3>
                     <v-card flat class="light-blue white--text">
-                        <v-card-title>Total product</v-card-title>
+                        <v-card-title>Product Available</v-card-title>
                         <v-card-text class="pt-0">
-                            <h2 class="display-2 white--text text-xs-center"><strong>350</strong></h2>
+                            <h2 class="display-2 white--text text-xs-center"><strong>{{avaliable_product}}</strong></h2>
                         </v-card-text>
                     </v-card>
                 </v-flex>
 
                 <v-flex xs3>
                     <v-card flat class="light-green lighten-1 white--text">
-                        <v-card-title>Total product</v-card-title>
+                        <v-card-title>Not is stock</v-card-title>
                         <v-card-text class="pt-0">
-                            <h2 class="display-2 white--text text-xs-center"><strong>350</strong></h2>
+                            <h2 class="display-2 white--text text-xs-center"><strong>{{unavaliable_product}}</strong></h2>
                         </v-card-text>
                     </v-card>
                 </v-flex>
 
                 <v-flex xs3>
                     <v-card flat class="orange darken-1 white--text">
-                        <v-card-title>Total product</v-card-title>
+                        <v-card-title>Total Stock</v-card-title>
                         <v-card-text class="pt-0">
-                            <h2 class="display-2 white--text text-xs-center"><strong>350</strong></h2>
+                            <h2 class="display-2 white--text text-xs-center"><strong>{{total_stock}}</strong></h2>
                         </v-card-text>
                     </v-card>
                 </v-flex>
@@ -237,6 +237,12 @@
             pagination: {
                 sortBy: 'name'
             },
+
+            avaliable_product:0,
+            unavaliable_product: 0,
+            total_product: 0,
+            total_stock: 0,
+
 
             snackbar: false,
             snackbar_message: '',
@@ -347,6 +353,9 @@
                         this.items = response.data.products;
                         this.quantity_type = response.data.quantity_types;
                         this.total_product = response.data.total_product;
+                        this.avaliable_product = response.data.avaliable_product;
+                        this.unavaliable_product = response.data.unavaliable_product? response.data.unavaliable_product : 0;
+                        this.total_stock = response.data.total_stock;
                     })
                     .catch((error) => {
                         console.log(error)

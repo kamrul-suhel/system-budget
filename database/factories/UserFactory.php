@@ -165,7 +165,7 @@ $factory->define(\App\CompanyTransaction::class, function (Faker $faker) {
         //
 
         'company_id' => Company::all()->random()->id,
-        'payment_type' => $faker->randomElement(['cash', 'cheque']),
+        'payment_type' => $faker->randomElement(['cash', 'cheque','product', 'other']),
         'reference' => generateRandomString(),
         'remarks'  => $faker->randomElement(['remarks', 'unremarks']),
         'debit'        => $faker->randomFloat(2,30000,  90000),

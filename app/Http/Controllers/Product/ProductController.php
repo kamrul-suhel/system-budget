@@ -24,9 +24,21 @@ class ProductController extends ApiController
     public function index()
     {
         $products = Product::all();
+        $totalProduct = $products->count();
+        $totalStock = $products->sum(function($product){
+            return $product->purchase_price * $product->quantity;
+        });
+
+        $avaliable_product = Product::where('status', 'available')->count();
+        $unavaliable_product = Product::where('status', 'unavailable')->count();
+
         $data = collect([
             'products' => $products,
-            'quantity_types' => Product::getQuantityType()
+            'quantity_types' => Product::getQuantityType(),
+            'total_stock' => number_format($totalStock,2,'.',','),
+            'avaliable_product' => $avaliable_product,
+            'unavaliable_product' => $unavaliable_product,
+            'total_product' => $totalProduct
         ]);
         return $this->showAll($data);
     }
