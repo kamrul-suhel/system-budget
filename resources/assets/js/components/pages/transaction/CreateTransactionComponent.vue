@@ -25,9 +25,9 @@
                                     <v-select
                                             label="Is warranty product"
                                             @input="selectedWarranty"
-                                    items="warranty"
+                                    :items="warranty"
                                     item-text="text"
-                                    :item-value="value"
+                                    item-value="value"
                                     >
                                     </v-select>
                                 </v-flex>
