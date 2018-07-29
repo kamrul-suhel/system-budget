@@ -25,8 +25,8 @@
                                     <v-select
                                             label="Is warranty product"
                                             @input="selectedWarranty"
-                                    :items="warranty"
-                                    :item-text="text"
+                                    items="warranty"
+                                    item-text="text"
                                     :item-value="value"
                                     >
                                     </v-select>
