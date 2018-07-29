@@ -24,7 +24,7 @@
                                 <v-flex xs6>
                                     <v-select
                                             label="Is warranty product"
-                                            @input="selectedWarranty()"
+                                            @input="selectedWarranty"
                                     :items="warranty"
                                     :item-text="text"
                                     :item-value="value"
@@ -232,6 +232,7 @@
             },
 
             selectedWarranty(value){
+                console.log(value);
                 this.isWarranty = false;
                 if(value === 1){
                     this.isWarranty = true;
