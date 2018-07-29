@@ -237,7 +237,6 @@
             },
 
             selectedWarranty(value){
-                console.log(value);
                 this.isWarranty = false;
                 if(value === 1){
                     this.isWarranty = true;
