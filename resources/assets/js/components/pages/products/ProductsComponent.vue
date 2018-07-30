@@ -204,7 +204,7 @@
                                     <v-btn icon class="mx-0" @click="editItem(props.item)">
                                         <v-icon color="primary">edit</v-icon>
                                     </v-btn>
-                                    <v-btn icon class="mx-0" @click="deleteItem(props.item)">
+                                    <v-btn icon class="mx-0" @click="openDeleteDialog(props.item)">
                                         <v-icon color="pink">delete</v-icon>
                                     </v-btn>
                                 </td>
@@ -232,6 +232,20 @@
                 v-model="snackbar">
             {{ snackbar_message }}
         </v-snackbar>
+
+        <v-dialog v-model="deleteDialog" persistent max-width="290">
+            <v-card color="error">
+                <v-card-text>
+                    <div class="text-xs-center"><v-icon color="white" size="50">warning</v-icon></div>
+                    <p class="text-xs-center">Are you sure you want to delete {{deleteItem.title}} {{ deleteItem.description}}</p>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="dark darken-1" flat @click.native="deleteDialog = false">Disagree</v-btn>
+                    <v-btn color="dark darken-1" flat @click.native="deleteItemD()">Agree</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
     </div>
 </template>
 <script>
@@ -251,6 +265,9 @@
             unavaliable_product: 0,
             total_product: 0,
             total_stock: 0,
+
+            deleteDialog:false,
+            deleteItem:{},
 
 
             snackbar: false,
@@ -314,12 +331,12 @@
             editedIndex: -1,
             editedItem: {
                 id: '',
-                name: 'asldf',
-                description: 'alsdkfj',
-                quantity: '3',
+                name: '',
+                description: '',
+                quantity: '0',
                 status: 'available',
-                sale_price: '200',
-                purchase_price: '200',
+                sale_price: '0',
+                purchase_price: '0',
                 quantity_type: 'kg'
             },
 
@@ -407,9 +424,20 @@
                 this.dialog = true
             },
 
-            deleteItem(item) {
-                const index = this.items.indexOf(item)
-                confirm('Are you sure you want to delete this item?') && this.items.splice(index, 1)
+            openDeleteDialog(deleteItem){
+                this.deleteItem = deleteItem;
+                this.deleteDialog = true;
+            },
+
+            deleteItemD () {
+                let url = 'api/products/'+this.deleteItem.id
+                axios.delete(url).then((response) => {
+                    this.deleteDialog = false;
+                    const index = this.items.indexOf(this.deleteItem)
+                    this.items.splice(index, 1)
+                    this.snackbar_message = 'You successfully delete '+ this.deleteItem.name;
+                    this.snackbar = true;
+                });
             },
 
             close() {
