@@ -9,9 +9,10 @@
 
         <search-component></search-component>
 
+        <chart-component></chart-component>
+
         <over-view-component></over-view-component>
 
-        <chart-component></chart-component>
 
     </v-container>
 </template>

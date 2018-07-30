@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Accounting;
 
+use App\Expense;
 use App\Traits\ApiResponser;
 use App\Transaction;
 use Carbon\Carbon;
@@ -15,18 +16,25 @@ class TransactionAccountingController extends Controller
 
     public function index(Request $request)
     {
-        $transactions = Transaction::with('products');
+        $transactions = Transaction::with(['products']);
+        $expenses = new Expense();
+
         if($request->select['abbr'] === 'TDT'){
             $transactions = $transactions->where('created_at', '>', Carbon::now()->startOfDay())
+                ->where('created_at', '<', Carbon::now()->endOfDay());
+
+            $expenses = $expenses->where('created_at', '>', Carbon::now()->startOfDay())
                 ->where('created_at', '<', Carbon::now()->endOfDay());
         }
 
         if($request->select['abbr'] === 'YDT'){
             $transactions =  $transactions->where('created_at', '>', Carbon::yesterday());
+            $expenses =  $expenses->where('created_at', '>', Carbon::yesterday());
         }
 
         if($request->select['abbr'] === 'TWT'){
             $transactions = $transactions->where('created_at','>', Carbon::now()->startOfWeek());
+            $expenses = $expenses->where('created_at','>', Carbon::now()->startOfWeek());
         }
         if($request->select['abbr'] === 'LWT'){
             $currentDate = Carbon::now();
@@ -34,6 +42,8 @@ class TransactionAccountingController extends Controller
             $currentDate = Carbon::now();
             $endDate = $currentDate->subDays($currentDate->dayOfWeek);
             $transactions = $transactions->whereBetween('created_at', [$agoDate, $endDate]);
+
+            $expenses = $expenses->whereBetween('created_at', [$agoDate, $endDate]);
         }
 
         if($request->select['abbr'] === 'TMT'){
@@ -42,10 +52,12 @@ class TransactionAccountingController extends Controller
             $currentDate = Carbon::now();
             $endDate = $currentDate->endOfMonth();
             $transactions = $transactions->whereBetween('created_at', [$agoDate, $endDate]);
+            $expenses = $expenses->whereBetween('created_at', [$agoDate, $endDate]);
         }
 
         if($request->select['abbr'] === 'LMT'){
             $transactions = $transactions->whereMonth('created_at', Carbon::now()->subMonth()->month);
+            $expenses = $expenses->whereMonth('created_at', Carbon::now()->subMonth()->month);
         }
 
         if($request->select['abbr'] === 'TYT'){
@@ -54,25 +66,26 @@ class TransactionAccountingController extends Controller
             $currentDate = Carbon::now();
             $endDate = $currentDate->endOfYear();
             $transactions = $transactions->whereBetween('created_at', [$agoDate, $endDate]);
+            $expenses = $expenses->whereBetween('created_at', [$agoDate, $endDate]);
         }
-
-
 
         if($request->customdate){
             $begainDate = Carbon::parse($request->startdate)->startOfDay();
             $endDate = Carbon::parse($request->startdate)->endOfDay();
             $transactions = $transactions->whereBetween('created_at', [$begainDate, $endDate]);
+            $expenses = $expenses->whereBetween('created_at', [$begainDate, $endDate]);
         }
 
         if($request->customdate && $request->customrangerate){
             $agoDate = Carbon::parse($request->startdate)->startOfDay();
             $endDate = Carbon::parse($request->enddate)->endOfDay();
             $transactions = $transactions->whereBetween('created_at', [$agoDate, $endDate]);
+            $expenses = $expenses->whereBetween('created_at', [$agoDate, $endDate]);
         }
 
         $transactions = $transactions->orderBy('created_at', 'desc')->get();
-//        $transactions = $transactions->toSql();
-//        dd($transactions);
+        $expenses = $expenses->orderBy('created_at', 'desc')->get();
+
         $total = number_format((float)$transactions->sum('total'), 2, '.', '');
         $paymentDue = $transactions->sum('payment_due');
         $discount = $transactions->sum('discount_amount');
@@ -96,6 +109,19 @@ class TransactionAccountingController extends Controller
             $chartData[] = $data;
         });
 
+        $totalProduct = $transactions->pluck('products')->collapse();
+
+        $salePrice = $totalProduct->sum(function($product){
+            return $product->pivot->sale_quantity * $product->sale_price;
+        });
+
+        $purchasePrice = $totalProduct->sum(function($product){
+            return $product->pivot->sale_quantity * $product->purchase_price;
+        });
+
+        $totalProfit = $salePrice - $purchasePrice;
+        $totalExpenses = $expenses->sum('amount');
+        $profitAfter = $totalProfit - $totalExpenses;
 
         $data = [
             'total' => number_format((float)$total, 2, '.', ''),
@@ -104,7 +130,10 @@ class TransactionAccountingController extends Controller
             'total_product' => $total_product,
             'paid' => number_format((float)$paid, 2, '.', ''),
             'transactions' => $transactions,
-            'chart_data'    => $chartData
+            'chart_data'    => $chartData,
+            'total_profit' => $totalProfit,
+            'total_expense' => $totalExpenses,
+            'profit_after' => $profitAfter
         ];
 
         return $this->successResponse($data, 200);

@@ -47,6 +47,54 @@
                 </v-card-text>
             </v-card>
         </v-flex>
+
+        <v-flex xs6>
+            <v-card flat class="primary darken-1 white--text">
+                <v-card-title>{{ title }} expenses</v-card-title>
+                <v-card-text class="pt-0">
+                    <h2 class="display-2 white--text text-xs-center">
+                        <span style="font-size:12px">TK.</span>
+                        <strong>{{totalExpense}}</strong>
+                    </h2>
+                </v-card-text>
+            </v-card>
+        </v-flex>
+
+        <v-flex xs6>
+            <v-card flat class="purple darken-1 white--text">
+                <v-card-title>{{ title }} total profit</v-card-title>
+                <v-card-text class="pt-0">
+                    <h2 class="display-2 white--text text-xs-center">
+                        <span style="font-size:12px">TK.</span>
+                        <strong>{{totalProfit}}</strong>
+                    </h2>
+                </v-card-text>
+            </v-card>
+        </v-flex>
+
+        <v-flex xs6>
+            <v-card flat class="blue darken-1 white--text">
+                <v-card-title>{{ title }} after expense profit</v-card-title>
+                <v-card-text class="pt-0">
+                    <h2 class="display-2 white--text text-xs-center">
+                        <span style="font-size:12px">TK.</span>
+                        <strong>{{afterExpenseProfit}}</strong>
+                    </h2>
+                </v-card-text>
+            </v-card>
+        </v-flex>
+
+        <v-flex xs6>
+            <v-card flat class="red darken-1 white--text">
+                <v-card-title>{{ title }}</v-card-title>
+                <v-card-text class="pt-0">
+                    <h2 class="display-2 white--text text-xs-center">
+                        <span style="font-size:12px">TK.</span>
+                        <strong>{{total}}</strong>
+                    </h2>
+                </v-card-text>
+            </v-card>
+        </v-flex>
     </v-layout>
 </template>
 
@@ -64,6 +112,10 @@
                 paid : 'getTPaid',
                 discount : 'getTDiscount',
                 total : 'getTTotal',
+                totalProfit : 'getProfit',
+                totalExpense : 'getExpense',
+                totalProfit : 'getProfit',
+                afterExpenseProfit : 'getAfterExpenseProfit',
                 title:'getChartTitle'
             }),
         },

@@ -2,10 +2,6 @@
 
 namespace App;
 
-use App\Buyer;
-use App\Product;
-use App\Transformers\TransactionTransformer;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -40,7 +36,7 @@ class Transaction extends Model
     ];
 
     protected $hidden =[
-        'deleted_at'
+        'deleted_at','pivot'
     ];
 
      public function customer(){
@@ -65,5 +61,5 @@ class Transaction extends Model
         $dt = date("F j, Y, g:i a", strtotime($value));
         return $dt;
      }
-    
+
 }

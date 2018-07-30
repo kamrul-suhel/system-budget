@@ -6,6 +6,8 @@
                     <v-layout row wrap>
                         <v-flex xs6>
                             <v-select
+                                    dark
+                                    color="white"
                                     v-model="select"
                                     :hint="`${select.state}, ${select.abbr}`"
                                     :items="items"
@@ -35,6 +37,8 @@
                                             min-width="290px"
                                     >
                                         <v-text-field
+                                                dark
+                                                color="white"
                                                 slot="activator"
                                                 label="Start Date"
                                                 v-model="startDate"
@@ -59,6 +63,8 @@
                                             min-width="290px"
                                     >
                                         <v-text-field
+                                                dark
+                                                color="white"
                                                 slot="activator"
                                                 v-model="endDate"
                                                 label="End date"

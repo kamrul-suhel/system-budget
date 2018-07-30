@@ -63,6 +63,7 @@ class Product extends Model
             ->withTimestamps();
     }
 
+
     // getter and setter
     public function setQuantityTypeAttribute($value){
         $this->attributes['quantity_type'] = strtolower($value);

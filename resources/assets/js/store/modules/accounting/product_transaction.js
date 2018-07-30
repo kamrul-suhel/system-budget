@@ -6,6 +6,11 @@ const state = {
     tChartData: '',
     tTableData: '',
     chartTitle:'',
+
+    expense:'',
+    profit:'',
+    afterExpenseProfit:''
+
 }
 
 const getters = {
@@ -34,6 +39,18 @@ const getters = {
     },
     getChartTitle(state){
         return state.chartTitle;
+    },
+
+    getExpense(state){
+        return state.expense;
+    },
+
+    getProfit(state){
+        return state.profit;
+    },
+
+    getAfterExpenseProfit(state){
+        return state.afterExpenseProfit;
     }
 }
 
@@ -67,11 +84,26 @@ const mutations = {
         state.tPaid = '';
         state.tDiscount = '';
         state.tTotal = '';
-        state.chartData = ''
+        state.chartData = '';
+        state.expense = '';
+        state.profit = '';
+        state.afterExpenseProfit = ''
     },
 
     setChartTitle(state, value){
         state.chartTitle = value;
+    },
+
+    setExpense(state, value){
+        state.expense = value;
+    },
+
+    setProfit(state, value){
+        state.profit = value;
+    },
+
+    setAfterExpenseProfit(state, value){
+        state.afterExpenseProfit = value;
     }
 }
 
@@ -120,6 +152,9 @@ const actions = {
                 commit('setTTotal', response.data.total);
                 commit('setTChartData', response.data.chart_data);
                 commit('setTTableData', response.data.transactions);
+                commit('setExpense', response.data.total_expense);
+                commit('setProfit', response.data.total_profit);
+                commit('setAfterExpenseProfit', response.data.profit_after);
             });
     }
 }
