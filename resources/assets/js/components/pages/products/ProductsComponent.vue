@@ -458,9 +458,9 @@
                             // update total product & stock
                             this.total_product++;
 
-                            let total = this.total_stock.replace(',', '');
-                            total = Number(total);
-                            this.total_stock = total + this.editedItem.quantity * this.editedItem.purchase_price;
+                            // let total = this.total_stock.replace(',', '');
+                            // total = Number(total);
+                            // this.total_stock = total + this.editedItem.quantity * this.editedItem.purchase_price;
                             this.close()
                         })
                 }

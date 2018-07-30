@@ -69,11 +69,13 @@ class ProductController extends ApiController
 
         $product = Product::create($product);
 
+
         // If product has category then it will link with category in pivot table
         if($request->has('categories')){
             $categoriesId = [];
+
             foreach(json_decode($request->categories) as $category){
-                $categoriesId[] = $category;
+                $categoriesId[] = $category->value;
             }
             $product->categories()->sync($categoriesId);
         }
