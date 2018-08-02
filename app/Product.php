@@ -53,6 +53,11 @@ class Product extends Model
         return $this->belongsToMany(Category::class);
     }
 
+    public function companies(){
+        return $this->belongsToMany(Product::class)
+            ->withPivot('product_quantity');
+    }
+
     public function seller(){
         return $this->belongsTo(Seller::class);
     }
@@ -75,6 +80,10 @@ class Product extends Model
             self::PRODUCTTYPLITTER,
             self::PRODUCTTYPEPIC
         ];
+    }
+
+    public function serials(){
+        return $this->hasMany(ProductSerial::class);
     }
 
 }

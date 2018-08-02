@@ -37,4 +37,9 @@ class Company extends Model
     public function setStatusAttribute($value){
         $this->attributes['status'] = $value == 'Active'? 1 : 0;
     }
+
+    public function products(){
+        return $this->belongsToMany(Product::class)
+            ->withPivot('product_quantity');
+    }
 }

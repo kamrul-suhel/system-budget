@@ -128,6 +128,8 @@ class DatabaseSeeder extends Seeder
         		$categories = Category::all()->random(mt_rand(1, 5))->pluck('id');
 
         		$product->categories()->attach($categories);
+        		$serials = $this->generateProductSerialArray();
+        		$product->serials()->saveMany($serials);
         	}
         );
 
@@ -161,5 +163,18 @@ class DatabaseSeeder extends Seeder
         factory(Company::class, 20)->create();
 
         factory(CompanyTransaction::class, 200)->create();
+    }
+
+    private function generateProductSerialArray(){
+        $faker = new Faker();
+        $digits = $faker->numberBetween(3, 5);
+        $data = [];
+        for($i = 0; $i<=$digits; $i++){
+            $data['product_serial'] = $faker->unique()->randomDigit;
+            $data['is_sold'] = $faker->numberBetween(0, 1);
+        }
+
+        return $data;
+
     }
 }

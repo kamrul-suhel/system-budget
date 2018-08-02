@@ -31,7 +31,7 @@ class Transaction extends Model
         'discount_amount',
         'total',
         'invoice_number',
-        'serial_number',
+        'product_serial',
         'length_warranty'
     ];
 

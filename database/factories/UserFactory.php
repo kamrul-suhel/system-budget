@@ -52,6 +52,13 @@ $factory->define(Category::class, function (Faker $faker) {
 });
 
 $factory->define(Product::class, function (Faker $faker) {
+    /*
+     * *********************************
+     * product serial
+     * *********************************
+     */
+
+
     return [
         'name' => $faker->word,
         'description' => $faker->paragraph(1),
@@ -90,7 +97,7 @@ $factory->define(Transaction::class, function (Faker $faker) {
         'paid'         => $faker->randomFloat($nbMaxDecimals =2, $min = 0, $max = 2000),
         'discount_amount' => $faker->numberBetween(20, 50),
         'invoice_number' => $unique_id,
-        'serial_number' => $faker->bankAccountNumber,
+        'product_serial' => $faker->bankAccountNumber,
         'length_warranty' => $faker->bankAccountNumber,
         'total' => $faker->numberBetween(3000, 4000),
         'created_at'    => $faker->dateTimeBetween($startDate = '-1 month', $endDate = 'now'),

@@ -50,7 +50,7 @@ class DatabaseSeeder extends Seeder
         $usersQuantity = 30;
         $customerQuantity = 10;
         $categoriesQuantity = 200;
-        $productsQuantity = 200;
+        $productsQuantity = 100;
         $transactionQuantity = 200;
 
         $categoryRoot = Category::create([
@@ -128,6 +128,8 @@ class DatabaseSeeder extends Seeder
         		$categories = Category::all()->random(mt_rand(1, 5))->pluck('id');
 
         		$product->categories()->attach($categories);
+                $serials = $this->generateProductSerialArray();
+                $product->serials()->createMany($serials);
         	}
         );
 
@@ -158,8 +160,29 @@ class DatabaseSeeder extends Seeder
          * Company seeder
          */
 
-        factory(Company::class, 20)->create();
+        factory(Company::class, 20)->create()->each(function($company){
+            $products = Product::all()->random(mt_rand(1,5))->pluck('id');
+            $company->products()->attach($products,
+                [
+                   'product_quantity' => Faker::create()->numberBetween(1, 5)
+                ]);
+        });
 
         factory(CompanyTransaction::class, 200)->create();
+    }
+
+    private function generateProductSerialArray(){
+        $faker = new Faker();
+        $digits = Faker::create()->numberBetween(2, 3);
+        $allData = [];
+        for($i = 0; $i<=$digits; $i++){
+            $data = [];
+            $data['product_serial'] = Faker::create()->randomNumber($nbDigits = NULL);
+            $data['is_sold'] = Faker::create()->numberBetween(0, 1);
+            $allData[] = $data;
+        }
+
+        return $allData;
+
     }
 }

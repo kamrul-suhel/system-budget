@@ -18,7 +18,7 @@ class CreateTransactionsTable extends Migration
             $table->integer('customer_id')->unsigned();
             $table->integer('payment_status')->unsigned()->nullable();
             $table->float('payment_due')->unsigned()->nullable();
-            $table->string('serial_number')->nullable()->index();
+            $table->string('product_serial')->nullable()->index();
             $table->string('length_warranty')->nullable()->index();
             $table->float('paid')->unsigned()->nullable();
             $table->string('invoice_number')->index();
