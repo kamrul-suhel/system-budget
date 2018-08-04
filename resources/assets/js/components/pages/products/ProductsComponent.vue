@@ -11,22 +11,99 @@
 
                 <v-card-text>
                     <v-container fluid grid-list-md>
-                        <v-layout wrap>
+                        <v-layout row wrap>
                             <v-flex xs12>
-                                <v-text-field label="Title" v-model="editedItem.name"></v-text-field>
+                                <v-text-field
+                                        label="Title"
+                                        v-model="editedItem.name"
+                                        dark
+                                        color="dark"
+                                ></v-text-field>
                             </v-flex>
 
                             <v-flex xs12>
                                 <v-textarea
+                                        dark
+                                        color="dark"
                                         label="Description"
                                         v-model="editedItem.description"
                                 ></v-textarea>
+                            </v-flex>
+
+                            <v-flex xs12>
+                                <v-select
+                                        label="Is this product has serial"
+                                    :items="isSerials"
+                                    v-model="isSerial"></v-select>
+                            </v-flex>
+
+                            <v-flex xs12 v-if="totalCompanies" v-for="(company, totalCompanyIndex) in totalCompanies"
+                                    :key="totalCompanyIndex">
+                                <v-layout row wrap
+                                          >
+                                    <v-flex xs6>
+                                        <v-select
+                                                dark
+                                                color="dark"
+                                                label="Which company"
+                                                :items="company.companies"
+                                                v-model="company.selectedCompany"
+                                                item-text="name"
+                                                item-value="id"
+                                                return-object
+                                        ></v-select>
+                                    </v-flex>
+
+                                    <v-flex xs6>
+                                        <v-text-field
+                                                label="How many quantity"
+                                                dark
+                                                v-model="company.quantity"
+                                                color="dark">
+                                        </v-text-field>
+
+                                        <v-flex xs12 v-if="isSerial">
+                                            <v-layout row wrap>
+                                                <v-flex xs3
+                                                        v-for="(serial, index) in company.serials"
+                                                        :key="index">
+                                                    <v-text-field
+                                                            :label="'Product Serial ' +  (Number(index) + 1)"
+                                                            v-model="company.serials[index]"
+                                                    ></v-text-field>
+                                                </v-flex>
+                                            </v-layout>
+                                        </v-flex>
+
+                                        <v-btn
+                                                right
+                                                fab
+                                                dark
+                                                small
+                                                color="error"
+                                                style="width:20px;height:20px;position:absolute"
+                                                @click="onRemoveCompany(totalCompanyIndex)"
+                                        ><v-icon>remove</v-icon></v-btn>
+                                    </v-flex>
+                                </v-layout>
+                            </v-flex>
+
+
+                            <v-flex xs12>
+                                <v-btn
+                                        dark
+                                        color="dark"
+                                        class="ml-0"
+                                        @click="onAddCompany()">Add company
+                                </v-btn>
                             </v-flex>
 
                             <v-flex xs6>
                                 <v-text-field
                                         label="Quantity"
                                         type="number"
+                                        dark
+                                        color="dark"
                                         placeholder="00.00"
                                         v-model="editedItem.quantity"
                                 ></v-text-field>
@@ -34,6 +111,8 @@
 
                             <v-flex xs6>
                                 <v-select
+                                        dark
+                                        color="dark"
                                         label="Quantity type"
                                         :items="quantity_type"
                                         v-model="editedItem.quantity_type"
@@ -43,6 +122,8 @@
 
                             <v-flex xs6>
                                 <v-select
+                                        dark
+                                        color="dark"
                                         :items="status"
                                         v-model="editedItem.status"
                                         label="Status"
@@ -52,6 +133,8 @@
 
                             <v-flex xs6>
                                 <v-text-field
+                                        dark
+                                        color="dark"
                                         label="Sale Price"
                                         type="number"
                                         placeholder="00.00"
@@ -62,6 +145,8 @@
 
                             <v-flex xs6>
                                 <v-text-field
+                                        dark
+                                        color="dark"
                                         label="Purchase price"
                                         type="number"
                                         placeholder="00.00"
@@ -72,6 +157,8 @@
 
                             <v-flex xs6>
                                 <v-select
+                                        dark
+                                        color="dark"
                                         label="Categories"
                                         :items="categories"
                                         v-model="selectedCategories"
@@ -179,17 +266,17 @@
                         >
 
                             <!--<template slot="headers" slot-scope="props">-->
-                                <!--<tr>-->
-                                    <!--<th-->
-                                            <!--v-for="header in props.headers"-->
-                                            <!--:key="header.value"-->
-                                            <!--:class="['column sortable', pagination.descending ? 'desc' : 'asc', header.value === pagination.sortBy ? 'active' : '']"-->
-                                            <!--@click="changeSort(header.value)"-->
-                                    <!--&gt;-->
-                                        <!--<v-icon small>arrow_upward</v-icon>-->
-                                        <!--{{ header.text}}-->
-                                    <!--</th>-->
-                                <!--</tr>-->
+                            <!--<tr>-->
+                            <!--<th-->
+                            <!--v-for="header in props.headers"-->
+                            <!--:key="header.value"-->
+                            <!--:class="['column sortable', pagination.descending ? 'desc' : 'asc', header.value === pagination.sortBy ? 'active' : '']"-->
+                            <!--@click="changeSort(header.value)"-->
+                            <!--&gt;-->
+                            <!--<v-icon small>arrow_upward</v-icon>-->
+                            <!--{{ header.text}}-->
+                            <!--</th>-->
+                            <!--</tr>-->
                             <!--</template>-->
 
                             <template slot="items" slot-scope="props">
@@ -236,8 +323,11 @@
         <v-dialog v-model="deleteDialog" persistent max-width="290">
             <v-card color="error">
                 <v-card-text>
-                    <div class="text-xs-center"><v-icon color="white" size="50">warning</v-icon></div>
-                    <p class="text-xs-center">Are you sure you want to delete {{deleteItem.title}} {{ deleteItem.description}}</p>
+                    <div class="text-xs-center">
+                        <v-icon color="white" size="50">warning</v-icon>
+                    </div>
+                    <p class="text-xs-center">Are you sure you want to delete {{deleteItem.title}} {{
+                        deleteItem.description}}</p>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -261,13 +351,13 @@
                 sortBy: 'name'
             },
 
-            avaliable_product:0,
+            avaliable_product: 0,
             unavaliable_product: 0,
             total_product: 0,
             total_stock: 0,
 
-            deleteDialog:false,
-            deleteItem:{},
+            deleteDialog: false,
+            deleteItem: {},
 
 
             snackbar: false,
@@ -333,7 +423,7 @@
                 id: '',
                 name: '',
                 description: '',
-                quantity: '0',
+                quantity: 0,
                 status: 'available',
                 sale_price: '0',
                 purchase_price: '0',
@@ -344,7 +434,7 @@
 
             categories: [],
             selectedCategories: [],
-            update_form : false,
+            update_form: false,
 
             defaultItem: {
                 name: '',
@@ -352,18 +442,66 @@
             },
             row_per_page: [20, 30, 50, {'text': 'All', 'value': -1}],
 
-            purchase_price_field: false
+            purchase_price_field: false,
+
+            companies: [],
+            selectedCompanies:[],
+
+            isSerials : [{text: 'yes', value: true}, {text: 'No', value: false}],
+            isSerial: false,
+            productSerials: [],
+
+
         }),
 
         computed: {
             formTitle() {
                 return this.editedIndex === -1 ? 'New Product' : 'Edit Product'
+            },
+
+            totalCompanies() {
+                console.log('total called');
+                let quantity = 0;
+                this.selectedCompanies.forEach((company)=>{
+                    quantity += Number(company.quantity)
+                    company.serials = [];
+                    for(let i =0; i < company.quantity; i++){
+                        console.log('Serial ' + i);
+                        company.serials.push(i)
+                    }
+                })
+
+                this.editedItem.quantity = quantity;
+
+                return this.selectedCompanies;
             }
         },
 
         watch: {
             dialog(val) {
                 val || this.close()
+            },
+
+            isSerial(value){
+                this.productSerials = [];
+                if(value){
+                    let count = Number(this.editedItem.quantity);
+                    console.log(count);
+                    for(let i = 0; i < count; i++){
+                        console.log(i);
+                        this.productSerials.push('0');
+                    }
+                }
+            },
+
+            editedItem(value){
+                if(value.quantity){
+                    this.productSerials = [];
+                    let count = Number(this.editedItem.quantity);
+                    for(let i = 0; i < count; i++){
+                        this.productSerials.push('0');
+                    }
+                }
             }
         },
 
@@ -380,7 +518,7 @@
                         this.quantity_type = response.data.quantity_types;
                         this.total_product = response.data.total_product;
                         this.avaliable_product = response.data.avaliable_product;
-                        this.unavaliable_product = response.data.unavaliable_product? response.data.unavaliable_product : 0;
+                        this.unavaliable_product = response.data.unavaliable_product ? response.data.unavaliable_product : 0;
                         this.total_stock = response.data.total_stock;
                     })
                     .catch((error) => {
@@ -401,6 +539,16 @@
                     })
                     .catch((error) => {
                         console.log('categories error');
+                        console.log(error)
+                    })
+
+                // get All product
+                axios.get('/api/productcompany')
+                    .then((response) => {
+                        this.companies = response.data;
+                    })
+                    .catch((error) => {
+                        console.log('Companies error');
                         console.log(error)
                     })
             },
@@ -424,18 +572,18 @@
                 this.dialog = true
             },
 
-            openDeleteDialog(deleteItem){
+            openDeleteDialog(deleteItem) {
                 this.deleteItem = deleteItem;
                 this.deleteDialog = true;
             },
 
-            deleteItemD () {
-                let url = 'api/products/'+this.deleteItem.id
+            deleteItemD() {
+                let url = 'api/products/' + this.deleteItem.id
                 axios.delete(url).then((response) => {
                     this.deleteDialog = false;
                     const index = this.items.indexOf(this.deleteItem)
                     this.items.splice(index, 1)
-                    this.snackbar_message = 'You successfully delete '+ this.deleteItem.name;
+                    this.snackbar_message = 'You successfully delete ' + this.deleteItem.name;
                     this.snackbar = true;
                 });
             },
@@ -449,9 +597,21 @@
                 }, 300)
             },
 
+            onAddCompany() {
+                let newcompany = {quantity: 0, companies: this.companies, selectedCompany:{}};
+                this.selectedCompanies.push(newcompany);
+                console.log(this.totalCompanies);
+            },
+
+            onRemoveCompany(index){
+                this.selectedCompanies.splice(index, 1);
+            },
+
             save() {
                 let form = new FormData();
                 let url = '/api/products';
+                console.log(this.totalCompanies);
+                return;
 
                 form.append('name', this.editedItem.name);
                 form.append('description', this.editedItem.description);
@@ -468,11 +628,11 @@
                 if (this.editedIndex > -1) {
                     // update product
                     form.append('_method', 'PATCH')
-                    url = url +'/'+ this.editedItem.id;
+                    url = url + '/' + this.editedItem.id;
                     axios.post(url, form)
                         .then((response) => {
                             Object.assign(this.items[this.editedIndex], this.editedItem);
-                            this.snackbar_message = 'Product '+this.editedItem.name + ' successfully updated.';
+                            this.snackbar_message = 'Product ' + this.editedItem.name + ' successfully updated.';
                             this.snackbar = true;
                             this.close()
                         })
@@ -481,7 +641,7 @@
                     axios.post(url, form)
                         .then((response) => {
                             this.items.push(response.data);
-                            this.snackbar_message = 'Product '+this.editedItem.name + ' successfully created.';
+                            this.snackbar_message = 'Product ' + this.editedItem.name + ' successfully created.';
                             this.snackbar = true;
                             // update total product & stock
                             this.total_product++;
@@ -508,8 +668,8 @@
 </script>
 
 <style>
-    .products table.table thead th:first-child{
-        padding:0 15px;
+    .products table.table thead th:first-child {
+        padding: 0 15px;
     }
 
 </style>

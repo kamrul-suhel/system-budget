@@ -32,6 +32,11 @@ class CompanyController extends Controller
         return view('welcome');
     }
 
+    public function productCompany(Request $request){
+        $companies = Company::select('id', 'name')->orderBy('name', 'ASC')->get();
+        return $this->successResponse($companies, 200);
+    }
+
     /**
      * Store a newly created resource in storage.
      *
