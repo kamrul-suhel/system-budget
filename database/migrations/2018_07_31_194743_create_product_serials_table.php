@@ -16,8 +16,11 @@ class CreateProductSerialsTable extends Migration
         Schema::create('product_serials', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('product_id');
+            $table->integer('company_id');
+            $table->integer('transaction_id')->nullable();
             $table->string('product_serial')->nullable()->index();
             $table->integer('is_sold')->nullable()->unsigned()->index();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -11,6 +11,8 @@
                             <v-layout row wrap>
                                 <v-flex xs6>
                                     <v-autocomplete
+                                            dark
+                                            color="dark"
                                             label="Select Customer"
                                             :items="customers"
                                             v-model="selectedCustomer"
@@ -23,6 +25,8 @@
 
                                 <v-flex xs6>
                                     <v-select
+                                            dark
+                                            color="dark"
                                             label="Is warranty product"
                                             @input="selectedWarranty"
                                     :items="warranty"
@@ -36,11 +40,15 @@
                             <v-layout row wrap v-if="isWarranty">
                                 <v-flex xs6>
                                     <v-text-field
+                                            dark
+                                            color="dark"
                                         label="Serial number"
                                     v-model="serial_number">
                                     </v-text-field>
                                 </v-flex>
                                     <v-text-field
+                                            dark
+                                            color="dark"
                                         label="Length Of Warranty"
                                         v-model="length_warranty">
                                     </v-text-field>
@@ -49,7 +57,11 @@
                                 </v-flex>
                             </v-layout>
 
-                            <product-component v-for="(product, index) in total_product" :key="index" :index="index"></product-component>
+                            <product-component
+                                    v-for="(product, index) in total_product"
+                                    :key="index"
+                                    :index="index"
+                            ></product-component>
 
                             <v-layout row wrap>
                                 <v-flex xs12>
@@ -62,6 +74,8 @@
                             <v-layout row wrap>
                                 <v-flex xs6>
                                     <v-select
+                                            dark
+                                            color="dark"
                                             label="Payment Status"
                                             hint="What is the payment status."
                                             :items="paymentStatus"
@@ -71,6 +85,8 @@
 
                                 <v-flex xs6>
                                     <v-text-field
+                                            dark
+                                            color="dark"
                                             label="Discount amount"
                                             v-model="discount"
                                             type="number"
@@ -83,6 +99,8 @@
                             <v-layout row wrap>
                                 <v-flex xs6 v-if="selectedPaymentStatus > 1">
                                     <v-text-field
+                                            dark
+                                            color="dark"
                                             label="How much paid"
                                             v-model="paid"
                                             type="number"

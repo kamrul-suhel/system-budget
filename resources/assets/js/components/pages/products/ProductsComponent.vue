@@ -37,7 +37,7 @@
                                     v-model="isSerial"></v-select>
                             </v-flex>
 
-                            <v-flex xs12 v-if="totalCompanies" v-for="(company, totalCompanyIndex) in totalCompanies"
+                            <v-flex xs12 v-for="(company, totalCompanyIndex) in totalCompanies"
                                     :key="totalCompanyIndex">
                                 <v-layout row wrap
                                           >
@@ -421,13 +421,13 @@
             editedIndex: -1,
             editedItem: {
                 id: '',
-                name: '',
-                description: '',
-                quantity: 0,
+                name: 'new title',
+                description: 'soe description',
+                quantity: 1,
                 status: 'available',
-                sale_price: '0',
-                purchase_price: '0',
-                quantity_type: 'kg'
+                sale_price: '120',
+                purchase_price: '100',
+                quantity_type: 'pic'
             },
 
             quantity_type: [],
@@ -460,14 +460,24 @@
             },
 
             totalCompanies() {
-                console.log('total called');
                 let quantity = 0;
+                let serials = [];
                 this.selectedCompanies.forEach((company)=>{
+                    if(company.serials){
+                        serials = company.serials;
+                    }
+
                     quantity += Number(company.quantity)
                     company.serials = [];
                     for(let i =0; i < company.quantity; i++){
-                        console.log('Serial ' + i);
-                        company.serials.push(i)
+                        if(this.isSerial){
+                            if(serials.length > 0){
+                                company.serials.push(serials[i]);
+                            }else{
+                                company.serials.push('');
+                            }
+                        }
+
                     }
                 })
 
@@ -486,9 +496,7 @@
                 this.productSerials = [];
                 if(value){
                     let count = Number(this.editedItem.quantity);
-                    console.log(count);
                     for(let i = 0; i < count; i++){
-                        console.log(i);
                         this.productSerials.push('0');
                     }
                 }
@@ -610,8 +618,6 @@
             save() {
                 let form = new FormData();
                 let url = '/api/products';
-                console.log(this.totalCompanies);
-                return;
 
                 form.append('name', this.editedItem.name);
                 form.append('description', this.editedItem.description);
@@ -620,6 +626,7 @@
                 form.append('quantity', this.editedItem.quantity);
                 form.append('status', this.editedItem.status);
                 form.append('quantity_type', this.editedItem.quantity_type);
+                form.append('totalCompanies', JSON.stringify(this.totalCompanies));
 
                 if (this.selectedCategories) {
                     form.append('categories', JSON.stringify(this.selectedCategories));

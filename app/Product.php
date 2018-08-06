@@ -54,8 +54,9 @@ class Product extends Model
     }
 
     public function companies(){
-        return $this->belongsToMany(Product::class)
-            ->withPivot('product_quantity');
+        return $this->belongsToMany(Company::class)
+            ->withPivot('product_quantity')
+            ->withTimestamps();
     }
 
     public function seller(){

@@ -2,6 +2,8 @@
     <v-layout row wrap>
         <v-flex xs6>
             <v-autocomplete
+                    dark
+                    color="dark"
                     label="Select Product"
                     :items="products"
                     :hint="'Per unit sale price: '+ current_product_sale_price"
@@ -15,6 +17,8 @@
 
         <v-flex xs6>
             <v-text-field
+                    dark
+                    color="dark"
                     label="Quantity"
                     type="number"
                     min="1"
@@ -23,6 +27,16 @@
                     persistent-hint
                     v-model="selectedQuantity"
             ></v-text-field>
+        </v-flex>
+
+        <v-flex xs6>
+            <v-autocomplete
+                    dark
+                    color="dark"
+                :items="serials"
+                item-text="product_serial"
+                item-value="product_serial"
+            ></v-autocomplete>
         </v-flex>
     </v-layout>
 </template>
@@ -40,7 +54,8 @@
                 current_product_sale_price:0,
                 selectedQuantity:0,
                 allProductData:'',
-                previous_selected_id:''
+                previous_selected_id:'',
+                serials:[]
             }
         },
 
@@ -98,6 +113,18 @@
                         this.current_product_sale_price = product.sale_price;
                         change_product.index = this.index;
                         change_product.product = product;
+
+                        // Check serial keys exists
+                        if(product.serials.length > 0){
+                            this.serials = [];
+                            product.serials.forEach((serial)=> {
+                                let currSerial = {
+                                    'id' : serial.id,
+                                    'product_serial': serial.product_serial
+                                };
+                                this.serials.push(currSerial);
+                            })
+                        }
 
                         this.$store.dispatch('setTransaction', change_product)
                             .then(()=>{

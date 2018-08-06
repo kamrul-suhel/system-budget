@@ -7,6 +7,7 @@ use App\Product;
 use App\Transformers\ProductTransformer;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends ApiController
 {
@@ -23,7 +24,7 @@ class ProductController extends ApiController
      */
     public function index()
     {
-        $products = Product::all();
+        $products = Product::with('serials')->get();
         $totalProduct = $products->count();
         $totalStock = $products->sum(function($product){
             return $product->purchase_price * $product->quantity;
@@ -62,18 +63,43 @@ class ProductController extends ApiController
     public function store(Request $request)
     {
         //
-        $product = $request->all();
+        $totalCompanies = json_decode($request->totalCompanies);
+
+
+        // Product create
+        $product = $request->except('totalCompanies');
         $product['image'] = '1.jpg';
         //change this when auth is set
         $product['seller_id'] = 1;
-
         $product = Product::create($product);
 
+        // Product serials key with company
+        $productSerialsWithCompany =[];
+        $productCompany = [];
+        foreach($totalCompanies as $currCompany){
+
+            $company = [];
+            $company['company_id'] = $currCompany->selectedCompany->id;
+            $company['product_quantity'] = $currCompany->quantity;
+            $productCompany[] = $company;
+
+            if($currCompany->serials){
+                foreach($currCompany->serials as $currSerial){
+                    $serial = [];
+                    $serial['is_sold'] = 0;
+                    $serial['product_serial'] = $currSerial;
+                    $serial['company_id'] = $currCompany->selectedCompany->id;
+                    $productSerialsWithCompany[] = $serial;
+                }
+            }
+        }
+
+        $companies = $product->companies()->attach($productCompany);
+        $serial = $product->serials()->createMany($productSerialsWithCompany);
 
         // If product has category then it will link with category in pivot table
         if($request->has('categories')){
             $categoriesId = [];
-
             foreach(json_decode($request->categories) as $category){
                 $categoriesId[] = $category->value;
             }

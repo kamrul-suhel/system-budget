@@ -12,7 +12,8 @@ class ProductSerial extends Model
 
     public $fillable = [
         'product_serial',
-        'is_use'
+        'is_sold',
+        'company_id'
     ];
 
     public function product(){
