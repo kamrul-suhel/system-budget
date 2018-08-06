@@ -16,6 +16,8 @@
             </v-list-tile>
 
             <v-list-group
+                    dark
+                    color="dark"
                     v-for="(navs, index) in items"
                     :key="index"
                     :prepend-icon="navs.icon"
