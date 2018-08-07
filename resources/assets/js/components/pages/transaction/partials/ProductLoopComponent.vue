@@ -33,9 +33,12 @@
             <v-autocomplete
                     dark
                     color="dark"
-                :items="serials"
-                item-text="product_serial"
-                item-value="product_serial"
+                    :items="serials"
+                    item-text="product_serial"
+                    item-value="product_serial"
+                    v-model="selectedSerials"
+                    @change="onSerialChange()"
+                    multiple
             ></v-autocomplete>
         </v-flex>
     </v-layout>
@@ -51,23 +54,24 @@
                 products: [],
                 selectedProduct: [],
                 current_product_quantity: '',
-                current_product_sale_price:0,
-                selectedQuantity:0,
-                allProductData:'',
-                previous_selected_id:'',
-                serials:[]
+                current_product_sale_price: 0,
+                selectedQuantity: 0,
+                allProductData: '',
+                previous_selected_id: '',
+                serials: [],
+                selectedSerials: [],
             }
         },
 
-        props:['index'],
+        props: ['index'],
         watch: {
             selectedProduct(val) {
-                if(val){
+                if (val) {
                     this.updateStore(val.value);
                 }
             },
 
-            selectedQuantity(val){
+            selectedQuantity(val) {
                 this.updateStore(this.selectedProduct.value);
             },
 
@@ -78,23 +82,32 @@
         },
 
         methods: {
+            onSerialChange(){
+                this.updateStore(this.selectedProduct.value);
+            },
+
             initialize() {
 
                 //get all product
                 axios.get('/api/products')
                     .then((response) => {
-                        if(response.data.products){
+                        if (response.data.products) {
                             this.products = response.data.products;
                             this.allProductData = response.data.products;
                             var array_products = [];
-                            this.products.forEach((product)=> {
-                                var product = { text: product.name, value : product.id, quantity: product.quantity, current_product_sale_price: product.sale_price};
+                            this.products.forEach((product) => {
+                                var product = {
+                                    text: product.name,
+                                    value: product.id,
+                                    quantity: product.quantity,
+                                    current_product_sale_price: product.sale_price
+                                };
                                 array_products.push(product);
                             })
                             this.products = array_products;
-                            this.selectedProduct = this.products[0];
-                            this.current_product_quantity = this.products[0].quantity;
-                            this.current_product_sale_price = this.products[0].current_product_sale_price;
+                            // this.selectedProduct = this.products[0];
+                            // this.current_product_quantity = this.products[0].quantity;
+                            // this.current_product_sale_price = this.products[0].current_product_sale_price;
 
                             this.updateStore(this.selectedProduct.value);
                         }
@@ -104,30 +117,31 @@
                     });
             },
 
-            updateStore(val){
+            updateStore(val) {
                 var change_product = {};
-                this.allProductData.forEach((product)=> {
-                    if(val === product.id){
+                this.allProductData.forEach((product) => {
+                    if (val === product.id) {
                         change_product.selected_quantity = this.selectedQuantity;
                         this.current_product_quantity = product.quantity;
                         this.current_product_sale_price = product.sale_price;
                         change_product.index = this.index;
                         change_product.product = product;
+                        change_product.selectedSerials = this.selectedSerials;
+                        console.log('updated ');
 
                         // Check serial keys exists
-                        if(product.serials.length > 0){
+                        if (product.serials.length > 0) {
                             this.serials = [];
-                            product.serials.forEach((serial)=> {
+                            product.serials.forEach((serial) => {
                                 let currSerial = {
-                                    'id' : serial.id,
+                                    'id': serial.id,
                                     'product_serial': serial.product_serial
                                 };
                                 this.serials.push(currSerial);
                             })
                         }
-
                         this.$store.dispatch('setTransaction', change_product)
-                            .then(()=>{
+                            .then(() => {
                                 TransactionEventBus.updateProduct();
                             });
                     }

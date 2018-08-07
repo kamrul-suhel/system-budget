@@ -34,7 +34,7 @@
         >
             {{ text }}
             <v-btn
-                    color="primary"
+                    color="white"
                     flat
                     @click="snackbar = false"
             >
@@ -57,7 +57,6 @@
 
         created() {
             TransactionEventBus.$on('productCreate', (message) =>{
-                console.log('alksdfjl');
                 this.text = message;
                 this.snackbar = true;
             });

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Product;
 use App\Http\Controllers\ApiController;
 use App\Product;
+use App\ProductSerial;
 use App\Seller;
 use App\Transaction;
 use App\User;
@@ -31,21 +32,6 @@ class ProductBuyerTransactionController extends ApiController
             $attach_product =[];
             $unique_id = $this->getUniqueId();
 
-            $products = json_decode($request->products);
-
-
-
-
-            foreach($products as $product){
-                $cur_product= Product::find($product->product->id);
-                $selected_quantity = $product->selected_quantity;
-                $cur_product->quantity -= $selected_quantity;
-
-                $attach_product[$product->product->id] = ['sale_quantity' => $product->selected_quantity];
-
-                $cur_product->save();
-            }
-
             $transaction = Transaction::create([
                 'customer_id'      => $customer->id,
                 'invoice_number'         => $unique_id,
@@ -55,6 +41,31 @@ class ProductBuyerTransactionController extends ApiController
                 'payment_due'   => $request->payment_due ? $request->payment_due : 0,
                 'paid'         => $request->paid
             ]);
+
+            $products = json_decode($request->products);
+
+
+            foreach($products as $product){
+                // check if has selected serials
+                if($product->selectedSerials){
+                    // Find the serials key
+                    $serials = ProductSerial::where('product_id', $product->product->id)
+                        ->whereIn('product_serial',$product->selectedSerials)->get();
+                    foreach($serials as $serial){
+                        $serial->is_sold = 1;
+                        $serial->transaction_id = $transaction->id;
+                        $serial->update();
+                    }
+                }
+
+                $cur_product= Product::find($product->product->id);
+                $selected_quantity = $product->selected_quantity;
+                $cur_product->quantity -= $selected_quantity;
+
+                $attach_product[$product->product->id] = ['sale_quantity' => $product->selected_quantity];
+
+                $cur_product->save();
+            }
 
             $transaction->products()->sync($attach_product);
             return $transaction;

@@ -21,14 +21,16 @@ const store = new Vuex.Store({
             return new Promise((resolve, reject) => {
                 if(state.products.length === 0){
                     state.products.push(product);
+                    console.log(state.products);
                     resolve();
                 }else{
-
                     if(state.products[product.product.index] === 'undefined'){
                         state.products.push(product);
+                        console.log(state.products);
                         resolve();
                     }else{
                         state.products[product.index] = product;
+                        console.log(state.products);
                         resolve();
                     }
                 }
