@@ -16,7 +16,7 @@ class TransactionAccountingController extends Controller
 
     public function index(Request $request)
     {
-        $transactions = Transaction::with(['products']);
+        $transactions = Transaction::with(['products', 'customer']);
         $expenses = new Expense();
 
         if($request->select['abbr'] === 'TDT'){
@@ -86,7 +86,7 @@ class TransactionAccountingController extends Controller
         $transactions = $transactions->orderBy('created_at', 'desc')->get();
         $expenses = $expenses->orderBy('created_at', 'desc')->get();
 
-        $total = number_format((float)$transactions->sum('total'), 2, '.', '');
+        $total = $transactions->sum('total');
         $paymentDue = $transactions->sum('payment_due');
         $discount = $transactions->sum('discount_amount');
         $paid = $transactions->sum('paid');
@@ -121,7 +121,8 @@ class TransactionAccountingController extends Controller
 
         $totalProfit = $salePrice - $purchasePrice;
         $totalExpenses = $expenses->sum('amount');
-        $profitAfter = $totalProfit - $totalExpenses;
+        $profitAfter = $totalProfit - $totalExpenses - $discount;
+
 
         $data = [
             'total' => number_format((float)$total, 2, '.', ''),
@@ -131,9 +132,9 @@ class TransactionAccountingController extends Controller
             'paid' => number_format((float)$paid, 2, '.', ''),
             'transactions' => $transactions,
             'chart_data'    => $chartData,
-            'total_profit' => $totalProfit,
-            'total_expense' => $totalExpenses,
-            'profit_after' => $profitAfter
+            'total_profit' => number_format((float)$totalProfit, 2, '.', ''),
+            'total_expense' => number_format((float)$totalExpenses, 2, '.', ''),
+            'profit_after' => number_format((float)$profitAfter, 2, '.', '')
         ];
 
         return $this->successResponse($data, 200);

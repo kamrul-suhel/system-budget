@@ -13,6 +13,7 @@
 
         <over-view-component></over-view-component>
 
+        <table-data></table-data>
 
     </v-container>
 </template>
@@ -21,6 +22,7 @@
     import SearchComponent from '../partials/SearchComponent'
     import OverViewComponent from '../partials/OverviewComponent'
     import ChartComponent from '../../../Partials/ChartComponent'
+    import TableData from '../partials/TransactionOverviewComponent'
     import {mapActions} from 'vuex';
     export default {
 
@@ -29,7 +31,8 @@
         components: {
             chartComponent: ChartComponent,
             SearchComponent,
-            OverViewComponent
+            OverViewComponent,
+            TableData
         },
 
         computed: {

@@ -151,7 +151,6 @@
             }),
             onSelected(){
                 let data = this.generateData();
-                console.log(data);
                 this.$store.dispatch('fetchAllTransaction', data);
             },
 
