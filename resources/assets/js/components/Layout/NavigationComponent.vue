@@ -13,6 +13,7 @@
                     <v-icon>home</v-icon>
                 </v-list-tile-action>
                 <v-list-tile-title>Home</v-list-tile-title>
+                <v-list-tile-title @click="onCloseWindow()">Close</v-list-tile-title>
             </v-list-tile>
 
             <v-list-group
@@ -188,6 +189,11 @@
                     return;
                 }
                 this.$router.push({name: item.link});
+            },
+
+            onCloseWindow(){
+                console.log('closing window');
+                window.close();
             }
         }
     }

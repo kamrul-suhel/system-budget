@@ -24,7 +24,9 @@ class ProductController extends ApiController
      */
     public function index()
     {
-        $products = Product::with('serials')->get();
+        $products = Product::with(['serials' => function($quary){
+            $quary->where('is_sold', 0);
+        }])->get();
         $totalProduct = $products->count();
         $totalStock = $products->sum(function($product){
             return $product->purchase_price * $product->quantity;
@@ -150,8 +152,6 @@ class ProductController extends ApiController
             'sale_price',
             'status'
         ]));
-
-
 
         if($request->has('categories') && !empty($request->categories)){
             $categoriesId = [];
